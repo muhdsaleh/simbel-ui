@@ -269,23 +269,28 @@
     height: 56px;
     position: sticky; top: 0; z-index: 10;
     box-shadow: var(--shadow-sm);
+    overflow: visible;
+  }
+  .progress-strip-inner {
+    display: flex; align-items: center; position: relative; height: 100%; width: 100%;
+  }
+  .progress-indicator {
+    position: absolute; top: -3px; height: calc(100% + 6px);
+    background: var(--primary); border-radius: var(--radius);
+    transition: left .28s cubic-bezier(.4, 0, .2, 1), width .28s cubic-bezier(.4, 0, .2, 1);
+    z-index: 0;
+    pointer-events: none;
   }
   .progress-step {
     display: flex; align-items: center; gap: var(--space-2);
     font-size: 14px; font-weight: 700; color: #27274E;
     padding: 0 var(--space-4); height: 100%; cursor: pointer;
-    position: relative; transition: color .12s;
+    position: relative; z-index: 1;
+    transition: color .2s cubic-bezier(.4, 0, .2, 1);
     white-space: nowrap;
   }
   .progress-step:hover { color: #27274E; }
-  .progress-step.active {
-    color: #fff;
-    background: var(--primary);
-    border-radius: var(--radius);
-    margin: -3px 0;
-    padding: 3px var(--space-4);
-    height: calc(100% + 6px);
-  }
+  .progress-step.active { color: #fff; }
   .progress-step.done { color: var(--green); }
   .progress-step .step-num {
     width: 26px; height: 26px; border-radius: 50%;
@@ -293,7 +298,7 @@
     font-size: 12px; font-weight: 700;
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0; font-family: 'Fustat', sans-serif;
-    transition: background .12s, color .12s;
+    transition: background .2s cubic-bezier(.4, 0, .2, 1), color .2s cubic-bezier(.4, 0, .2, 1);
   }
   .progress-step.active .step-num { background: rgba(255,255,255,.2); color: #fff; }
   .progress-step.done .step-num { background: var(--green-muted); color: var(--green); }
@@ -302,9 +307,10 @@
   .progress-step + .progress-step::before {
     content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
     width: 1px; height: 16px; background: var(--border);
+    transition: opacity .2s;
   }
   .progress-step.active + .progress-step::before,
-  .progress-step + .progress-step.active::before { display: none; }
+  .progress-step + .progress-step.active::before { opacity: 0; }
   body.rtl .progress-step + .progress-step::before { left: unset; right: 0; }
 
   /* ── FORM LAYOUT ── */
