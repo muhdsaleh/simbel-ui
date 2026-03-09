@@ -387,7 +387,12 @@
   .badge-secondary::before { background: var(--primary); opacity: .5; }
 
   .campaigns-list.grid-view { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: var(--gutter); }
-  .campaigns-list.grid-view .campaign-card-bottom { flex-wrap: wrap; }
+  .campaigns-list.grid-view .campaign-card { gap: var(--space-5); }
+  .campaigns-list.grid-view .campaign-card-top { flex-wrap: wrap; }
+  .campaigns-list.grid-view .campaign-name { white-space: normal; overflow: visible; text-overflow: unset; }
+  .campaigns-list.grid-view .campaign-card-bottom { flex-direction: column; align-items: stretch; gap: var(--space-4); }
+  .campaigns-list.grid-view .campaign-stats { justify-content: space-between; }
+  .campaigns-list.grid-view .card-actions { justify-content: flex-start; }
 
   /* ═══ 12-COLUMN GRID UTILITY ═══
      Use .grid as a layout wrapper inside .content on any page.
