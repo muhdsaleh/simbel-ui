@@ -1243,8 +1243,30 @@
   // ── PROGRESS SCROLLSPY ──
   const sections = ['basics', 'platforms', 'audience', 'content', 'review'];
   const contentArea = document.querySelector('.content');
+  const indicator = document.getElementById('progressIndicator');
+  let clickLock = false;
+
+  function moveIndicator(section) {
+    const step = document.querySelector(`.progress-step[data-section="${section}"]`);
+    if (!step || !indicator) return;
+    indicator.style.left = step.offsetLeft + 'px';
+    indicator.style.width = step.offsetWidth + 'px';
+    document.querySelectorAll('.progress-step').forEach(s => {
+      s.classList.toggle('active', s.dataset.section === section);
+    });
+  }
+
+  // Initial position (no transition on load)
+  requestAnimationFrame(() => {
+    indicator.style.transition = 'none';
+    moveIndicator('basics');
+    requestAnimationFrame(() => {
+      indicator.style.transition = '';
+    });
+  });
 
   contentArea.addEventListener('scroll', () => {
+    if (clickLock) return;
     let current = sections[0];
     const atBottom = contentArea.scrollTop + contentArea.clientHeight >= contentArea.scrollHeight - 50;
     if (atBottom) {
@@ -1255,14 +1277,17 @@
         if (el && contentArea.scrollTop + 100 >= el.offsetTop) current = id;
       });
     }
-    document.querySelectorAll('.progress-step').forEach(s => {
-      s.classList.toggle('active', s.dataset.section === current);
-    });
+    moveIndicator(current);
   });
 
   function scrollToSection(id) {
+    // Immediately move indicator, then scroll content
+    clickLock = true;
+    moveIndicator(id);
     const el = document.getElementById(`section-${id}`);
     if (el) contentArea.scrollTo({ top: el.offsetTop - 70, behavior: 'smooth' });
+    // Release lock after scroll settles
+    setTimeout(() => { clickLock = false; }, 400);
   }
 
   // ── LAUNCH ──
