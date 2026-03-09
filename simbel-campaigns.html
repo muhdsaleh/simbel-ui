@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simbel — Campaigns</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fustat:wght@300;400;500;600;700;800&family=Alyamama&display=swap" rel="stylesheet">
+<style>
+  /* Fustat restricted to Latin/numbers only — Arabic falls through to Alyamama */
+  @font-face {
+    font-family: 'FustatLatin';
+    src: url('https://fonts.gstatic.com/s/fustat/v4/NaPEcZ_aHO9Iy5thRNqze7YGY9HGCEQQRrw.ttf') format('truetype');
+    font-weight: 400; font-display: swap;
+    unicode-range: U+0000-024F, U+0300-036F, U+2000-206F, U+20A0-20CF, U+2100-214F;
+  }
+  @font-face {
+    font-family: 'FustatLatin';
+    src: url('https://fonts.gstatic.com/s/fustat/v4/NaPEcZ_aHO9Iy5thRNqze7YGY9HGCHYQRrw.ttf') format('truetype');
+    font-weight: 500; font-display: swap;
+    unicode-range: U+0000-024F, U+0300-036F, U+2000-206F, U+20A0-20CF, U+2100-214F;
+  }
+  @font-face {
+    font-family: 'FustatLatin';
+    src: url('https://fonts.gstatic.com/s/fustat/v4/NaPEcZ_aHO9Iy5thRNqze7YGY9HGCJoXRrw.ttf') format('truetype');
+    font-weight: 600; font-display: swap;
+    unicode-range: U+0000-024F, U+0300-036F, U+2000-206F, U+20A0-20CF, U+2100-214F;
+  }
+  @font-face {
+    font-family: 'FustatLatin';
+    src: url('https://fonts.gstatic.com/s/fustat/v4/NaPEcZ_aHO9Iy5thRNqze7YGY9HGCKMXRrw.ttf') format('truetype');
+    font-weight: 700; font-display: swap;
+    unicode-range: U+0000-024F, U+0300-036F, U+2000-206F, U+20A0-20CF, U+2100-214F;
+  }
+  @font-face {
+    font-family: 'FustatLatin';
+    src: url('https://fonts.gstatic.com/s/fustat/v4/NaPEcZ_aHO9Iy5thRNqze7YGY9HGCMQXRrw.ttf') format('truetype');
+    font-weight: 800; font-display: swap;
+    unicode-range: U+0000-024F, U+0300-036F, U+2000-206F, U+20A0-20CF, U+2100-214F;
+  }
+
+  :root {
+  /* ═══════════════════════════════════════════════════
+     DESIGN SYSTEM — GRID & SPACING
+     for fine-grain). Layout uses a 12-column CSS grid.
+     ═══════════════════════════════════════════════════
+
+     SPACING SCALE
+     --space-1   4px   (half-unit — tight nudges only)
+     --space-2   8px   (1u — gaps between inline elements)
+     --space-3  12px   (1.5u — card internal gaps, gutters)
+     --space-4  16px   (2u — card padding, section sub-gaps)
+     --space-5  20px   (2.5u — card padding wide axis)
+     --space-6  24px   (3u — page margins)
+     --space-8  32px   (4u — large section separators)
+     --space-10 40px   (5u)
+     --space-12 48px   (6u — page bottom breathing room)
+
+     LAYOUT TOKENS
+     --page-x          horizontal page padding  = --space-6
+     --page-y          vertical page padding    = --space-6
+     --page-bottom     scroll bottom clearance  = --space-12
+     --topbar-h        topbar / logo row height = 57px
+     --control-h       all interactive controls = 34px
+     --sidebar-w       sidebar expanded         = 220px
+     --sidebar-coll    sidebar collapsed        = 52px
+
+     GRID
+     --gutter      gap between 12 grid columns  = --space-3 (12px)
+     --section-gap gap between page sections    = --space-5 (20px)
+     --card-gap    gap between stacked cards    = --space-2 (8px)
+
+     12-COLUMN GRID USAGE
+     Wrap content in .grid, children use .col-N classes.
+     Example: 4-stat row → 4× .col-3
+              Split layout → .col-8 + .col-4
+
+     ═══════════════════════════════════════════════════ */
+
+  --u:           8px;
+  --space-1:     4px;
+  --space-2:     8px;
+  --space-3:     12px;
+  --space-4:     16px;
+  --space-5:     20px;
+  --space-6:     24px;
+  --space-8:     32px;
+  --space-10:    40px;
+  --space-12:    48px;
+
+  --page-x:      var(--space-6);
+  --page-y:      var(--space-6);
+  --page-bottom: var(--space-12);
+  --topbar-h:    57px;
+  --control-h:   34px;
+  --sidebar-coll: 52px;
+
+  --gutter:      var(--space-3);
+  --section-gap: var(--space-5);
+  --card-gap:    var(--space-2);
+
+  /* ─── Color & surface tokens ─── */
+  --background:      hsl(0 0% 100%);
+    --foreground:      #27274E;
+    --card:            hsl(0 0% 100%);
+    --muted:           hsl(240 4.8% 95.9%);
+    --muted-fg:        hsl(240 3.8% 46.1%);
+    --border:          hsl(240 5.9% 90%);
+    --input:           hsl(240 5.9% 90%);
+    --ring:            hsl(240 5% 64.9%);
+    --primary:         #3333CC;
+    --primary-fg:      #ffffff;
+    --primary-muted:   hsl(240 100% 95%);
+    --primary-border:  hsl(240 100% 88%);
+    --cta:             #32BB5A;
+    --cta-hover:       #28a34e;
+    --destructive:     hsl(0 84.2% 60.2%);
+    --green:           hsl(142 71% 38%);
+    --green-muted:     hsl(142 76% 97%);
+    --green-border:    hsl(142 60% 80%);
+    --sidebar-w:       220px;
+    --radius:          6px;
+    --shadow-sm:       0 1px 2px 0 rgb(0 0 0 / .05);
+    --shadow:          0 1px 3px 0 rgb(0 0 0 / .1), 0 1px 2px -1px rgb(0 0 0 / .1);
+  }
+  .dark {
+    --background:      #0F0F1A;
+    --foreground:      #E8E8F5;
+    --card:            #16162A;
+    --muted:           #1E1E32;
+    --muted-fg:        #8888AA;
+    --border:          #2A2A42;
+    --input:           #2A2A42;
+    --ring:            #4444AA;
+    --primary-muted:   rgba(51,51,204,0.18);
+    --primary-border:  rgba(51,51,204,0.35);
+    --green-muted:     rgba(22,163,74,0.15);
+    --green-border:    rgba(22,163,74,0.35);
+    --shadow-sm:       0 1px 2px 0 rgb(0 0 0 / .3);
+    --shadow:          0 1px 3px 0 rgb(0 0 0 / .4), 0 1px 2px -1px rgb(0 0 0 / .4);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Fustat', sans-serif;
+    background: var(--muted);
+    color: var(--foreground);
+    font-size: 14px;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-weight: 500;
+  }
+
+  /* Numbers always Fustat regardless of language */
+  .num { font-family: 'Fustat', sans-serif !important; }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: var(--sidebar-w);
+    background: var(--background);
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    flex-shrink: 0; height: 100vh;
+    transition: width .22s ease;
+    overflow: hidden;
+  }
+  .sidebar.collapsed { width: var(--sidebar-coll); }
+  .sidebar-logo {
+    display: flex; align-items: center;
+    padding: 0 var(--space-4); height: var(--topbar-h);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .sidebar.collapsed .sidebar-logo { padding: 0; align-items: stretch; }
+  .logo-wordmark { height: 15px; width: auto; display: block; flex-shrink: 0; transform: translateZ(0); }
+  .dark .logo-wordmark { fill: #E8E8F5; }
+  .sidebar.collapsed .logo-wordmark { display: none; }
+  .logo-mark { display: none; flex-shrink: 0; }
+  .sidebar.collapsed .logo-mark { display: block; width: var(--sidebar-coll); height: var(--topbar-h); }
+
+  .sidebar-nav {
+    flex: 1; padding: var(--space-2) var(--space-1);
+    display: flex; flex-direction: column; gap: var(--space-1);
+    overflow-y: auto; overflow-x: hidden;
+  }
+  .sidebar-section {
+    font-size: 10.5px; font-weight: 600;
+    letter-spacing: .08em; text-transform: uppercase;
+    color: var(--muted-fg); padding: 16px 8px 5px; opacity: .6;
+    white-space: nowrap;
+  }
+  .sidebar.collapsed .sidebar-section { opacity: 0; height: 4px; padding: 0; pointer-events: none; overflow: hidden; }
+
+  .nav-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 10px; border-radius: var(--radius);
+    color: var(--muted-fg); font-size: 13.5px; font-weight: 400;
+    cursor: pointer; transition: background .12s, color .12s;
+    text-decoration: none; line-height: 1; height: 34px; white-space: nowrap;
+  }
+  .sidebar.collapsed .nav-item { padding: 8px; justify-content: center; gap: 0; }
+  .nav-label { white-space: nowrap; }
+  .sidebar.collapsed .nav-label { display: none; }
+  .sidebar.collapsed .lock-icon { display: none; }
+  .nav-item:hover { background: var(--muted); color: var(--foreground); }
+  .nav-item.active { background: var(--primary-muted); color: var(--primary); font-weight: 500; }
+  .nav-item svg { width: 15px; height: 15px; flex-shrink: 0; }
+  .nav-item.nav-locked { opacity: .4; cursor: default; pointer-events: none; }
+  .lock-icon { margin-left: auto; display: flex; align-items: center; }
+  .lock-icon svg { width: 11px; height: 11px; }
+
+  /* Collapse tab — full bleed, line on left, arrow centered in square */
+  .sidebar-bottom {
+    padding: 0 0 0 6px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: stretch;
+    min-height: 46px;
+  }
+  .sidebar-bottom .nav-item { flex: 1; align-self: center; padding: 8px 10px; }
+  .sidebar.collapsed .sidebar-bottom { padding: 0; flex-direction: column; align-items: center; min-height: unset; }
+  .sidebar.collapsed .sidebar-bottom .nav-item { flex: unset; padding: 8px; justify-content: center; gap: 0; align-self: auto; }
+
+  #sidebarToggle {
+    width: 34px; height: 34px;
+    align-self: center; flex-shrink: 0;
+    border: none; border-radius: var(--radius);
+    background: transparent; color: var(--muted-fg);
+    cursor: pointer; padding: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: color .12s, background .12s, transform .22s;
+  }
+  #sidebarToggle:hover { background: var(--muted); color: var(--foreground); }
+  #sidebarToggle svg { width: 12px; height: 12px; display: block; }
+  .sidebar.collapsed #sidebarToggle { transform: rotate(180deg); }
+
+  .topbar-util-btn {
+    display: flex; align-items: center; justify-content: center;
+    width: 34px; height: 34px; flex-shrink: 0;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: transparent; color: var(--muted-fg);
+    cursor: pointer;
+    transition: background .12s, color .12s;
+  }
+  .topbar-util-btn:hover { background: var(--muted); color: var(--foreground); }
+  .topbar-util-btn svg { width: 15px; height: 15px; display: block; }
+
+  /* ═══ ARABIC / RTL ═══ */
+  body.rtl { direction: rtl; font-family: 'FustatLatin', 'Alyamama', sans-serif; }
+  body.rtl .num { font-family: 'FustatLatin', sans-serif !important; }
+  body.rtl .sidebar { border-right: none; border-left: 1px solid var(--border); }
+  body.rtl .sidebar.collapsed #sidebarToggle { transform: rotate(0deg); }
+  body.rtl .sidebar:not(.collapsed) #sidebarToggle { transform: rotate(180deg); }
+  body.rtl #sidebarToggle { border-right: none; }
+  body.rtl .sidebar.collapsed #sidebarToggle { border-top: none; }
+  body.rtl .sidebar-bottom { flex-direction: row-reverse; padding: 0 6px 0 0; }
+  body.rtl .sidebar.collapsed .sidebar-bottom { flex-direction: column; padding: 0; }
+  body.rtl .lock-icon { margin-left: unset; margin-right: auto; }
+  body.rtl .sidebar-section { letter-spacing: 0; text-transform: none; font-size: 11.5px; }
+  body.rtl .btn { font-family: 'FustatLatin', 'Alyamama', sans-serif; }
+  body.rtl .btn .num { font-family: 'FustatLatin', sans-serif !important; }
+  body.rtl .select-wrap select { font-family: 'FustatLatin', 'Alyamama', sans-serif; }
+  body.rtl .search-wrap input { font-family: 'FustatLatin', 'Alyamama', sans-serif; }
+  body.rtl #arabicToggle { color: var(--primary); border-color: var(--primary-border); background: var(--primary-muted); }
+
+  /* MAIN */
+  .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  .topbar {
+    background: var(--background); border-bottom: 1px solid var(--border);
+    padding: 0 var(--page-x); height: var(--topbar-h);
+    display: flex; align-items: center; gap: var(--space-2); flex-shrink: 0;
+  }
+  .search-wrap { flex: 1; display: flex; align-items: center; gap: 8px; height: 100%; background: transparent; }
+  .search-wrap svg { width: 15px; height: 15px; color: var(--muted-fg); flex-shrink: 0; }
+  .search-wrap input { border: none; background: transparent; font-family: 'Fustat', sans-serif; font-size: 14px; color: var(--foreground); width: 100%; outline: none; }
+  .search-wrap input::placeholder { color: var(--muted-fg); }
+  .topbar-right { display: flex; align-items: center; gap: var(--space-2); flex-shrink: 0; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: 'Fustat', sans-serif; font-size: 13.5px; font-weight: 500;
+    border-radius: var(--radius); cursor: pointer; white-space: nowrap;
+    transition: background .12s, border-color .12s, color .12s;
+    border: 1px solid transparent; outline: none; line-height: 1;
+    text-decoration: none;
+  }
+  .btn-default { height: 34px; padding: 0 14px; background: var(--cta); color: #fff; border-color: var(--cta); }
+  .btn-default:hover { background: var(--cta-hover); border-color: var(--cta-hover); }
+  .btn-default svg { width: 13px; height: 13px; }
+  .btn-primary { height: 34px; padding: 0 12px; background: var(--primary); color: var(--primary-fg); border-color: var(--primary); }
+  .btn-primary:hover { background: #2929a8; border-color: #2929a8; }
+  .btn-outline { height: 34px; padding: 0 12px; background: var(--background); color: var(--foreground); border-color: var(--border); box-shadow: var(--shadow-sm); }
+  .btn-outline:hover { background: var(--muted); }
+  .btn-outline svg { width: 13px; height: 13px; }
+  .btn-destructive { height: 34px; padding: 0 8px; background: transparent; color: var(--muted-fg); border-color: transparent; }
+  .btn-destructive:hover { background: hsl(0 84% 97%); color: var(--destructive); }
+  .dark .btn-destructive:hover { background: hsl(0 40% 18%); color: hsl(0 84% 70%); }
+  .btn-destructive svg { width: 14px; height: 14px; }
+
+  .user-avatar {
+    width: 34px; height: 34px; border-radius: var(--radius);
+    background: var(--primary-muted); color: var(--primary);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    border: 1px solid var(--primary-border); transition: background .12s;
+    font-family: 'Fustat', sans-serif;
+  }
+  .user-avatar:hover { background: hsl(240 100% 91%); }
+
+  .content { flex: 1; overflow-y: auto; padding: var(--page-y) var(--page-x) var(--page-bottom); }
+  .page-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: var(--section-gap); }
+  .page-title { font-size: 20px; font-weight: 700; letter-spacing: -.025em; color: var(--foreground); margin-bottom: 2px; }
+  body.rtl .page-title { letter-spacing: 0; }
+  .page-sub { font-size: 13px; color: var(--muted-fg); }
+
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gutter); margin-bottom: var(--section-gap); }
+  .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: calc(var(--radius) + 2px); padding: var(--space-4) var(--space-5); transition: box-shadow .15s; }
+  .stat-card:hover { box-shadow: var(--shadow); }
+  .stat-value { font-size: 26px; font-weight: 700; color: var(--foreground); letter-spacing: -.03em; line-height: 1; margin-bottom: 5px; font-family: 'Fustat', sans-serif; }
+  .stat-label { font-size: 13px; color: var(--muted-fg); font-weight: 500; }
+  body.rtl .stat-label { letter-spacing: 0; }
+
+  .toolbar { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-3); }
+  .select-wrap { position: relative; }
+  .select-wrap select { appearance: none; background: var(--background); border: 1px solid var(--input); border-radius: var(--radius); padding: 0 26px 0 10px; height: 34px; font-family: 'Fustat', sans-serif; font-size: 13px; color: var(--foreground); cursor: pointer; outline: none; transition: box-shadow .12s, border-color .12s; }
+  .select-wrap select:hover { border-color: var(--ring); box-shadow: var(--shadow-sm); }
+  .select-wrap::after { content: ''; position: absolute; right: 9px; top: 50%; transform: translateY(-50%); width: 0; height: 0; border-left: 3.5px solid transparent; border-right: 3.5px solid transparent; border-top: 3.5px solid var(--muted-fg); pointer-events: none; }
+  body.rtl .select-wrap select { padding: 0 10px 0 26px; }
+  body.rtl .select-wrap::after { right: unset; left: 9px; }
+  .toolbar-sep { flex: 1; }
+  .view-toggle { display: flex; background: var(--background); border: 1px solid var(--input); border-radius: var(--radius); overflow: hidden; }
+  .view-btn { padding: 0 10px; height: 34px; font-family: 'Fustat', sans-serif; font-size: 13px; color: var(--muted-fg); border: none; background: transparent; cursor: pointer; transition: background .12s, color .12s; display: flex; align-items: center; gap: 5px; }
+  .view-toggle:hover { box-shadow: var(--shadow-sm); }
+  body.rtl .view-btn { font-family: 'FustatLatin', 'Alyamama', sans-serif; }
+  .view-btn + .view-btn { border-left: 1px solid var(--border); }
+  body.rtl .view-btn + .view-btn { border-left: none; border-right: 1px solid var(--border); }
+  .view-btn.active { background: var(--muted); color: var(--foreground); font-weight: 500; }
+  .view-btn svg { width: 13px; height: 13px; }
+
+  /* CAMPAIGN CARDS */
+  .campaigns-list { display: flex; flex-direction: column; gap: var(--card-gap); }
+  .campaign-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: calc(var(--radius) + 2px); padding: var(--space-5);
+    display: flex; flex-direction: column; gap: var(--space-4);
+    transition: box-shadow .15s, border-color .15s;
+  }
+  .campaign-card:hover { box-shadow: var(--shadow-sm); border-color: hsl(240 5.9% 83%); }
+  .dark .campaign-card:hover { border-color: #3A3A5A; }
+
+  /* Top row: icon+info  |  badge */
+  .campaign-card-top {
+    display: flex; align-items: center;
+    justify-content: space-between; gap: var(--space-5);
+  }
+  .campaign-card-left { display: flex; align-items: center; gap: var(--space-4); min-width: 0; }
+  .campaign-icon { width: 40px; height: 40px; border-radius: var(--radius); background: var(--primary-muted); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .campaign-icon svg { width: 20px; height: 20px; }
+  .campaign-info { min-width: 0; padding-top: 7px; }
+  .campaign-name { font-size: 14px; font-weight: 600; color: var(--foreground); letter-spacing: -.01em; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  body.rtl .campaign-name { letter-spacing: 0; }
+  .campaign-meta { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+  .meta-item { font-size: 12px; color: var(--muted-fg); }
+  .meta-dot { width: 2px; height: 2px; border-radius: 50%; background: var(--muted-fg); opacity: .4; flex-shrink: 0; }
+  .platform-icon { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; background: #27274E; flex-shrink: 0; }
+  .platform-icon svg { display: block; }
+
+  /* Bottom row: stats  |  actions */
+  .campaign-card-bottom {
+    display: flex; align-items: center;
+    justify-content: space-between; gap: var(--space-5);
+  }
+  .campaign-stats { display: flex; gap: var(--space-6); }
+  .c-stat-val { font-size: 15px; font-weight: 600; color: var(--foreground); letter-spacing: -.02em; line-height: 1; margin-bottom: 3px; font-family: 'Fustat', sans-serif; }
+  .c-stat-label { font-size: 11px; color: var(--muted-fg); }
+  .card-actions { display: flex; align-items: center; gap: var(--space-1); flex-shrink: 0; }
+  body.rtl .card-actions { flex-direction: row-reverse; }
+  .badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 500; padding: 2px 9px; border-radius: 9999px; line-height: 1.6; flex-shrink: 0; }
+  .badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+  .badge-success  { background: var(--green-muted); color: var(--green); }
+  .badge-success::before { background: var(--green); }
+  .badge-secondary { background: var(--primary-muted); color: var(--primary); }
+  .badge-secondary::before { background: var(--primary); opacity: .5; }
+
+  .campaigns-list.grid-view { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: var(--gutter); }
+  .campaigns-list.grid-view .campaign-card-bottom { flex-wrap: wrap; }
+
+  /* ═══ 12-COLUMN GRID UTILITY ═══
+     Use .grid as a layout wrapper inside .content on any page.
+     Children declare their width with .col-N classes.
+     Omitting a .col-N defaults to full-width (span 12).
+
+     Common patterns:
+       4-up stats:    4× .col-3
+       3-up cards:    3× .col-4
+       2-up split:    .col-8 + .col-4  (main + sidebar panel)
+       half + half:   2× .col-6
+       full-width:    .col-12  (or no class — defaults to span 12)
+  ═══════════════════════════════════════════════════ */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--gutter);
+  }
+  .col-1  { grid-column: span 1; }
+  .col-2  { grid-column: span 2; }
+  .col-3  { grid-column: span 3; }
+  .col-4  { grid-column: span 4; }
+  .col-5  { grid-column: span 5; }
+  .col-6  { grid-column: span 6; }
+  .col-7  { grid-column: span 7; }
+  .col-8  { grid-column: span 8; }
+  .col-9  { grid-column: span 9; }
+  .col-10 { grid-column: span 10; }
+  .col-11 { grid-column: span 11; }
+  .col-12 { grid-column: span 12; }
+
+ from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+  .stats .stat-card:nth-child(1) { animation: fadeUp .2s ease 0.00s both; }
+  .stats .stat-card:nth-child(2) { animation: fadeUp .2s ease 0.04s both; }
+  .stats .stat-card:nth-child(3) { animation: fadeUp .2s ease 0.08s both; }
+  .stats .stat-card:nth-child(4) { animation: fadeUp .2s ease 0.12s both; }
+  .campaign-card:nth-child(1)   { animation: fadeUp .2s ease 0.16s both; }
+  .campaign-card:nth-child(2)   { animation: fadeUp .2s ease 0.21s both; }
+
+  /* ═══ RESPONSIVE ═══════════════════════════════════════════
+     All breakpoints work by overriding tokens and grid spans —
+     no layout rules are rewritten.
+  ═══════════════════════════════════════════════════════════ */
+
+  /* Tablet — 900px: auto-collapse sidebar, 2-col stats */
+  @media (max-width: 900px) {
+    :root {
+      --sidebar-w: var(--sidebar-coll);
+      --page-x: var(--space-4);
+      --page-y: var(--space-4);
+    }
+    .sidebar { width: var(--sidebar-coll); }
+    .sidebar .nav-label,
+    .sidebar .nav-section-header,
+    .sidebar .wordmark { display: none; }
+    .sidebar .logo-area { justify-content: center; padding: 0; }
+    .sidebar-bottom { justify-content: center; }
+    #sidebarToggle { display: none; }
+    .col-3 { grid-column: span 6; }   /* 4-up stats → 2×2 */
+    .campaign-card-bottom { flex-wrap: wrap; gap: var(--space-3); }
+    .btn span[data-en] { display: none; }           /* topbar New Campaign — icon only */
+  }
+
+  /* Mobile — 600px: no sidebar, 1-col stats, stacked cards */
+  @media (max-width: 600px) {
+    :root {
+      --page-x: var(--space-3);
+      --page-y: var(--space-3);
+    }
+    .sidebar { display: none; }
+    .main { margin-left: 0 !important; }
+    .col-3 { grid-column: span 12; }  /* stats → 1 per row */
+    .stats { grid-template-columns: repeat(2, 1fr); display: grid; gap: var(--gutter); }
+    .campaign-card-top { flex-wrap: wrap; gap: var(--space-2); }
+    .campaign-card-bottom { flex-direction: column; align-items: flex-start; }
+    .card-actions { flex-wrap: wrap; }
+    .toolbar { flex-wrap: wrap; gap: var(--space-2); }
+    .toolbar-sep { display: none; }
+    .topbar { padding: 0 var(--page-x); }
+  }
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <svg class="logo-wordmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 118" shape-rendering="geometricPrecision" fill="#3333CC">
+      <path d="M313.97,49.64l-8.66-.75c-12.95-.94-14.88-8.26-14.88-12.54,0-6.34,4.51-13.75,17.23-13.75s17.98,7.5,18.16,15.04h24.01c-.18-21.65-16.3-35.08-42.17-35.08-12.34,0-22.72,3.14-30.02,9.09-7.34,5.98-11.22,14.52-11.22,24.7,0,19.04,13.69,31.5,36.63,33.34l8.51.75c13.63,1.19,19.98,5.23,19.98,12.7,0,9.04-8.44,14.65-22.03,14.65-7.58,0-13.47-1.62-17.5-4.82-3.47-2.75-5.35-6.54-5.45-10.98h-23.86c.19,22.11,18.09,35.83,46.81,35.83,13.9,0,25.55-3.28,33.71-9.49,8.07-6.14,12.33-14.86,12.33-25.2,0-18.74-15.55-31.26-41.58-33.49Z"/>
+      <polygon points="374.79 114.96 398.8 114.96 398.8 33.25 363.5 33.25 363.5 50.27 374.79 50.27 374.79 114.96"/>
+      <path d="M384.01,24.4c8.41,0,13.24-4.42,13.24-12.12s-4.83-12.28-13.24-12.28-13.24,4.47-13.24,12.28,4.83,12.12,13.24,12.12Z"/>
+      <path d="M518.04,30.69h-1.08c-12.83,0-21.51,5.89-25.79,17.51l-.36.97-.34-.97c-4.14-11.62-12.76-17.51-25.64-17.51h-1.08c-14.79,0-23.94,7.75-27.17,23.03l-.74,3.47v-23.95h-18.9v81.72h24.01v-47.48c0-9.72,5.85-16.01,14.91-16.01s14.14,5.96,14.14,15.56v47.93h24.16v-47.48c0-9.72,5.79-16.01,14.76-16.01s14.29,5.96,14.29,15.56v47.93h24.01v-46.57c0-24.66-10.09-37.7-29.18-37.7Z"/>
+      <path d="M617.88,30.84c-12.7,0-22.54,5.3-28.45,15.31l-.69,1.18V5.87h-24.01v109.09h18.9v-19.82l.72,1.85c5.18,13.33,16.59,20.68,32.14,20.68,23.01,0,39.08-17.3,39.08-42.06v-3.31c0-11.72-3.64-22.27-10.24-29.7-6.83-7.69-16.32-11.76-27.45-11.76ZM609.99,98.23c-5.52,0-10.99-1.99-15-5.47-3.14-2.71-6.87-7.58-6.87-15.35v-5.57c0-14.26,11.01-21.72,21.88-21.72,12.81,0,21.41,9.58,21.41,23.83s-8.8,24.28-21.41,24.28Z"/>
+      <path d="M709.17,30.39c-28.09,0-42.79,21.24-42.79,42.21v3.01c0,20.98,15.02,42.21,43.72,42.21,20.3,0,35.31-10.6,39.3-27.71h-22.02c-2.27,5.56-8.7,8.88-17.27,8.88-12.02,0-19.26-6.4-20.94-18.52l-.06-.41h61.93v-7.76c0-28.8-21.7-41.91-41.86-41.91ZM689.24,67.09l.08-.42c2.06-11.41,8.93-17.45,19.86-17.45s17.32,6.2,19.09,17.46l.07.42h-39.09Z"/>
+      <polygon points="788.71 5.87 764.7 5.87 764.7 114.96 800 114.96 800 97.93 788.71 97.93 788.71 5.87"/>
+      <path d="M203.28,89.54c6.78-6.6,10.52-15.37,10.52-24.7s-3.74-18.1-10.52-24.7c-6.78-6.6-15.8-10.23-25.4-10.23s-18.61,3.63-25.4,10.23l-76.93,74.81h35.22l59.32-57.69c2.08-2.02,4.85-3.14,7.79-3.14s5.71,1.11,7.79,3.14c2.08,2.02,3.23,4.71,3.23,7.57s-1.15,5.55-3.23,7.57l-43.75,42.54h35.22l26.14-25.42Z"/>
+      <path d="M102.72,33.25l-59.03,57.4c-2.08,2.02-4.85,3.14-7.79,3.14s-5.71-1.11-7.79-3.14c-4.29-4.18-4.29-10.97,0-15.15l43.45-42.25h-35.22l-25.84,25.13c-14,13.62-14,35.78,0,49.39,6.78,6.6,15.8,10.23,25.4,10.23s18.61-3.63,25.4-10.23l76.64-74.52h-35.22Z"/>
+    </svg>
+    <svg class="logo-mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 203.14 203.14" preserveAspectRatio="xMidYMid slice">
+      <rect fill="#3333CC" width="203.14" height="203.14"/>
+      <path fill="#f7f3f0" d="M160.68,80.98c-4.12-4-9.59-6.21-15.42-6.21s-11.3,2.21-15.42,6.21l-46.81,45.52h20.8l36.43-35.42c1.34-1.3,3.12-2.02,5.01-2.02s3.67.72,5.01,2.02c1.34,1.3,2.08,3.04,2.08,4.88s-.74,3.58-2.08,4.88l-26.39,25.66h20.8l16-15.56c4.12-4,6.38-9.32,6.38-14.98s-2.27-10.98-6.38-14.98Z"/>
+      <path fill="#f7f3f0" d="M99.12,76.82l-36.25,35.25c-1.34,1.3-3.12,2.02-5.01,2.02s-3.67-.72-5.01-2.02c-1.34-1.3-2.08-3.04-2.08-4.88s.74-3.58,2.08-4.88l26.2-25.48h-20.8l-15.82,15.38c-4.11,4-6.37,9.32-6.37,14.98s2.26,10.99,6.37,14.98c4.12,4,9.59,6.21,15.42,6.21s11.3-2.21,15.42-6.21l46.63-45.35h-20.8Z"/>
+    </svg>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="nav-item active" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      <span class="nav-label" data-en="Campaigns" data-ar="الحملات">Campaigns</span>
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+      <span class="nav-label" data-en="Schedule" data-ar="الجدول الزمني">Schedule</span>
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      <span class="nav-label" data-en="Content Library" data-ar="مكتبة المحتوى">Content Library</span>
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      <span class="nav-label" data-en="Media Library" data-ar="مكتبة الوسائط">Media Library</span>
+    </a>
+    <div class="sidebar-section" data-en="Create" data-ar="إنشاء">Create</div>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      <span class="nav-label" data-en="Create Post" data-ar="إنشاء منشور">Create Post</span>
+    </a>
+    <a class="nav-item nav-locked" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      <span class="nav-label" data-en="Studio" data-ar="الاستوديو">Studio</span>
+      <span class="lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+    </a>
+    <div class="sidebar-section" data-en="Grow" data-ar="النمو">Grow</div>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      <span class="nav-label" data-en="Analytics" data-ar="التحليلات">Analytics</span>
+    </a>
+    <a class="nav-item nav-locked" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+      <span class="nav-label" data-en="Paid Ads" data-ar="الإعلانات المدفوعة">Paid Ads</span>
+      <span class="lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+    </a>
+    <a class="nav-item nav-locked" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <span class="nav-label" data-en="SEO" data-ar="تحسين محركات البحث">SEO</span>
+      <span class="lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+    </a>
+    <div class="sidebar-section" data-en="Settings" data-ar="الإعدادات">Settings</div>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+      <span class="nav-label" data-en="Brand Context" data-ar="سياق العلامة التجارية">Brand Context</span>
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8H6a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2z"/></svg>
+      <span class="nav-label" data-en="Integrations" data-ar="التكاملات">Integrations</span>
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span class="nav-label" data-en="Contact Lists" data-ar="قوائم جهات الاتصال">Contact Lists</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-bottom">
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span class="nav-label" data-en="Account" data-ar="الحساب">Account</span>
+    </a>
+    <button id="sidebarToggle" title="Collapse sidebar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+  </div>
+</aside>
+
+<div class="main">
+  <header class="topbar">
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="searchInput" placeholder="Search campaigns..." data-en-placeholder="Search campaigns..." data-ar-placeholder="البحث في الحملات...">
+    </div>
+    <div class="topbar-right">
+      <a href="simbel-campaign-builder.html" class="btn btn-default">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        <span data-en="New Campaign" data-ar="حملة جديدة">New Campaign</span>
+      </a>
+      <button class="topbar-util-btn" id="themeToggle" title="Toggle dark mode">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" style="display:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+      <button class="topbar-util-btn" id="arabicToggle" title="Toggle Arabic" style="font-size:14px;font-weight:600;font-family:'Alyamama',serif;letter-spacing:0;">ع</button>
+      <div class="user-avatar">B</div>
+    </div>
+  </header>
+
+  <main class="content">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title" data-en="Campaigns" data-ar="الحملات">Campaigns</h1>
+        <p class="page-sub" data-en="Manage and monitor all your AI-powered campaigns" data-ar="إدارة ومتابعة جميع حملاتك المدعومة بالذكاء الاصطناعي">Manage and monitor all your AI-powered campaigns</p>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-value">1</div>
+        <div class="stat-label" data-en="Total Campaigns" data-ar="إجمالي الحملات">Total Campaigns</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">0</div>
+        <div class="stat-label" data-en="Active Now" data-ar="نشط الآن">Active Now</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">10</div>
+        <div class="stat-label" data-en="Total Posts" data-ar="إجمالي المنشورات">Total Posts</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">0</div>
+        <div class="stat-label" data-en="Total Engagement" data-ar="إجمالي التفاعل">Total Engagement</div>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="select-wrap">
+        <select id="statusSelect">
+          <option data-en="All Status" data-ar="جميع الحالات">All Status</option>
+          <option data-en="Active" data-ar="نشط">Active</option>
+          <option data-en="Scheduled" data-ar="مجدول">Scheduled</option>
+          <option data-en="Paused" data-ar="موقوف مؤقتاً">Paused</option>
+          <option data-en="Completed" data-ar="مكتمل">Completed</option>
+        </select>
+      </div>
+      <div class="select-wrap">
+        <select id="platformSelect">
+          <option data-en="All Platforms" data-ar="جميع المنصات">All Platforms</option>
+          <option data-en="Instagram" data-ar="إنستغرام">Instagram</option>
+          <option data-en="Twitter / X" data-ar="تويتر / إكس">Twitter / X</option>
+          <option data-en="LinkedIn" data-ar="لينكدإين">LinkedIn</option>
+          <option data-en="TikTok" data-ar="تيك توك">TikTok</option>
+          <option data-en="Facebook" data-ar="فيسبوك">Facebook</option>
+        </select>
+      </div>
+      <div class="select-wrap">
+        <select id="sortSelect">
+          <option data-en="Newest First" data-ar="الأحدث أولاً">Newest First</option>
+          <option data-en="Oldest First" data-ar="الأقدم أولاً">Oldest First</option>
+          <option data-en="Most Posts" data-ar="الأكثر منشورات">Most Posts</option>
+          <option data-en="Most Engagement" data-ar="الأكثر تفاعلاً">Most Engagement</option>
+        </select>
+      </div>
+      <div class="toolbar-sep"></div>
+      <div class="view-toggle">
+        <button class="view-btn active">
+          <svg viewBox="0 0 13 13" fill="currentColor"><rect x="1" y="1" width="4.5" height="4.5" rx=".8"/><rect x="7.5" y="1" width="4.5" height="4.5" rx=".8"/><rect x="1" y="7.5" width="4.5" height="4.5" rx=".8"/><rect x="7.5" y="7.5" width="4.5" height="4.5" rx=".8"/></svg>
+          <span data-en="List" data-ar="قائمة">List</span>
+        </button>
+        <button class="view-btn">
+          <svg viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1" y="1" width="4.5" height="10.5" rx=".8"/><rect x="7.5" y="1" width="4.5" height="10.5" rx=".8"/></svg>
+          <span data-en="Grid" data-ar="شبكة">Grid</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="campaigns-list">
+
+      <!-- Card 1 -->
+      <div class="campaign-card">
+        <div class="campaign-card-top">
+          <div class="campaign-card-left">
+            <div class="campaign-icon">
+              <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="15" rx="3" fill="#3333CC" opacity=".15"/><path d="M3 10C3 8.114 3 7.172 3.586 6.586C4.172 6 5.114 6 7 6H17C18.886 6 19.828 6 20.414 6.586C21 7.172 21 8.114 21 10H3Z" fill="#3333CC"/><path d="M7 3V6M17 3V6" stroke="#3333CC" stroke-width="1.5" stroke-linecap="round"/><path d="M8 14H8.01M12 14H12.01M16 14H16.01M8 17.5H8.01M12 17.5H12.01M16 17.5H16.01" stroke="#3333CC" stroke-width="2" stroke-linecap="round"/></svg>
+            </div>
+            <div class="campaign-info">
+              <div class="campaign-name" data-en="Test Campaign" data-ar="حملة تجريبية">Test Campaign</div>
+              <div class="campaign-meta">
+                <span class="meta-item" data-en="Created Mar 7, 2026" data-ar="أُنشئت في 7 مارس 2026">Created Mar 7, 2026</span>
+                <div class="meta-dot"></div>
+                <span class="meta-item" data-en="2 weeks" data-ar="أسبوعان">2 weeks</span>
+                <div class="meta-dot"></div>
+                <span class="platform-icon" title="Twitter / X">
+                  <svg width="11" height="11" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M178.57 127.15L290.27 0H263.81L166.78 110.38L89.34 0H0L117.13 166.93L0 300H26.46L128.86 183.36L210.66 300H300L178.57 127.15ZM142.08 167.28L129.93 149.6L36.36 19.5H76.66L152.93 126.26L165.08 143.94L263.83 281.07H223.53L142.08 167.28Z" fill="white"/>
+                  </svg>
+                </span>
+              </div>
+            </div>
+          </div>
+          <span class="badge badge-success" data-en="Publishing Scheduled" data-ar="مجدول للنشر">Publishing Scheduled</span>
+        </div>
+        <div class="campaign-card-bottom">
+          <div class="campaign-stats">
+            <div class="c-stat"><div class="c-stat-val">10</div><div class="c-stat-label" data-en="Posts" data-ar="منشورات">Posts</div></div>
+            <div class="c-stat"><div class="c-stat-val">0</div><div class="c-stat-label" data-en="Published" data-ar="منشور">Published</div></div>
+            <div class="c-stat"><div class="c-stat-val">0</div><div class="c-stat-label" data-en="Engagement" data-ar="تفاعل">Engagement</div></div>
+            <div class="c-stat"><div class="c-stat-val">0</div><div class="c-stat-label" data-en="Reach" data-ar="وصول">Reach</div></div>
+          </div>
+          <div class="card-actions">
+            <button class="btn btn-primary" data-en="View Campaign" data-ar="عرض الحملة">View Campaign</button>
+            <button class="btn btn-outline" data-en="Pause" data-ar="إيقاف مؤقت"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>Pause</button>
+            <button class="btn btn-outline" data-en="Complete" data-ar="إكمال">Complete</button>
+            <button class="btn btn-destructive"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="campaign-card">
+        <div class="campaign-card-top">
+          <div class="campaign-card-left">
+            <div class="campaign-icon">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 15C13.864 13.676 15.096 11.68 15.392 9.46C15.72 7.026 14.958 4.538 13 3C11.042 4.538 10.28 7.026 10.608 9.46C10.904 11.68 12.136 13.676 12 15Z" fill="#3333CC" opacity=".2"/><path d="M13 3C14.958 4.538 15.72 7.026 15.392 9.46C15.096 11.68 13.864 13.676 12 15C10.136 13.676 8.904 11.68 8.608 9.46C8.28 7.026 9.042 4.538 11 3" stroke="#3333CC" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="9" r="1.5" fill="#3333CC"/><path d="M7.5 14.5C5.5 15.5 5 17.5 5 19.5C7 19.5 9 19 10.5 17.5" stroke="#3333CC" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M16.5 14.5C18.5 15.5 19 17.5 19 19.5C17 19.5 15 19 13.5 17.5" stroke="#3333CC" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="campaign-info">
+              <div class="campaign-name" data-en="Spring Product Launch" data-ar="إطلاق منتج الربيع">Spring Product Launch</div>
+              <div class="campaign-meta">
+                <span class="meta-item" data-en="Created Feb 14, 2026" data-ar="أُنشئت في 14 فبراير 2026">Created Feb 14, 2026</span>
+                <div class="meta-dot"></div>
+                <span class="meta-item" data-en="4 weeks" data-ar="4 أسابيع">4 weeks</span>
+                <div class="meta-dot"></div>
+                <span class="platform-icon" title="Instagram">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="2" y="2" width="20" height="20" rx="5.5" stroke="white" stroke-width="2"/>
+                    <circle cx="12" cy="12" r="4" stroke="white" stroke-width="2"/>
+                    <circle cx="17.5" cy="6.5" r="1.2" fill="white"/>
+                  </svg>
+                </span>
+              </div>
+            </div>
+          </div>
+          <span class="badge badge-secondary" data-en="Paused" data-ar="موقوف مؤقتاً">Paused</span>
+        </div>
+        <div class="campaign-card-bottom">
+          <div class="campaign-stats">
+            <div class="c-stat"><div class="c-stat-val">24</div><div class="c-stat-label" data-en="Posts" data-ar="منشورات">Posts</div></div>
+            <div class="c-stat"><div class="c-stat-val">18</div><div class="c-stat-label" data-en="Published" data-ar="منشور">Published</div></div>
+            <div class="c-stat"><div class="c-stat-val">1.2k</div><div class="c-stat-label" data-en="Engagement" data-ar="تفاعل">Engagement</div></div>
+            <div class="c-stat"><div class="c-stat-val">8.4k</div><div class="c-stat-label" data-en="Reach" data-ar="وصول">Reach</div></div>
+          </div>
+          <div class="card-actions">
+            <button class="btn btn-primary" data-en="View Campaign" data-ar="عرض الحملة">View Campaign</button>
+            <button class="btn btn-outline" data-en="Resume" data-ar="استئناف">Resume</button>
+            <button class="btn btn-outline" data-en="Complete" data-ar="إكمال">Complete</button>
+            <button class="btn btn-destructive"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script>
+  // View toggle
+  const viewBtns = document.querySelectorAll('.view-btn');
+  const list = document.querySelector('.campaigns-list');
+  viewBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      viewBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const label = btn.querySelector('[data-en]');
+      const isGrid = (label ? label.getAttribute('data-en') : btn.textContent.trim()) === 'Grid';
+      list.classList.toggle('grid-view', isGrid);
+    });
+  });
+
+  // Sidebar collapse
+  const sidebar = document.querySelector('.sidebar');
+  document.getElementById('sidebarToggle').addEventListener('click', () => sidebar.classList.toggle('collapsed'));
+
+  // Dark mode
+  const themeBtn = document.getElementById('themeToggle');
+  const moon = themeBtn.querySelector('.icon-moon');
+  const sun  = themeBtn.querySelector('.icon-sun');
+  themeBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+    const isDark = document.body.classList.contains('dark');
+    moon.style.display = isDark ? 'none' : '';
+    sun.style.display  = isDark ? '' : 'none';
+  });
+
+  // Arabic toggle
+  const arabicBtn = document.getElementById('arabicToggle');
+  arabicBtn.addEventListener('click', () => {
+    const isAr = !document.body.classList.contains('rtl');
+    document.body.classList.toggle('rtl', isAr);
+    document.documentElement.lang = isAr ? 'ar' : 'en';
+
+    arabicBtn.textContent = isAr ? 'En' : 'ع';
+    arabicBtn.style.fontFamily = isAr ? "'Fustat', sans-serif" : "'Alyamama', serif";
+
+    // Swap all data-en / data-ar text nodes
+    document.querySelectorAll('[data-en]').forEach(el => {
+      const target = isAr ? 'data-ar' : 'data-en';
+      const val = el.getAttribute(target);
+      if (!val) return;
+
+      // For buttons with SVG inside, preserve SVG and only update text node
+      if (el.tagName === 'BUTTON' && el.querySelector('svg')) {
+        const svg = el.querySelector('svg');
+        el.textContent = val;
+        el.insertBefore(svg, el.firstChild);
+      } else if (el.tagName === 'SPAN' && el.querySelector('svg')) {
+        // platform badges: keep SVG, update text
+        const svg = el.querySelector('svg');
+        el.textContent = val;
+        el.insertBefore(svg, el.firstChild);
+      } else {
+        el.textContent = val;
+      }
+    });
+
+    // Swap select option text
+    document.querySelectorAll('select option[data-en]').forEach(opt => {
+      opt.textContent = isAr ? opt.getAttribute('data-ar') : opt.getAttribute('data-en');
+    });
+
+    // Swap placeholder
+    const searchInput = document.getElementById('searchInput');
+    searchInput.placeholder = isAr
+      ? searchInput.getAttribute('data-ar-placeholder')
+      : searchInput.getAttribute('data-en-placeholder');
+  });
+</script>
+</body>
+</html>

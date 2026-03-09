@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simbel — New Campaign</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fustat:wght@300;400;500;600;700;800&family=Alyamama&display=swap" rel="stylesheet">
+<style>
+  /* Fustat restricted to Latin/numbers only — Arabic falls through to Alyamama */
+  @font-face {
+    font-family: 'FustatLatin';
+    src: url('https://fonts.gstatic.com/s/fustat/v4/NaPEcZ_aHO9Iy5thRNqze7YGY9HGCEQQRrw.ttf') format('truetype');
+    font-weight: 400; font-display: swap;
+    unicode-range: U+0000-024F, U+0300-036F, U+2000-206F, U+20A0-20CF, U+2100-214F;
+  }
+  @font-face {
+    font-family: 'FustatLatin';
+    src: url('https://fonts.gstatic.com/s/fustat/v4/NaPEcZ_aHO9Iy5thRNqze7YGY9HGCHYQRrw.ttf') format('truetype');
+    font-weight: 500; font-display: swap;
+    unicode-range: U+0000-024F, U+0300-036F, U+2000-206F, U+20A0-20CF, U+2100-214F;
+  }
+  @font-face {
+    font-family: 'FustatLatin';
+    src: url('https://fonts.gstatic.com/s/fustat/v4/NaPEcZ_aHO9Iy5thRNqze7YGY9HGCJoXRrw.ttf') format('truetype');
+    font-weight: 600; font-display: swap;
+    unicode-range: U+0000-024F, U+0300-036F, U+2000-206F, U+20A0-20CF, U+2100-214F;
+  }
+  @font-face {
+    font-family: 'FustatLatin';
+    src: url('https://fonts.gstatic.com/s/fustat/v4/NaPEcZ_aHO9Iy5thRNqze7YGY9HGCKMXRrw.ttf') format('truetype');
+    font-weight: 700; font-display: swap;
+    unicode-range: U+0000-024F, U+0300-036F, U+2000-206F, U+20A0-20CF, U+2100-214F;
+  }
+  @font-face {
+    font-family: 'FustatLatin';
+    src: url('https://fonts.gstatic.com/s/fustat/v4/NaPEcZ_aHO9Iy5thRNqze7YGY9HGCMQXRrw.ttf') format('truetype');
+    font-weight: 800; font-display: swap;
+    unicode-range: U+0000-024F, U+0300-036F, U+2000-206F, U+20A0-20CF, U+2100-214F;
+  }
+
+  :root {
+  --u:           8px;
+  --space-1:     4px;
+  --space-2:     8px;
+  --space-3:     12px;
+  --space-4:     16px;
+  --space-5:     20px;
+  --space-6:     24px;
+  --space-8:     32px;
+  --space-10:    40px;
+  --space-12:    48px;
+  --page-x:      var(--space-6);
+  --page-y:      var(--space-6);
+  --page-bottom: var(--space-12);
+  --topbar-h:    57px;
+  --control-h:   34px;
+  --sidebar-coll: 52px;
+  --gutter:      var(--space-3);
+  --section-gap: var(--space-5);
+  --card-gap:    var(--space-2);
+  --background:  hsl(0 0% 100%);
+  --foreground:  #27274E;
+  --card:        hsl(0 0% 100%);
+  --muted:       hsl(240 4.8% 95.9%);
+  --muted-fg:    hsl(240 3.8% 46.1%);
+  --border:      hsl(240 5.9% 90%);
+  --input:       hsl(240 5.9% 90%);
+  --ring:        hsl(240 5% 64.9%);
+  --primary:     #3333CC;
+  --primary-fg:  #ffffff;
+  --primary-muted: hsl(240 100% 95%);
+  --primary-border: hsl(240 100% 88%);
+  --cta:         #32BB5A;
+  --cta-hover:   #28a34e;
+  --destructive: hsl(0 84.2% 60.2%);
+  --green:       hsl(142 71% 38%);
+  --green-muted: hsl(142 76% 97%);
+  --green-border: hsl(142 60% 80%);
+  --sidebar-w:   220px;
+  --radius:      6px;
+  --shadow-sm:   0 1px 2px 0 rgb(0 0 0 / .05);
+  --shadow:      0 1px 3px 0 rgb(0 0 0 / .1), 0 1px 2px -1px rgb(0 0 0 / .1);
+  }
+  .dark {
+  --background:  #0F0F1A;
+  --foreground:  #E8E8F5;
+  --card:        #16162A;
+  --muted:       #1E1E32;
+  --muted-fg:    #8888AA;
+  --border:      #2A2A42;
+  --input:       #2A2A42;
+  --ring:        #4444AA;
+  --primary-muted: rgba(51,51,204,0.18);
+  --primary-border: rgba(51,51,204,0.35);
+  --green-muted: rgba(22,163,74,0.15);
+  --green-border: rgba(22,163,74,0.35);
+  --shadow-sm:   0 1px 2px 0 rgb(0 0 0 / .3);
+  --shadow:      0 1px 3px 0 rgb(0 0 0 / .4), 0 1px 2px -1px rgb(0 0 0 / .4);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Fustat', sans-serif;
+    background: var(--muted);
+    color: var(--foreground);
+    font-size: 14px;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-weight: 500;
+  }
+  .num { font-family: 'Fustat', sans-serif !important; }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: var(--sidebar-w); background: var(--background);
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    flex-shrink: 0; height: 100vh;
+    transition: width .22s ease; overflow: hidden;
+  }
+  .sidebar.collapsed { width: var(--sidebar-coll); }
+  .sidebar-logo {
+    display: flex; align-items: center;
+    padding: 0 var(--space-4); height: var(--topbar-h);
+    border-bottom: 1px solid var(--border); flex-shrink: 0;
+  }
+  .sidebar.collapsed .sidebar-logo { padding: 0; align-items: stretch; }
+  .logo-wordmark { height: 15px; width: auto; display: block; flex-shrink: 0; transform: translateZ(0); }
+  .dark .logo-wordmark { fill: #E8E8F5; }
+  .sidebar.collapsed .logo-wordmark { display: none; }
+  .logo-mark { display: none; flex-shrink: 0; }
+  .sidebar.collapsed .logo-mark { display: block; width: var(--sidebar-coll); height: var(--topbar-h); }
+  .sidebar-nav {
+    flex: 1; padding: var(--space-2) var(--space-1);
+    display: flex; flex-direction: column; gap: var(--space-1);
+    overflow-y: auto; overflow-x: hidden;
+  }
+  .sidebar-section {
+    font-size: 10.5px; font-weight: 600;
+    letter-spacing: .08em; text-transform: uppercase;
+    color: var(--muted-fg); padding: 16px 8px 5px; opacity: .6; white-space: nowrap;
+  }
+  .sidebar.collapsed .sidebar-section { opacity: 0; height: 4px; padding: 0; pointer-events: none; overflow: hidden; }
+  .nav-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 10px; border-radius: var(--radius);
+    color: var(--muted-fg); font-size: 13.5px; font-weight: 400;
+    cursor: pointer; transition: background .12s, color .12s;
+    text-decoration: none; line-height: 1; height: 34px; white-space: nowrap;
+  }
+  .sidebar.collapsed .nav-item { padding: 8px; justify-content: center; gap: 0; }
+  .nav-label { white-space: nowrap; }
+  .sidebar.collapsed .nav-label { display: none; }
+  .sidebar.collapsed .lock-icon { display: none; }
+  .nav-item:hover { background: var(--muted); color: var(--foreground); }
+  .nav-item.active { background: var(--primary-muted); color: var(--primary); font-weight: 500; }
+  .nav-item svg { width: 15px; height: 15px; flex-shrink: 0; }
+  .nav-item.nav-locked { opacity: .4; cursor: default; pointer-events: none; }
+  .lock-icon { margin-left: auto; display: flex; align-items: center; }
+  .lock-icon svg { width: 11px; height: 11px; }
+  .sidebar-bottom {
+    padding: 0 0 0 6px; flex-shrink: 0;
+    display: flex; align-items: stretch; min-height: 46px;
+  }
+  .sidebar-bottom .nav-item { flex: 1; align-self: center; padding: 8px 10px; }
+  .sidebar.collapsed .sidebar-bottom { padding: 0; flex-direction: column; align-items: center; min-height: unset; }
+  .sidebar.collapsed .sidebar-bottom .nav-item { flex: unset; padding: 8px; justify-content: center; gap: 0; align-self: auto; }
+  #sidebarToggle {
+    width: 34px; height: 34px; align-self: center; flex-shrink: 0;
+    border: none; border-radius: var(--radius);
+    background: transparent; color: var(--muted-fg);
+    cursor: pointer; padding: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: color .12s, background .12s, transform .22s;
+  }
+  #sidebarToggle:hover { background: var(--muted); color: var(--foreground); }
+  #sidebarToggle svg { width: 12px; height: 12px; display: block; }
+  .sidebar.collapsed #sidebarToggle { transform: rotate(180deg); }
+  .topbar-util-btn {
+    display: flex; align-items: center; justify-content: center;
+    width: 34px; height: 34px; flex-shrink: 0;
+    border-radius: var(--radius); border: 1px solid var(--border);
+    background: transparent; color: var(--muted-fg);
+    cursor: pointer; transition: background .12s, color .12s;
+  }
+  .topbar-util-btn:hover { background: var(--muted); color: var(--foreground); }
+  .topbar-util-btn svg { width: 15px; height: 15px; display: block; }
+
+  /* ── RTL ── */
+  body.rtl { direction: rtl; font-family: 'FustatLatin', 'Alyamama', sans-serif; }
+  body.rtl .num { font-family: 'FustatLatin', sans-serif !important; }
+  body.rtl .sidebar { border-right: none; border-left: 1px solid var(--border); }
+  body.rtl .sidebar.collapsed #sidebarToggle { transform: rotate(0deg); }
+  body.rtl .sidebar:not(.collapsed) #sidebarToggle { transform: rotate(180deg); }
+  body.rtl .sidebar-bottom { flex-direction: row-reverse; padding: 0 6px 0 0; }
+  body.rtl .sidebar.collapsed .sidebar-bottom { flex-direction: column; padding: 0; }
+  body.rtl .lock-icon { margin-left: unset; margin-right: auto; }
+  body.rtl .sidebar-section { letter-spacing: 0; text-transform: none; font-size: 11.5px; }
+  body.rtl .btn { font-family: 'FustatLatin', 'Alyamama', sans-serif; }
+  body.rtl #arabicToggle { color: var(--primary); border-color: var(--primary-border); background: var(--primary-muted); }
+
+  /* ── MAIN SHELL ── */
+  .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  .topbar {
+    background: var(--background); border-bottom: 1px solid var(--border);
+    padding: 0 var(--page-x); height: var(--topbar-h);
+    display: flex; align-items: center; gap: var(--space-2); flex-shrink: 0;
+  }
+  .topbar-back {
+    display: flex; align-items: center; gap: 6px;
+    color: var(--muted-fg); font-size: 13.5px; font-weight: 400;
+    cursor: pointer; border: none; background: transparent;
+    padding: 0 4px 0 0; height: 34px;
+    transition: color .12s;
+  }
+  body.rtl .topbar-back { padding: 0 0 0 4px; }
+  .topbar-back:hover { color: var(--foreground); }
+  .topbar-back svg { width: 14px; height: 14px; }
+  .topbar-breadcrumb {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 13.5px; color: var(--muted-fg); flex: 1;
+  }
+  .topbar-breadcrumb .crumb-sep { opacity: .5; font-size: 15px; }
+  .topbar-breadcrumb a:hover { color: #27274E; }
+  .topbar-breadcrumb .crumb-current { color: var(--foreground); font-weight: 600; }
+  .topbar-right { display: flex; align-items: center; gap: var(--space-2); flex-shrink: 0; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: 'Fustat', sans-serif; font-size: 13.5px; font-weight: 500;
+    border-radius: var(--radius); cursor: pointer; white-space: nowrap;
+    transition: background .12s, border-color .12s, color .12s;
+    border: 1px solid transparent; outline: none; line-height: 1;
+  }
+  .btn-default { height: 34px; padding: 0 14px; background: var(--cta); color: #fff; border-color: var(--cta); }
+  .btn-default:hover { background: var(--cta-hover); border-color: var(--cta-hover); }
+  .btn-default svg { width: 13px; height: 13px; }
+  .btn-primary { height: 34px; padding: 0 12px; background: var(--primary); color: var(--primary-fg); border-color: var(--primary); }
+  .btn-primary:hover { background: #2929a8; border-color: #2929a8; }
+  .btn-outline { height: 34px; padding: 0 12px; background: var(--background); color: var(--foreground); border-color: var(--border); box-shadow: var(--shadow-sm); }
+  .btn-outline:hover { background: var(--muted); }
+  .btn-outline svg { width: 13px; height: 13px; }
+  .btn-lg { height: 40px; padding: 0 20px; font-size: 14px; }
+  body.rtl .btn svg { transform: scaleX(-1); }
+
+  .user-avatar {
+    width: 34px; height: 34px; border-radius: var(--radius);
+    background: var(--primary-muted); color: var(--primary);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    border: 1px solid var(--primary-border); font-family: 'Fustat', sans-serif;
+  }
+
+  /* ── CONTENT ── */
+  .content { flex: 1; overflow-y: auto; padding: var(--page-y) var(--page-x) var(--page-bottom); }
+
+  /* ── PROGRESS STRIP ── */
+  .progress-strip {
+    display: flex; align-items: center; gap: 0;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: calc(var(--radius) + 2px);
+    padding: 0 var(--space-5);
+    margin-bottom: var(--section-gap);
+    height: 48px;
+    position: sticky; top: 0; z-index: 10;
+    box-shadow: var(--shadow-sm);
+  }
+  .progress-step {
+    display: flex; align-items: center; gap: var(--space-2);
+    font-size: 12px; font-weight: 500; color: var(--muted-fg);
+    padding: 0 var(--space-4); height: 100%; cursor: pointer;
+    position: relative; transition: color .12s;
+    white-space: nowrap;
+  }
+  .progress-step:hover { color: var(--foreground); }
+  .progress-step.active { color: var(--primary); }
+  .progress-step.done { color: var(--green); }
+  .progress-step .step-num {
+    width: 20px; height: 20px; border-radius: 50%;
+    background: var(--muted); color: var(--muted-fg);
+    font-size: 11px; font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; font-family: 'Fustat', sans-serif;
+    transition: background .12s, color .12s;
+  }
+  .progress-step.active .step-num { background: var(--primary-muted); color: var(--primary); }
+  .progress-step.done .step-num { background: var(--green-muted); color: var(--green); }
+  .progress-step + .progress-step::before {
+    content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+    width: 1px; height: 16px; background: var(--border);
+  }
+  body.rtl .progress-step + .progress-step::before { left: unset; right: 0; }
+
+  /* ── FORM LAYOUT ── */
+  .builder-wrap {
+    display: flex; flex-direction: column; gap: var(--section-gap);
+  }
+
+  /* ── SECTION CARDS ── */
+  .section-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: calc(var(--radius) + 2px);
+    overflow: hidden;
+    animation: fadeUp .22s ease both;
+  }
+  .section-card:nth-child(2) { animation-delay: .04s; }
+  .section-card:nth-child(3) { animation-delay: .08s; }
+  .section-card:nth-child(4) { animation-delay: .12s; }
+  .section-card:nth-child(5) { animation-delay: .16s; }
+  .section-card:nth-child(6) { animation-delay: .20s; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+  .section-header {
+    padding: var(--space-5) var(--space-6);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: var(--space-3);
+  }
+  .section-num {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--primary-muted); color: var(--primary);
+    font-size: 12px; font-weight: 700; font-family: 'Fustat', sans-serif;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .section-title { font-size: 14px; font-weight: 600; color: var(--foreground); letter-spacing: -.01em; }
+  body.rtl .section-title { letter-spacing: 0; }
+  .section-sub { font-size: 12px; color: var(--muted-fg); margin-top: 1px; }
+  .section-body { padding: var(--space-6); display: flex; flex-direction: column; gap: var(--space-5); }
+
+  /* ── FORM ELEMENTS ── */
+  .field { display: flex; flex-direction: column; gap: var(--space-2); }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
+  .field-label {
+    font-size: 12px; font-weight: 600; color: var(--foreground);
+    letter-spacing: .01em;
+  }
+  body.rtl .field-label { letter-spacing: 0; }
+  .field-hint { font-size: 11.5px; color: var(--muted-fg); }
+  .field-input {
+    height: var(--control-h); border-radius: var(--radius);
+    border: 1px solid var(--input); background: var(--background);
+    padding: 0 var(--space-3); font-family: 'Fustat', sans-serif;
+    font-size: 13.5px; color: var(--foreground); outline: none; width: 100%;
+    transition: border-color .12s, box-shadow .12s;
+  }
+  body.rtl .field-input { font-family: 'FustatLatin', 'Alyamama', sans-serif; }
+  .field-input::placeholder { color: var(--muted-fg); }
+  .field-input:hover { border-color: var(--ring); }
+  .field-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-muted); }
+  .field-input.has-value { border-color: var(--input); }
+
+  .field-textarea {
+    border-radius: var(--radius); border: 1px solid var(--input);
+    background: var(--background); padding: var(--space-3);
+    font-family: 'Fustat', sans-serif; font-size: 13.5px;
+    color: var(--foreground); outline: none; width: 100%; resize: vertical;
+    min-height: 80px; line-height: 1.6;
+    transition: border-color .12s, box-shadow .12s;
+  }
+  body.rtl .field-textarea { font-family: 'FustatLatin', 'Alyamama', sans-serif; }
+  .field-textarea::placeholder { color: var(--muted-fg); }
+  .field-textarea:hover { border-color: var(--ring); }
+  .field-textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-muted); }
+
+  .select-wrap { position: relative; }
+  .select-wrap select {
+    appearance: none; background: var(--background); border: 1px solid var(--input);
+    border-radius: var(--radius); padding: 0 26px 0 var(--space-3);
+    height: var(--control-h); font-family: 'Fustat', sans-serif;
+    font-size: 13.5px; color: var(--foreground); cursor: pointer; outline: none; width: 100%;
+    transition: box-shadow .12s, border-color .12s;
+  }
+  body.rtl .select-wrap select { font-family: 'FustatLatin', 'Alyamama', sans-serif; padding: 0 var(--space-3) 0 26px; }
+  .select-wrap select:hover { border-color: var(--ring); box-shadow: var(--shadow-sm); }
+  .select-wrap select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-muted); }
+  .select-wrap::after {
+    content: ''; position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+    width: 0; height: 0;
+    border-left: 3.5px solid transparent; border-right: 3.5px solid transparent;
+    border-top: 3.5px solid var(--muted-fg); pointer-events: none;
+  }
+  body.rtl .select-wrap::after { right: unset; left: 10px; }
+
+  /* ── PLATFORM GRID ── */
+  .platform-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-2);
+  }
+  .platform-tile {
+    border: 1px solid var(--border); border-radius: var(--radius);
+    padding: var(--space-4) var(--space-3);
+    display: flex; flex-direction: column; align-items: center; gap: var(--space-2);
+    cursor: pointer; transition: border-color .12s, background .12s, box-shadow .12s;
+    background: var(--background); user-select: none;
+  }
+  .platform-tile:hover { border-color: var(--ring); box-shadow: var(--shadow-sm); }
+  .platform-tile.selected {
+    border-color: var(--primary); background: var(--primary-muted);
+    box-shadow: 0 0 0 1px var(--primary);
+  }
+  .platform-tile .pt-icon {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: #27274E; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: background .12s;
+  }
+  .platform-tile.selected .pt-icon { background: var(--primary); }
+  .platform-tile .pt-name {
+    font-size: 12px; font-weight: 500; color: var(--muted-fg);
+    text-align: center; transition: color .12s;
+    font-family: 'Fustat', sans-serif;
+  }
+  .platform-tile.selected .pt-name { color: var(--primary); font-weight: 600; }
+  .platform-tile .pt-check {
+    width: 16px; height: 16px; border-radius: 50%;
+    border: 1.5px solid var(--border); background: var(--background);
+    display: flex; align-items: center; justify-content: center;
+    transition: border-color .12s, background .12s;
+    flex-shrink: 0;
+  }
+  .platform-tile.selected .pt-check {
+    border-color: var(--primary); background: var(--primary);
+  }
+  .platform-tile.selected .pt-check::after {
+    content: ''; width: 5px; height: 3px;
+    border-left: 1.5px solid #fff; border-bottom: 1.5px solid #fff;
+    transform: rotate(-45deg) translateY(-1px);
+  }
+
+  /* ── PILL SELECTS ── */
+  .pill-group { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .pill {
+    height: 32px; padding: 0 14px; border-radius: 9999px;
+    border: none; background: var(--muted);
+    font-size: 12.5px; font-weight: 500; color: var(--muted-fg);
+    cursor: pointer; transition: all .12s; user-select: none;
+    display: flex; align-items: center; gap: 5px;
+    font-family: 'Fustat', sans-serif;
+  }
+  body.rtl .pill { font-family: 'FustatLatin', 'Alyamama', sans-serif; }
+  .pill:hover { background: var(--border); color: var(--foreground); }
+  .pill.selected { background: var(--primary-muted); color: var(--primary); }
+
+  /* ── TAG INPUT ── */
+  .tag-wrap {
+    min-height: var(--control-h); border-radius: var(--radius);
+    border: 1px solid var(--input); background: var(--background);
+    padding: 4px var(--space-2); display: flex; flex-wrap: wrap; gap: 4px;
+    align-items: center; cursor: text;
+    transition: border-color .12s, box-shadow .12s;
+  }
+  .tag-wrap:focus-within { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-muted); }
+  .tag {
+    display: inline-flex; align-items: center; gap: 4px;
+    height: 22px; padding: 0 8px; border-radius: 9999px;
+    background: var(--primary-muted); color: var(--primary);
+    font-size: 12px; font-weight: 500;
+  }
+  .tag-remove {
+    width: 12px; height: 12px; border-radius: 50%; border: none;
+    background: transparent; color: var(--primary); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    opacity: .6; padding: 0; line-height: 1; font-size: 14px;
+  }
+  .tag-remove:hover { opacity: 1; }
+  .tag-input {
+    border: none; outline: none; background: transparent;
+    font-family: 'Fustat', sans-serif; font-size: 13px; color: var(--foreground);
+    flex: 1; min-width: 120px; padding: 2px 4px;
+  }
+  body.rtl .tag-input { font-family: 'FustatLatin', 'Alyamama', sans-serif; }
+  .tag-input::placeholder { color: var(--muted-fg); }
+
+  /* ── RANGE SLIDER ── */
+  .range-row { display: flex; align-items: center; gap: var(--space-3); }
+  .range-label { font-size: 12px; color: var(--muted-fg); min-width: 28px; text-align: center; font-family: 'Fustat', sans-serif; }
+  input[type=range] {
+    flex: 1; height: 4px; border-radius: 9999px;
+    background: var(--border); appearance: none; outline: none; cursor: pointer;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    appearance: none; width: 16px; height: 16px; border-radius: 50%;
+    background: var(--primary); border: 2px solid var(--background);
+    box-shadow: 0 0 0 1.5px var(--primary); cursor: pointer;
+  }
+  input[type=range]::-moz-range-thumb {
+    width: 16px; height: 16px; border-radius: 50%;
+    background: var(--primary); border: 2px solid var(--background);
+    box-shadow: 0 0 0 1.5px var(--primary); cursor: pointer;
+  }
+
+  /* ── TOGGLE SWITCH ── */
+  .toggle-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); }
+  .toggle-info { display: flex; flex-direction: column; gap: 2px; }
+  .toggle-label { font-size: 13px; font-weight: 500; color: var(--foreground); }
+  .toggle-desc { font-size: 12px; color: var(--muted-fg); }
+  .toggle-switch {
+    position: relative; width: 36px; height: 20px; flex-shrink: 0; cursor: pointer;
+  }
+  .toggle-switch input { opacity: 0; width: 0; height: 0; }
+  .toggle-track {
+    position: absolute; inset: 0; border-radius: 9999px;
+    background: var(--border); transition: background .15s;
+  }
+  .toggle-switch input:checked + .toggle-track { background: var(--primary); }
+  .toggle-knob {
+    position: absolute; top: 3px; left: 3px;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: white; box-shadow: var(--shadow-sm);
+    transition: transform .15s;
+  }
+  .toggle-switch input:checked ~ .toggle-knob { transform: translateX(16px); }
+
+  /* ── REVIEW SECTION ── */
+  .review-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3);
+  }
+  .review-item {
+    background: var(--muted); border-radius: var(--radius);
+    padding: var(--space-4);
+  }
+  .review-item-label {
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: .06em; color: var(--muted-fg); margin-bottom: var(--space-2);
+  }
+  body.rtl .review-item-label { letter-spacing: 0; text-transform: none; font-size: 12px; }
+  .review-item-value { font-size: 13.5px; font-weight: 500; color: var(--foreground); line-height: 1.5; }
+  .review-platforms { display: flex; flex-wrap: wrap; gap: var(--space-1); margin-top: 4px; }
+  .review-platform-chip {
+    display: inline-flex; align-items: center; gap: 5px;
+    height: 24px; padding: 0 8px; border-radius: 9999px;
+    background: var(--primary-muted); color: var(--primary);
+    font-size: 12px; font-weight: 500;
+  }
+  .review-platform-chip .rp-dot {
+    width: 8px; height: 8px; border-radius: 50%; background: #27274E; flex-shrink: 0;
+  }
+
+  /* ── FORM FOOTER ── */
+  .form-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-top: var(--space-5); border-top: 1px solid var(--border);
+    margin-top: var(--space-1);
+  }
+  .form-footer-hint { font-size: 12px; color: var(--muted-fg); }
+
+  /* ── CHARACTER COUNT ── */
+  .char-count { font-size: 11.5px; color: var(--muted-fg); text-align: right; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    :root { --sidebar-w: var(--sidebar-coll); --page-x: var(--space-4); }
+    .sidebar { width: var(--sidebar-coll); }
+    .sidebar .nav-label, .sidebar .nav-section-header, .sidebar .wordmark { display: none; }
+    #sidebarToggle { display: none; }
+    .platform-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 600px) {
+    :root { --page-x: var(--space-3); }
+    .sidebar { display: none; }
+    .field-row { grid-template-columns: 1fr; }
+    .platform-grid { grid-template-columns: repeat(2, 1fr); }
+    .review-grid { grid-template-columns: 1fr; }
+    .progress-step .step-label { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════ SIDEBAR ══════════════════════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <svg class="logo-wordmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 118" shape-rendering="geometricPrecision" fill="#3333CC">
+      <path d="M313.97,49.64l-8.66-.75c-12.95-.94-14.88-8.26-14.88-12.54,0-6.34,4.51-13.75,17.23-13.75s17.98,7.5,18.16,15.04h24.01c-.18-21.65-16.3-35.08-42.17-35.08-12.34,0-22.72,3.14-30.02,9.09-7.34,5.98-11.22,14.52-11.22,24.7,0,19.04,13.69,31.5,36.63,33.34l8.51.75c13.63,1.19,19.98,5.23,19.98,12.7,0,9.04-8.44,14.65-22.03,14.65-7.58,0-13.47-1.62-17.5-4.82-3.47-2.75-5.35-6.54-5.45-10.98h-23.86c.19,22.11,18.09,35.83,46.81,35.83,13.9,0,25.55-3.28,33.71-9.49,8.07-6.14,12.33-14.86,12.33-25.2,0-18.74-15.55-31.26-41.58-33.49Z"/>
+      <polygon points="374.79 114.96 398.8 114.96 398.8 33.25 363.5 33.25 363.5 50.27 374.79 50.27 374.79 114.96"/>
+      <path d="M384.01,24.4c8.41,0,13.24-4.42,13.24-12.12s-4.83-12.28-13.24-12.28-13.24,4.47-13.24,12.28,4.83,12.12,13.24,12.12Z"/>
+      <path d="M518.04,30.69h-1.08c-12.83,0-21.51,5.89-25.79,17.51l-.36.97-.34-.97c-4.14-11.62-12.76-17.51-25.64-17.51h-1.08c-14.79,0-23.94,7.75-27.17,23.03l-.74,3.47v-23.95h-18.9v81.72h24.01v-47.48c0-9.72,5.85-16.01,14.91-16.01s14.14,5.96,14.14,15.56v47.93h24.16v-47.48c0-9.72,5.79-16.01,14.76-16.01s14.29,5.96,14.29,15.56v47.93h24.01v-46.57c0-24.66-10.09-37.7-29.18-37.7Z"/>
+      <path d="M617.88,30.84c-12.7,0-22.54,5.3-28.45,15.31l-.69,1.18V5.87h-24.01v109.09h18.9v-19.82l.72,1.85c5.18,13.33,16.59,20.68,32.14,20.68,23.01,0,39.08-17.3,39.08-42.06v-3.31c0-11.72-3.64-22.27-10.24-29.7-6.83-7.69-16.32-11.76-27.45-11.76ZM609.99,98.23c-5.52,0-10.99-1.99-15-5.47-3.14-2.71-6.87-7.58-6.87-15.35v-5.57c0-14.26,11.01-21.72,21.88-21.72,12.81,0,21.41,9.58,21.41,23.83s-8.8,24.28-21.41,24.28Z"/>
+      <path d="M709.17,30.39c-28.09,0-42.79,21.24-42.79,42.21v3.01c0,20.98,15.02,42.21,43.72,42.21,20.3,0,35.31-10.6,39.3-27.71h-22.02c-2.27,5.56-8.7,8.88-17.27,8.88-12.02,0-19.26-6.4-20.94-18.52l-.06-.41h61.93v-7.76c0-28.8-21.7-41.91-41.86-41.91ZM689.24,67.09l.08-.42c2.06-11.41,8.93-17.45,19.86-17.45s17.32,6.2,19.09,17.46l.07.42h-39.09Z"/>
+      <polygon points="788.71 5.87 764.7 5.87 764.7 114.96 800 114.96 800 97.93 788.71 97.93 788.71 5.87"/>
+      <path d="M203.28,89.54c6.78-6.6,10.52-15.37,10.52-24.7s-3.74-18.1-10.52-24.7c-6.78-6.6-15.8-10.23-25.4-10.23s-18.61,3.63-25.4,10.23l-76.93,74.81h35.22l59.32-57.69c2.08-2.02,4.85-3.14,7.79-3.14s5.71,1.11,7.79,3.14c2.08,2.02,3.23,4.71,3.23,7.57s-1.15,5.55-3.23,7.57l-43.75,42.54h35.22l26.14-25.42Z"/>
+      <path d="M102.72,33.25l-59.03,57.4c-2.08,2.02-4.85,3.14-7.79,3.14s-5.71-1.11-7.79-3.14c-4.29-4.18-4.29-10.97,0-15.15l43.45-42.25h-35.22l-25.84,25.13c-14,13.62-14,35.78,0,49.39,6.78,6.6,15.8,10.23,25.4,10.23s18.61-3.63,25.4-10.23l76.64-74.52h-35.22Z"/>
+    </svg>
+    <svg class="logo-mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 203.14 203.14" preserveAspectRatio="xMidYMid slice">
+      <rect fill="#3333CC" width="203.14" height="203.14"/>
+      <path fill="#f7f3f0" d="M160.68,80.98c-4.12-4-9.59-6.21-15.42-6.21s-11.3,2.21-15.42,6.21l-46.81,45.52h20.8l36.43-35.42c1.34-1.3,3.12-2.02,5.01-2.02s3.67.72,5.01,2.02c1.34,1.3,2.08,3.04,2.08,4.88s-.74,3.58-2.08,4.88l-26.39,25.66h20.8l16-15.56c4.12-4,6.38-9.32,6.38-14.98s-2.27-10.98-6.38-14.98Z"/>
+      <path fill="#f7f3f0" d="M99.12,76.82l-36.25,35.25c-1.34,1.3-3.12,2.02-5.01,2.02s-3.67-.72-5.01-2.02c-1.34-1.3-2.08-3.04-2.08-4.88s.74-3.58,2.08-4.88l26.2-25.48h-20.8l-15.82,15.38c-4.11,4-6.37,9.32-6.37,14.98s2.26,10.99,6.37,14.98c4.12,4,9.59,6.21,15.42,6.21s11.3-2.21,15.42-6.21l46.63-45.35h-20.8Z"/>
+    </svg>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="sidebar-section" data-en="Core" data-ar="الأساسي">Core</div>
+    <a class="nav-item active" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+      <span class="nav-label" data-en="Campaigns" data-ar="الحملات">Campaigns</span>
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      <span class="nav-label" data-en="Schedule" data-ar="الجدول الزمني">Schedule</span>
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      <span class="nav-label" data-en="Content Library" data-ar="مكتبة المحتوى">Content Library</span>
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+      <span class="nav-label" data-en="Media Library" data-ar="مكتبة الوسائط">Media Library</span>
+    </a>
+
+    <div class="sidebar-section" data-en="Create" data-ar="إنشاء">Create</div>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      <span class="nav-label" data-en="Create Post" data-ar="إنشاء منشور">Create Post</span>
+    </a>
+    <a class="nav-item nav-locked" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      <span class="nav-label" data-en="Studio" data-ar="الاستوديو">Studio</span>
+      <span class="lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+    </a>
+
+    <div class="sidebar-section" data-en="Grow" data-ar="نمو">Grow</div>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      <span class="nav-label" data-en="Analytics" data-ar="التحليلات">Analytics</span>
+    </a>
+    <a class="nav-item nav-locked" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg>
+      <span class="nav-label" data-en="Paid Ads" data-ar="الإعلانات">Paid Ads</span>
+      <span class="lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+    </a>
+    <a class="nav-item nav-locked" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <span class="nav-label" data-en="SEO" data-ar="تحسين محركات البحث">SEO</span>
+      <span class="lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+    </a>
+
+    <div class="sidebar-section" data-en="Settings" data-ar="الإعدادات">Settings</div>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      <span class="nav-label" data-en="Brand Context" data-ar="سياق العلامة">Brand Context</span>
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      <span class="nav-label" data-en="Integrations" data-ar="التكاملات">Integrations</span>
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span class="nav-label" data-en="Contact Lists" data-ar="قوائم جهات الاتصال">Contact Lists</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-bottom">
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span class="nav-label" data-en="Account" data-ar="الحساب">Account</span>
+    </a>
+    <button id="sidebarToggle" title="Collapse sidebar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+  </div>
+</aside>
+
+<!-- ══════════════════════════ MAIN ══════════════════════════ -->
+<div class="main">
+  <header class="topbar">
+    <a href="simbel-campaigns.html" class="topbar-back" title="Back to Campaigns">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    </a>
+    <div class="topbar-breadcrumb">
+      <a href="simbel-campaigns.html" style="color:var(--muted-fg);text-decoration:none;" data-en="Campaigns" data-ar="الحملات">Campaigns</a>
+      <span class="crumb-sep">/</span>
+      <span class="crumb-current" data-en="New Campaign" data-ar="حملة جديدة">New Campaign</span>
+    </div>
+    <div class="topbar-right">
+      <button class="btn btn-outline" data-en="Save draft" data-ar="حفظ كمسودة">Save draft</button>
+      <button class="topbar-util-btn" id="themeToggle" title="Toggle dark mode">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" style="display:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg>
+      </button>
+      <button class="topbar-util-btn" id="arabicToggle" title="Toggle Arabic" style="font-size:14px;font-weight:600;font-family:'Alyamama',serif;letter-spacing:0;">ع</button>
+      <div class="user-avatar">B</div>
+    </div>
+  </header>
+
+  <main class="content">
+
+    <!-- Progress strip -->
+    <div class="progress-strip" id="progressStrip">
+      <div class="progress-step active" data-section="basics" onclick="scrollToSection('basics')">
+        <span class="step-num">1</span>
+        <span class="step-label" data-en="Basics" data-ar="الأساسيات">Basics</span>
+      </div>
+      <div class="progress-step" data-section="platforms" onclick="scrollToSection('platforms')">
+        <span class="step-num">2</span>
+        <span class="step-label" data-en="Platforms" data-ar="المنصات">Platforms</span>
+      </div>
+      <div class="progress-step" data-section="audience" onclick="scrollToSection('audience')">
+        <span class="step-num">3</span>
+        <span class="step-label" data-en="Audience" data-ar="الجمهور">Audience</span>
+      </div>
+      <div class="progress-step" data-section="content" onclick="scrollToSection('content')">
+        <span class="step-num">4</span>
+        <span class="step-label" data-en="Content" data-ar="المحتوى">Content</span>
+      </div>
+      <div class="progress-step" data-section="review" onclick="scrollToSection('review')">
+        <span class="step-num">5</span>
+        <span class="step-label" data-en="Review" data-ar="المراجعة">Review</span>
+      </div>
+    </div>
+
+    <div class="builder-wrap">
+
+      <!-- ── 1. CAMPAIGN BASICS ── -->
+      <div class="section-card" id="section-basics">
+        <div class="section-header">
+          <div class="section-num">1</div>
+          <div>
+            <div class="section-title" data-en="Campaign Basics" data-ar="أساسيات الحملة">Campaign Basics</div>
+            <div class="section-sub" data-en="Name your campaign and set its primary goal and dates" data-ar="سمِّ حملتك وحدد هدفها الرئيسي وتواريخها">Name your campaign and set its primary goal and dates</div>
+          </div>
+        </div>
+        <div class="section-body">
+
+          <div class="field">
+            <label class="field-label" data-en="Campaign name" data-ar="اسم الحملة">Campaign name</label>
+            <input class="field-input" type="text" id="campaignName" placeholder="e.g. Summer Product Launch" data-en-placeholder="e.g. Summer Product Launch" data-ar-placeholder="مثال: إطلاق منتج الصيف" maxlength="80">
+            <div class="char-count" id="nameCount">0 / 80</div>
+          </div>
+
+          <div class="field">
+            <label class="field-label" data-en="Campaign goal" data-ar="هدف الحملة">Campaign goal</label>
+            <div class="select-wrap">
+              <select id="campaignGoal">
+                <option value="" data-en="Select a goal…" data-ar="اختر هدفاً…">Select a goal…</option>
+                <option value="awareness" data-en="Brand Awareness" data-ar="الوعي بالعلامة التجارية">Brand Awareness</option>
+                <option value="engagement" data-en="Engagement" data-ar="التفاعل">Engagement</option>
+                <option value="leads" data-en="Lead Generation" data-ar="توليد العملاء المحتملين">Lead Generation</option>
+                <option value="sales" data-en="Sales & Conversions" data-ar="المبيعات والتحويلات">Sales & Conversions</option>
+                <option value="traffic" data-en="Website Traffic" data-ar="حركة زيارات الموقع">Website Traffic</option>
+                <option value="retention" data-en="Customer Retention" data-ar="الاحتفاظ بالعملاء">Customer Retention</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label" data-en="Start date" data-ar="تاريخ البدء">Start date</label>
+              <input class="field-input" type="date" id="startDate">
+            </div>
+            <div class="field">
+              <label class="field-label" data-en="End date" data-ar="تاريخ الانتهاء">End date</label>
+              <input class="field-input" type="date" id="endDate">
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="field-label" data-en="Brief / description" data-ar="الملخص / الوصف">Brief / description</label>
+            <textarea class="field-textarea" id="campaignBrief" rows="3" placeholder="Describe your campaign's purpose, key messages, or any important context…" data-en-placeholder="Describe your campaign's purpose, key messages, or any important context…" data-ar-placeholder="صف غرض حملتك ورسائلها الرئيسية أو أي سياق مهم…" maxlength="500"></textarea>
+            <div class="char-count" id="briefCount">0 / 500</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── 2. PLATFORM SELECTION ── -->
+      <div class="section-card" id="section-platforms">
+        <div class="section-header">
+          <div class="section-num">2</div>
+          <div>
+            <div class="section-title" data-en="Platform Selection" data-ar="اختيار المنصة">Platform Selection</div>
+            <div class="section-sub" data-en="Choose where your campaign will run — select one or more" data-ar="اختر أين ستعمل حملتك — اختر منصة أو أكثر">Choose where your campaign will run — select one or more</div>
+          </div>
+        </div>
+        <div class="section-body">
+          <div class="platform-grid" id="platformGrid">
+
+            <div class="platform-tile" data-platform="instagram" onclick="togglePlatform(this)">
+              <div class="pt-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5.5" stroke="white" stroke-width="2"/><circle cx="12" cy="12" r="4" stroke="white" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.2" fill="white"/></svg>
+              </div>
+              <div class="pt-name">Instagram</div>
+              <div class="pt-check"></div>
+            </div>
+
+            <div class="platform-tile" data-platform="facebook" onclick="togglePlatform(this)">
+              <div class="pt-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div class="pt-name">Facebook</div>
+              <div class="pt-check"></div>
+            </div>
+
+            <div class="platform-tile" data-platform="twitter" onclick="togglePlatform(this)">
+              <div class="pt-icon">
+                <svg width="13" height="13" viewBox="0 0 300 300" fill="none"><path d="M178.57 127.15L290.27 0H263.81L166.78 110.38L89.34 0H0L117.13 166.93L0 300H26.46L128.86 183.36L210.66 300H300L178.57 127.15ZM142.08 167.28L129.93 149.6L36.36 19.5H76.66L152.93 126.26L165.08 143.94L263.83 281.07H223.53L142.08 167.28Z" fill="white"/></svg>
+              </div>
+              <div class="pt-name">X / Twitter</div>
+              <div class="pt-check"></div>
+            </div>
+
+            <div class="platform-tile" data-platform="linkedin" onclick="togglePlatform(this)">
+              <div class="pt-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><rect x="2" y="9" width="4" height="12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="4" cy="4" r="2" stroke="white" stroke-width="2"/></svg>
+              </div>
+              <div class="pt-name">LinkedIn</div>
+              <div class="pt-check"></div>
+            </div>
+
+            <div class="platform-tile" data-platform="tiktok" onclick="togglePlatform(this)">
+              <div class="pt-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div class="pt-name">TikTok</div>
+              <div class="pt-check"></div>
+            </div>
+
+            <div class="platform-tile" data-platform="whatsapp" onclick="togglePlatform(this)">
+              <div class="pt-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div class="pt-name">WhatsApp</div>
+              <div class="pt-check"></div>
+            </div>
+
+            <div class="platform-tile" data-platform="email" onclick="togglePlatform(this)">
+              <div class="pt-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="22,6 12,13 2,6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div class="pt-name">Email</div>
+              <div class="pt-check"></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 3. AUDIENCE & TARGETING ── -->
+      <div class="section-card" id="section-audience">
+        <div class="section-header">
+          <div class="section-num">3</div>
+          <div>
+            <div class="section-title" data-en="Audience & Targeting" data-ar="الجمهور والاستهداف">Audience & Targeting</div>
+            <div class="section-sub" data-en="Define who you want to reach" data-ar="حدد من تريد الوصول إليه">Define who you want to reach</div>
+          </div>
+        </div>
+        <div class="section-body">
+
+          <div class="field">
+            <label class="field-label" data-en="Age range" data-ar="الفئة العمرية">Age range</label>
+            <div class="range-row">
+              <span class="range-label" id="ageMinLabel">18</span>
+              <input type="range" id="ageMin" min="13" max="65" value="18" oninput="updateAge()">
+              <input type="range" id="ageMax" min="13" max="65" value="45" oninput="updateAge()">
+              <span class="range-label" id="ageMaxLabel">45</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="field-label" data-en="Gender" data-ar="الجنس">Gender</label>
+            <div class="pill-group">
+              <div class="pill selected" data-value="all" onclick="togglePill(this, 'gender')" data-en="All" data-ar="الكل">All</div>
+              <div class="pill" data-value="male" onclick="togglePill(this, 'gender')" data-en="Male" data-ar="ذكر">Male</div>
+              <div class="pill" data-value="female" onclick="togglePill(this, 'gender')" data-en="Female" data-ar="أنثى">Female</div>
+              <div class="pill" data-value="other" onclick="togglePill(this, 'gender')" data-en="Non-binary / Other" data-ar="غير ثنائي / آخر">Non-binary / Other</div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="field-label" data-en="Locations" data-ar="المواقع الجغرافية">Locations</label>
+            <div class="tag-wrap" id="locationWrap" onclick="this.querySelector('.tag-input').focus()">
+              <span class="tag">Saudi Arabia <button class="tag-remove" onclick="removeTag(this)">×</button></span>
+              <span class="tag">UAE <button class="tag-remove" onclick="removeTag(this)">×</button></span>
+              <input class="tag-input" id="locationInput" placeholder="Add a country or city…" data-en-placeholder="Add a country or city…" data-ar-placeholder="أضف دولة أو مدينة…" onkeydown="handleTagInput(event, 'locationWrap')">
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="field-label" data-en="Interests" data-ar="الاهتمامات">Interests</label>
+            <div class="tag-wrap" id="interestWrap" onclick="this.querySelector('.tag-input').focus()">
+              <input class="tag-input" id="interestInput" placeholder="e.g. fashion, tech, fitness…" data-en-placeholder="e.g. fashion, tech, fitness…" data-ar-placeholder="مثال: الموضة، التقنية، اللياقة…" onkeydown="handleTagInput(event, 'interestWrap')">
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="field-label" data-en="Languages" data-ar="اللغات">Languages</label>
+            <div class="pill-group" id="languagePills">
+              <div class="pill selected" data-value="en" onclick="togglePill(this, 'language')" data-en="English" data-ar="الإنجليزية">English</div>
+              <div class="pill selected" data-value="ar" onclick="togglePill(this, 'language')" data-en="Arabic" data-ar="العربية">Arabic</div>
+              <div class="pill" data-value="fr" onclick="togglePill(this, 'language')" data-en="French" data-ar="الفرنسية">French</div>
+              <div class="pill" data-value="tr" onclick="togglePill(this, 'language')" data-en="Turkish" data-ar="التركية">Turkish</div>
+              <div class="pill" data-value="ur" onclick="togglePill(this, 'language')" data-en="Urdu" data-ar="الأردية">Urdu</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── 4. AI CONTENT SETTINGS ── -->
+      <div class="section-card" id="section-content">
+        <div class="section-header">
+          <div class="section-num">4</div>
+          <div>
+            <div class="section-title" data-en="AI Content Settings" data-ar="إعدادات محتوى الذكاء الاصطناعي">AI Content Settings</div>
+            <div class="section-sub" data-en="Guide how AI generates content for this campaign" data-ar="وجّه كيف يُنشئ الذكاء الاصطناعي المحتوى لهذه الحملة">Guide how AI generates content for this campaign</div>
+          </div>
+        </div>
+        <div class="section-body">
+
+          <div class="field">
+            <label class="field-label" data-en="Tone of voice" data-ar="أسلوب الصوت">Tone of voice</label>
+            <div class="pill-group">
+              <div class="pill" data-value="professional" onclick="togglePill(this, 'tone')" data-en="Professional" data-ar="احترافي">Professional</div>
+              <div class="pill selected" data-value="casual" onclick="togglePill(this, 'tone')" data-en="Casual" data-ar="غير رسمي">Casual</div>
+              <div class="pill" data-value="playful" onclick="togglePill(this, 'tone')" data-en="Playful" data-ar="مرح">Playful</div>
+              <div class="pill" data-value="inspirational" onclick="togglePill(this, 'tone')" data-en="Inspirational" data-ar="ملهم">Inspirational</div>
+              <div class="pill" data-value="bold" onclick="togglePill(this, 'tone')" data-en="Bold" data-ar="جريء">Bold</div>
+              <div class="pill" data-value="informative" onclick="togglePill(this, 'tone')" data-en="Informative" data-ar="معلوماتي">Informative</div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="field-label" data-en="Topics & themes" data-ar="المواضيع والمحاور">Topics & themes</label>
+            <div class="tag-wrap" id="topicWrap" onclick="this.querySelector('.tag-input').focus()">
+              <input class="tag-input" id="topicInput" placeholder="e.g. new arrivals, sustainability, tips…" data-en-placeholder="e.g. new arrivals, sustainability, tips…" data-ar-placeholder="مثال: وصول جديد، الاستدامة، نصائح…" onkeydown="handleTagInput(event, 'topicWrap')">
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="field-label" data-en="Posting frequency" data-ar="تكرار النشر">Posting frequency</label>
+            <div class="select-wrap">
+              <select id="postFreq">
+                <option value="1" data-en="Once a day" data-ar="مرة واحدة يومياً">Once a day</option>
+                <option value="2" data-en="Twice a day" data-ar="مرتين يومياً">Twice a day</option>
+                <option value="3x_week" selected data-en="3× per week" data-ar="3 مرات أسبوعياً">3× per week</option>
+                <option value="weekly" data-en="Once a week" data-ar="مرة واحدة أسبوعياً">Once a week</option>
+                <option value="custom" data-en="Custom schedule" data-ar="جدول مخصص">Custom schedule</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="field-label" data-en="Caption length" data-ar="طول التعليق">Caption length</label>
+            <div class="pill-group">
+              <div class="pill" data-value="short" onclick="togglePill(this, 'caption')" data-en="Short" data-ar="قصير">Short</div>
+              <div class="pill selected" data-value="medium" onclick="togglePill(this, 'caption')" data-en="Medium" data-ar="متوسط">Medium</div>
+              <div class="pill" data-value="long" onclick="togglePill(this, 'caption')" data-en="Long" data-ar="طويل">Long</div>
+            </div>
+          </div>
+
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <div class="toggle-label" data-en="Include hashtags" data-ar="تضمين الوسوم">Include hashtags</div>
+              <div class="toggle-desc" data-en="AI will suggest relevant hashtags for each post" data-ar="سيقترح الذكاء الاصطناعي وسوماً ذات صلة لكل منشور">AI will suggest relevant hashtags for each post</div>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="hashtagToggle" checked>
+              <div class="toggle-track"></div>
+              <div class="toggle-knob"></div>
+            </label>
+          </div>
+
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <div class="toggle-label" data-en="Include emojis" data-ar="تضمين الرموز التعبيرية">Include emojis</div>
+              <div class="toggle-desc" data-en="Add contextual emojis to captions" data-ar="إضافة رموز تعبيرية مناسبة للسياق في التعليقات">Add contextual emojis to captions</div>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="emojiToggle">
+              <div class="toggle-track"></div>
+              <div class="toggle-knob"></div>
+            </label>
+          </div>
+
+          <div class="field">
+            <label class="field-label" data-en="Call to action" data-ar="دعوة للتصرف">Call to action</label>
+            <div class="pill-group">
+              <div class="pill" data-value="none" onclick="togglePill(this, 'cta')" data-en="None" data-ar="بدون">None</div>
+              <div class="pill selected" data-value="learnmore" onclick="togglePill(this, 'cta')" data-en="Learn more" data-ar="اعرف المزيد">Learn more</div>
+              <div class="pill" data-value="shop" onclick="togglePill(this, 'cta')" data-en="Shop now" data-ar="تسوق الآن">Shop now</div>
+              <div class="pill" data-value="signup" onclick="togglePill(this, 'cta')" data-en="Sign up" data-ar="سجّل الآن">Sign up</div>
+              <div class="pill" data-value="contact" onclick="togglePill(this, 'cta')" data-en="Contact us" data-ar="تواصل معنا">Contact us</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── 5. REVIEW & LAUNCH ── -->
+      <div class="section-card" id="section-review">
+        <div class="section-header">
+          <div class="section-num">5</div>
+          <div>
+            <div class="section-title" data-en="Review & Launch" data-ar="المراجعة والإطلاق">Review & Launch</div>
+            <div class="section-sub" data-en="Check everything looks right before creating your campaign" data-ar="تحقق من أن كل شيء صحيح قبل إنشاء حملتك">Check everything looks right before creating your campaign</div>
+          </div>
+        </div>
+        <div class="section-body">
+
+          <div class="review-grid">
+            <div class="review-item">
+              <div class="review-item-label" data-en="Campaign name" data-ar="اسم الحملة">Campaign name</div>
+              <div class="review-item-value" id="reviewName">—</div>
+            </div>
+            <div class="review-item">
+              <div class="review-item-label" data-en="Goal" data-ar="الهدف">Goal</div>
+              <div class="review-item-value" id="reviewGoal">—</div>
+            </div>
+            <div class="review-item">
+              <div class="review-item-label" data-en="Dates" data-ar="التواريخ">Dates</div>
+              <div class="review-item-value" id="reviewDates">—</div>
+            </div>
+            <div class="review-item">
+              <div class="review-item-label" data-en="Posting frequency" data-ar="تكرار النشر">Posting frequency</div>
+              <div class="review-item-value" id="reviewFreq">—</div>
+            </div>
+            <div class="review-item" style="grid-column: span 2;">
+              <div class="review-item-label" data-en="Platforms" data-ar="المنصات">Platforms</div>
+              <div class="review-platforms" id="reviewPlatforms">
+                <span style="font-size:13px;color:var(--muted-fg);" data-en="No platforms selected yet" data-ar="لم يتم اختيار منصة بعد">No platforms selected yet</span>
+              </div>
+            </div>
+            <div class="review-item" style="grid-column: span 2;">
+              <div class="review-item-label" data-en="Audience" data-ar="الجمهور">Audience</div>
+              <div class="review-item-value" id="reviewAudience">—</div>
+            </div>
+            <div class="review-item" style="grid-column: span 2;">
+              <div class="review-item-label" data-en="Content settings" data-ar="إعدادات المحتوى">Content settings</div>
+              <div class="review-item-value" id="reviewContent">—</div>
+            </div>
+          </div>
+
+          <div class="form-footer">
+            <span class="form-footer-hint" data-en="You can edit campaign settings any time after launch" data-ar="يمكنك تعديل إعدادات الحملة في أي وقت بعد الإطلاق">You can edit campaign settings any time after launch</span>
+            <div style="display:flex;gap:var(--space-2);">
+              <button class="btn btn-outline btn-lg" data-en="Save draft" data-ar="حفظ كمسودة">Save draft</button>
+              <button class="btn btn-default btn-lg" onclick="launchCampaign()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                <span data-en="Create Campaign" data-ar="إنشاء الحملة">Create Campaign</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div><!-- /builder-wrap -->
+  </main>
+</div>
+
+<script>
+  // ── SIDEBAR TOGGLE ──
+  const sidebar = document.getElementById('sidebar');
+  document.getElementById('sidebarToggle').addEventListener('click', () => {
+    sidebar.classList.toggle('collapsed');
+  });
+
+  // ── DARK MODE ──
+  const themeToggle = document.getElementById('themeToggle');
+  themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+    themeToggle.querySelector('.icon-moon').style.display = document.body.classList.contains('dark') ? 'none' : 'block';
+    themeToggle.querySelector('.icon-sun').style.display  = document.body.classList.contains('dark') ? 'block' : 'none';
+  });
+
+  // ── ARABIC TOGGLE ──
+  const arabicToggle = document.getElementById('arabicToggle');
+  arabicToggle.addEventListener('click', () => {
+    const isRtl = document.body.classList.toggle('rtl');
+    document.documentElement.setAttribute('dir', isRtl ? 'rtl' : 'ltr');
+    arabicToggle.textContent = isRtl ? 'En' : 'ع';
+    arabicToggle.style.fontFamily = isRtl ? "'Fustat', sans-serif" : "'Alyamama', serif";
+    if (isRtl) {
+      arabicToggle.style.color = 'var(--primary)';
+      arabicToggle.style.borderColor = 'var(--primary-border)';
+      arabicToggle.style.background = 'var(--primary-muted)';
+    } else {
+      arabicToggle.style.color = '';
+      arabicToggle.style.borderColor = '';
+      arabicToggle.style.background = '';
+    }
+    swapLang(isRtl);
+  });
+
+  function swapLang(isAr) {
+    document.querySelectorAll('[data-en]').forEach(el => {
+      const key = isAr ? 'ar' : 'en';
+      if (el.dataset[key]) el.textContent = el.dataset[key];
+    });
+    document.querySelectorAll('[data-en-placeholder]').forEach(el => {
+      el.placeholder = isAr ? el.dataset.arPlaceholder : el.dataset.enPlaceholder;
+    });
+    // select options
+    document.querySelectorAll('select option').forEach(opt => {
+      const key = isAr ? 'ar' : 'en';
+      if (opt.dataset[key]) opt.textContent = opt.dataset[key];
+    });
+  }
+
+  // ── PLATFORM TILES ──
+  function togglePlatform(tile) {
+    tile.classList.toggle('selected');
+    updateReview();
+  }
+
+  // ── PILLS ──
+  function togglePill(pill, group) {
+    if (group === 'gender' && pill.dataset.value === 'all') {
+      document.querySelectorAll(`#section-audience .pill[data-value]`).forEach(p => p.classList.remove('selected'));
+    } else if (group === 'gender') {
+      document.querySelector('#section-audience .pill[data-value="all"]')?.classList.remove('selected');
+    }
+    pill.classList.toggle('selected');
+    updateReview();
+  }
+
+  // ── TAG INPUT ──
+  function handleTagInput(e, wrapId) {
+    if (e.key === 'Enter' || e.key === ',') {
+      e.preventDefault();
+      const input = e.target;
+      const val = input.value.trim().replace(/,$/, '');
+      if (!val) return;
+      const wrap = document.getElementById(wrapId);
+      const tag = document.createElement('span');
+      tag.className = 'tag';
+      tag.innerHTML = `${val} <button class="tag-remove" onclick="removeTag(this)">×</button>`;
+      wrap.insertBefore(tag, input);
+      input.value = '';
+      updateReview();
+    }
+    if (e.key === 'Backspace' && e.target.value === '') {
+      const wrap = document.getElementById(wrapId);
+      const tags = wrap.querySelectorAll('.tag');
+      if (tags.length) tags[tags.length - 1].remove();
+      updateReview();
+    }
+  }
+  function removeTag(btn) {
+    btn.closest('.tag').remove();
+    updateReview();
+  }
+
+  // ── AGE RANGE ──
+  function updateAge() {
+    let min = parseInt(document.getElementById('ageMin').value);
+    let max = parseInt(document.getElementById('ageMax').value);
+    if (min > max) { let t = min; min = max; max = t; }
+    document.getElementById('ageMinLabel').textContent = min;
+    document.getElementById('ageMaxLabel').textContent = max === 65 ? '65+' : max;
+    updateReview();
+  }
+  updateAge();
+
+  // ── CHAR COUNT ──
+  document.getElementById('campaignName').addEventListener('input', function() {
+    document.getElementById('nameCount').textContent = `${this.value.length} / 80`;
+    updateReview();
+  });
+  document.getElementById('campaignBrief').addEventListener('input', function() {
+    document.getElementById('briefCount').textContent = `${this.value.length} / 500`;
+  });
+  document.getElementById('campaignGoal').addEventListener('change', updateReview);
+  document.getElementById('startDate').addEventListener('change', updateReview);
+  document.getElementById('endDate').addEventListener('change', updateReview);
+  document.getElementById('postFreq').addEventListener('change', updateReview);
+
+  // ── REVIEW SUMMARY ──
+  function updateReview() {
+    // Name
+    const name = document.getElementById('campaignName').value;
+    document.getElementById('reviewName').textContent = name || '—';
+
+    // Goal
+    const goalEl = document.getElementById('campaignGoal');
+    document.getElementById('reviewGoal').textContent = goalEl.options[goalEl.selectedIndex]?.text || '—';
+
+    // Dates
+    const start = document.getElementById('startDate').value;
+    const end = document.getElementById('endDate').value;
+    const fmt = d => d ? new Date(d + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '—';
+    document.getElementById('reviewDates').textContent = start || end ? `${fmt(start)} → ${fmt(end)}` : '—';
+
+    // Freq
+    const freqEl = document.getElementById('postFreq');
+    document.getElementById('reviewFreq').textContent = freqEl.options[freqEl.selectedIndex]?.text || '—';
+
+    // Platforms
+    const platforms = [...document.querySelectorAll('.platform-tile.selected')].map(t => t.dataset.platform);
+    const reviewPlatforms = document.getElementById('reviewPlatforms');
+    if (platforms.length) {
+      reviewPlatforms.innerHTML = platforms.map(p =>
+        `<span class="review-platform-chip"><span class="rp-dot"></span>${p.charAt(0).toUpperCase() + p.slice(1)}</span>`
+      ).join('');
+    } else {
+      reviewPlatforms.innerHTML = `<span style="font-size:13px;color:var(--muted-fg);">No platforms selected yet</span>`;
+    }
+
+    // Audience
+    const ageMin = document.getElementById('ageMinLabel').textContent;
+    const ageMax = document.getElementById('ageMaxLabel').textContent;
+    const genders = [...document.querySelectorAll('#section-audience .pill.selected')].map(p => p.dataset['en'] || p.textContent).join(', ');
+    const locations = [...document.querySelectorAll('#locationWrap .tag')].map(t => t.textContent.trim().replace('×', '').trim()).join(', ');
+    let audience = `Ages ${ageMin}–${ageMax}`;
+    if (genders) audience += ` · ${genders}`;
+    if (locations) audience += ` · ${locations}`;
+    document.getElementById('reviewAudience').textContent = audience;
+
+    // Content
+    const tone = [...document.querySelectorAll('#section-content .pill[data-value].selected')].filter(p => {
+      const tones = ['professional','casual','playful','inspirational','bold','informative'];
+      return tones.includes(p.dataset.value);
+    }).map(p => p.dataset.en || p.textContent).join(', ');
+    const captionEl = document.querySelector('#section-content .pill[data-value="short"], #section-content .pill[data-value="medium"], #section-content .pill[data-value="long"]');
+    const captionSel = document.querySelector('#section-content .pill[data-value="short"].selected, #section-content .pill[data-value="medium"].selected, #section-content .pill[data-value="long"].selected');
+    let content = tone ? `Tone: ${tone}` : '';
+    if (captionSel) content += (content ? ' · ' : '') + `Caption: ${captionSel.dataset.en || captionSel.textContent}`;
+    document.getElementById('reviewContent').textContent = content || '—';
+  }
+
+  // ── PROGRESS SCROLLSPY ──
+  const sections = ['basics', 'platforms', 'audience', 'content', 'review'];
+  const contentArea = document.querySelector('.content');
+
+  contentArea.addEventListener('scroll', () => {
+    let current = sections[0];
+    sections.forEach(id => {
+      const el = document.getElementById(`section-${id}`);
+      if (el && contentArea.scrollTop + 100 >= el.offsetTop) current = id;
+    });
+    document.querySelectorAll('.progress-step').forEach(s => {
+      s.classList.toggle('active', s.dataset.section === current);
+    });
+  });
+
+  function scrollToSection(id) {
+    const el = document.getElementById(`section-${id}`);
+    if (el) contentArea.scrollTo({ top: el.offsetTop - 70, behavior: 'smooth' });
+  }
+
+  // ── LAUNCH ──
+  function launchCampaign() {
+    const name = document.getElementById('campaignName').value.trim();
+    if (!name) { scrollToSection('basics'); document.getElementById('campaignName').focus(); return; }
+    alert('Campaign created! (In the real app this would navigate to the campaign view.)');
+  }
+
+  updateReview();
+</script>
+</body>
+</html>
