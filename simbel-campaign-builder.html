@@ -297,6 +297,8 @@
   }
   .progress-step.active .step-num { background: rgba(255,255,255,.2); color: #fff; }
   .progress-step.done .step-num { background: var(--green-muted); color: var(--green); }
+  .progress-step .step-label { font-size: 20px; font-weight: 700; letter-spacing: -.025em; }
+  body.rtl .progress-step .step-label { letter-spacing: 0; }
   .progress-step + .progress-step::before {
     content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
     width: 1px; height: 16px; background: var(--border);
