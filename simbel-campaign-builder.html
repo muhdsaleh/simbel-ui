@@ -1299,7 +1299,7 @@
     clickLock = true;
     moveIndicator(id, true);
     const el = document.getElementById(`section-${id}`);
-    if (el) contentArea.scrollTo({ top: el.offsetTop - 70, behavior: 'smooth' });
+    if (el) contentArea.scrollTo({ top: el.offsetTop - 20, behavior: 'smooth' });
     // Release lock after scroll settles
     setTimeout(() => { clickLock = false; }, 400);
   }
