@@ -392,7 +392,15 @@
   .campaigns-list.grid-view .campaign-name { white-space: normal; overflow: visible; text-overflow: unset; }
   .campaigns-list.grid-view .campaign-card-bottom { flex-direction: column; align-items: stretch; gap: var(--space-4); }
   .campaigns-list.grid-view .campaign-stats { justify-content: space-between; }
-  .campaigns-list.grid-view .card-actions { flex-wrap: wrap; }
+  .campaigns-list.grid-view .card-actions {
+    display: grid; grid-template-columns: 1fr;
+    gap: var(--space-2);
+  }
+  .campaigns-list.grid-view .card-actions .btn-primary { width: 100%; }
+  .campaigns-list.grid-view .card-actions .btn-primary ~ .btn,
+  .campaigns-list.grid-view .card-actions .btn-primary ~ .btn-destructive {
+    display: inline-flex;
+  }
 
   /* ═══ 12-COLUMN GRID UTILITY ═══
      Use .grid as a layout wrapper inside .content on any page.
