@@ -1278,13 +1278,13 @@
         if (el && contentArea.scrollTop + 100 >= el.offsetTop) current = id;
       });
     }
-    moveIndicator(current);
+    moveIndicator(current, true);
   });
 
   function scrollToSection(id) {
     // Immediately move indicator, then scroll content
     clickLock = true;
-    moveIndicator(id);
+    moveIndicator(id, true);
     const el = document.getElementById(`section-${id}`);
     if (el) contentArea.scrollTo({ top: el.offsetTop - 70, behavior: 'smooth' });
     // Release lock after scroll settles
