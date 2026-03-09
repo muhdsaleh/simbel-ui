@@ -1,1 +1,3 @@
 .claude/
+.auto-deploy.pid
+auto-deploy.sh
