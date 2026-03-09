@@ -1246,24 +1246,25 @@
   const indicator = document.getElementById('progressIndicator');
   let clickLock = false;
 
-  function moveIndicator(section) {
-    const step = document.querySelector(`.progress-step[data-section="${section}"]`);
-    if (!step || !indicator) return;
-    indicator.style.left = step.offsetLeft + 'px';
-    indicator.style.width = step.offsetWidth + 'px';
+  function moveIndicator(section, animate) {
+    // Toggle classes first
     document.querySelectorAll('.progress-step').forEach(s => {
       s.classList.toggle('active', s.dataset.section === section);
     });
+    // Read layout after class changes settle
+    const step = document.querySelector(`.progress-step[data-section="${section}"]`);
+    if (!step || !indicator) return;
+    if (!animate) indicator.style.transition = 'none';
+    indicator.style.left = step.offsetLeft + 'px';
+    indicator.style.width = step.offsetWidth + 'px';
+    if (!animate) {
+      indicator.offsetLeft; // force reflow
+      indicator.style.transition = '';
+    }
   }
 
   // Initial position (no transition on load)
-  requestAnimationFrame(() => {
-    indicator.style.transition = 'none';
-    moveIndicator('basics');
-    requestAnimationFrame(() => {
-      indicator.style.transition = '';
-    });
-  });
+  moveIndicator('basics', false);
 
   contentArea.addEventListener('scroll', () => {
     if (clickLock) return;
