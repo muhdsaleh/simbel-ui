@@ -264,36 +264,42 @@
     display: flex; align-items: center; gap: 0;
     background: var(--card); border: 1px solid var(--border);
     border-radius: calc(var(--radius) + 2px);
-    padding: 0 var(--space-5);
+    padding: 0 var(--space-3);
     margin-bottom: var(--section-gap);
-    height: 48px;
+    height: 52px;
     position: sticky; top: 0; z-index: 10;
     box-shadow: var(--shadow-sm);
   }
   .progress-step {
     display: flex; align-items: center; gap: var(--space-2);
-    font-size: 12px; font-weight: 500; color: var(--muted-fg);
+    font-size: 15px; font-weight: 700; color: var(--muted-fg);
     padding: 0 var(--space-4); height: 100%; cursor: pointer;
     position: relative; transition: color .12s;
     white-space: nowrap;
   }
   .progress-step:hover { color: var(--foreground); }
-  .progress-step.active { color: var(--primary); }
+  .progress-step.active {
+    color: #fff;
+    background: var(--primary);
+    border-radius: var(--radius);
+    margin: -5px 0;
+    padding: 5px var(--space-4);
+    height: calc(100% + 10px);
+  }
   .progress-step.done { color: var(--green); }
   .progress-step .step-num {
-    width: 20px; height: 20px; border-radius: 50%;
-    background: var(--muted); color: var(--muted-fg);
-    font-size: 11px; font-weight: 600;
-    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 700;
     flex-shrink: 0; font-family: 'Fustat', sans-serif;
-    transition: background .12s, color .12s;
+    transition: color .12s;
   }
-  .progress-step.active .step-num { background: var(--primary-muted); color: var(--primary); }
-  .progress-step.done .step-num { background: var(--green-muted); color: var(--green); }
+  .progress-step.active .step-num { color: #fff; }
+  .progress-step.done .step-num { color: var(--green); }
   .progress-step + .progress-step::before {
     content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
     width: 1px; height: 16px; background: var(--border);
   }
+  .progress-step.active + .progress-step::before,
+  .progress-step + .progress-step.active::before { display: none; }
   body.rtl .progress-step + .progress-step::before { left: unset; right: 0; }
 
   /* ── FORM LAYOUT ── */
