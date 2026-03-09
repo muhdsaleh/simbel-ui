@@ -1235,10 +1235,15 @@
 
   contentArea.addEventListener('scroll', () => {
     let current = sections[0];
-    sections.forEach(id => {
-      const el = document.getElementById(`section-${id}`);
-      if (el && contentArea.scrollTop + 100 >= el.offsetTop) current = id;
-    });
+    const atBottom = contentArea.scrollTop + contentArea.clientHeight >= contentArea.scrollHeight - 50;
+    if (atBottom) {
+      current = sections[sections.length - 1];
+    } else {
+      sections.forEach(id => {
+        const el = document.getElementById(`section-${id}`);
+        if (el && contentArea.scrollTop + 100 >= el.offsetTop) current = id;
+      });
+    }
     document.querySelectorAll('.progress-step').forEach(s => {
       s.classList.toggle('active', s.dataset.section === current);
     });
