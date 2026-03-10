@@ -1052,7 +1052,7 @@
     const isRtl = document.body.classList.toggle('rtl');
     document.documentElement.setAttribute('dir', isRtl ? 'rtl' : 'ltr');
     arabicToggle.textContent = isRtl ? 'En' : 'ع';
-    arabicToggle.style.fontFamily = isRtl ? "'Fustat', sans-serif" : "'Alyamama', serif";
+    arabicToggle.style.fontFamily = "";
     if (isRtl) {
       arabicToggle.style.color = 'var(--primary)';
       arabicToggle.style.borderColor = 'var(--primary-border)';
