@@ -122,8 +122,8 @@
     font-weight: 500;
   }
 
-  /* Numbers always Fustat regardless of language */
-  .num { font-family: 'Fustat', sans-serif !important; }
+  /* Numbers — ensure Western Arabic numerals (1,2,3) not Hindi */
+  .num { font-variant-numeric: tabular-nums; }
 
   /* SIDEBAR */
   .sidebar {
