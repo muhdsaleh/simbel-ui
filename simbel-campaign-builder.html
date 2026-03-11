@@ -338,6 +338,11 @@
   .field-input:hover { border-color: var(--ring); }
   .field-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-muted); }
   .field-input.has-value { border-color: var(--input); }
+  input[type="date"].field-input { -webkit-appearance: none; appearance: none; }
+  input[type="date"].field-input::-webkit-calendar-picker-indicator {
+    opacity: .45; cursor: pointer;
+    filter: invert(26%) sepia(91%) saturate(1370%) hue-rotate(222deg) brightness(85%) contrast(96%);
+  }
 
   .field-textarea {
     border-radius: var(--radius); border: 1px solid var(--input);
