@@ -284,8 +284,8 @@
   .page-sub { font-size: 13px; color: var(--muted-fg); }
 
   .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gutter); margin-bottom: var(--section-gap); }
-  .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: calc(var(--radius) + 2px); padding: var(--space-4) var(--space-5); transition: box-shadow .15s; }
-  .stat-card:hover { box-shadow: var(--shadow); }
+  .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: calc(var(--radius) + 2px); padding: var(--space-4) var(--space-5); transition: box-shadow .18s ease, transform .18s ease, background-color .15s ease, border-color .15s ease; }
+  .stat-card:hover { box-shadow: 0 6px 20px rgba(51,51,204,.09), 0 1px 3px rgba(0,0,0,.05); transform: translateY(-2px); }
   .stat-value { font-size: 26px; font-weight: 700; color: var(--foreground); letter-spacing: -.03em; line-height: 1; margin-bottom: 5px; font-family: 'adapter-arabic-text', sans-serif; }
   .stat-label { font-size: 13px; color: var(--muted-fg); font-weight: 500; }
   body.rtl .stat-label { letter-spacing: 0; }
