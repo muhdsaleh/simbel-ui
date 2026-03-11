@@ -1178,12 +1178,16 @@
     document.getElementById('reviewFreq').textContent = freqEl.options[freqEl.selectedIndex]?.text || '—';
 
     // Platforms
+    const platformBrandColors = { instagram: 'radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%)', facebook: '#1877F2', twitter: '#000000', linkedin: '#0077B5', tiktok: '#000000', whatsapp: '#25D366', email: '#3333CC' };
+    const platformDisplayNames = { instagram: 'Instagram', facebook: 'Facebook', twitter: 'X / Twitter', linkedin: 'LinkedIn', tiktok: 'TikTok', whatsapp: 'WhatsApp', email: 'Email' };
     const platforms = [...document.querySelectorAll('.platform-tile.selected')].map(t => t.dataset.platform);
     const reviewPlatforms = document.getElementById('reviewPlatforms');
     if (platforms.length) {
-      reviewPlatforms.innerHTML = platforms.map(p =>
-        `<span class="review-platform-chip"><span class="rp-dot"></span>${p.charAt(0).toUpperCase() + p.slice(1)}</span>`
-      ).join('');
+      reviewPlatforms.innerHTML = platforms.map(p => {
+        const color = platformBrandColors[p] || '#27274E';
+        const name = platformDisplayNames[p] || (p.charAt(0).toUpperCase() + p.slice(1));
+        return `<span class="review-platform-chip"><span class="rp-dot" style="background:${color}"></span>${name}</span>`;
+      }).join('');
     } else {
       reviewPlatforms.innerHTML = `<span style="font-size:13px;color:var(--muted-fg);">No platforms selected yet</span>`;
     }
