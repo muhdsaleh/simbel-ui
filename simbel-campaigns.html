@@ -331,8 +331,14 @@
   .campaign-meta { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
   .meta-item { font-size: 12px; color: var(--muted-fg); }
   .meta-dot { width: 2px; height: 2px; border-radius: 50%; background: var(--muted-fg); opacity: .4; flex-shrink: 0; }
-  .platform-icon { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; background: #27274E; flex-shrink: 0; }
+  .platform-icon { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; background: var(--foreground); flex-shrink: 0; }
   .platform-icon svg { display: block; }
+  .platform-icon[title="Twitter / X"]  { background: #000000; }
+  .platform-icon[title="Instagram"]    { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); }
+  .platform-icon[title="Facebook"]     { background: #1877F2; }
+  .platform-icon[title="LinkedIn"]     { background: #0077B5; }
+  .platform-icon[title="TikTok"]       { background: #000000; }
+  .platform-icon[title="WhatsApp"]     { background: #25D366; }
 
   /* Bottom row: stats  |  actions */
   .campaign-card-bottom {
