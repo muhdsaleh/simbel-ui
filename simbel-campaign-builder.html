@@ -262,16 +262,16 @@
   .progress-step.active { color: #fff; }
   .progress-step.done { color: var(--green); }
   .progress-step .step-num {
-    width: 26px; height: 26px; border-radius: 50%;
+    width: 22px; height: 22px; border-radius: 50%;
     background: var(--primary-muted); color: var(--primary);
-    font-size: 12px; font-weight: 700;
+    font-size: 11px; font-weight: 700;
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0; font-family: 'adapter-arabic-text', sans-serif;
     transition: background .2s cubic-bezier(.4, 0, .2, 1), color .2s cubic-bezier(.4, 0, .2, 1);
   }
   .progress-step.active .step-num { background: rgba(255,255,255,.2); color: #fff; }
   .progress-step.done .step-num { background: var(--green-muted); color: var(--green); }
-  .progress-step .step-label { font-size: 20px; font-weight: 700; letter-spacing: -.025em; }
+  .progress-step .step-label { font-size: 14px; font-weight: 600; letter-spacing: -.015em; }
   body.rtl .progress-step .step-label { letter-spacing: 0; }
   .progress-step + .progress-step::before {
     content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
