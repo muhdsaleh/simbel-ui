@@ -1222,11 +1222,11 @@
     // Audience
     const ageMin = document.getElementById('ageMinLabel').textContent;
     const ageMax = document.getElementById('ageMaxLabel').textContent;
-    const genders = [...document.querySelectorAll('#section-audience .pill.selected')].map(p => p.dataset[lk] || p.textContent).join(', ');
+    const genders = [...document.querySelectorAll('#section-audience .pill.selected')].map(p => p.dataset[lk] || p.textContent).join(sep);
     const locations = [...document.querySelectorAll('#locationWrap .tag')].map(tag => {
       const inner = tag.querySelector('[data-en]');
       return inner ? (inner.dataset[lk] || inner.textContent) : tag.textContent.trim().replace('×', '').trim();
-    }).join(', ');
+    }).join(sep);
     let audience = `${t('Ages', 'الأعمار')} ${ageMin}–${ageMax}`;
     if (genders) audience += ` · ${genders}`;
     if (locations) audience += ` · ${locations}`;
@@ -1234,7 +1234,7 @@
 
     // Content
     const toneValues = ['professional','casual','playful','inspirational','bold','informative'];
-    const tone = [...document.querySelectorAll('#section-content .pill[data-value].selected')].filter(p => toneValues.includes(p.dataset.value)).map(p => p.dataset[lk] || p.textContent).join(', ');
+    const tone = [...document.querySelectorAll('#section-content .pill[data-value].selected')].filter(p => toneValues.includes(p.dataset.value)).map(p => p.dataset[lk] || p.textContent).join(sep);
     const captionSel = document.querySelector('#section-content .pill[data-value="short"].selected, #section-content .pill[data-value="medium"].selected, #section-content .pill[data-value="long"].selected');
     let content = tone ? `${t('Tone', 'النبرة')}: ${tone}` : '';
     if (captionSel) content += (content ? ' · ' : '') + `${t('Caption', 'التعليق')}: ${captionSel.dataset[lk] || captionSel.textContent}`;
