@@ -1196,7 +1196,7 @@
     const end = document.getElementById('endDate').value;
     const locale = isRtl ? 'ar-SA' : 'en-GB';
     const fmt = d => d ? new Date(d + 'T00:00:00').toLocaleDateString(locale, { day: 'numeric', month: 'short', year: 'numeric' }) : '—';
-    document.getElementById('reviewDates').textContent = start || end ? `${fmt(start)} ← ${fmt(end)}` : '—';
+    document.getElementById('reviewDates').textContent = start || end ? `${fmt(start)} ${t('→', '←')} ${fmt(end)}` : '—';
 
     // Freq
     const freqEl = document.getElementById('postFreq');
