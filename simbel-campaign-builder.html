@@ -267,18 +267,18 @@
     transition: background .2s cubic-bezier(.4, 0, .2, 1), color .2s cubic-bezier(.4, 0, .2, 1);
   }
   .progress-step.active .step-num { background: rgba(255,255,255,.2); color: #fff; }
-  @keyframes step-orbit {
-    to { transform: rotate(360deg); }
+  @keyframes step-pulse {
+    0%   { transform: scale(1);    opacity: .45; }
+    100% { transform: scale(1.85); opacity: 0;   }
   }
   .progress-step.active .step-num::before {
     content: '';
-    position: absolute; inset: -3px;
+    position: absolute; inset: 0;
     border-radius: 50%;
-    border: 1.5px solid transparent;
-    border-top-color: rgba(255,255,255,.55);
-    border-right-color: rgba(255,255,255,.18);
-    animation: step-orbit 2.4s linear infinite;
+    background: rgba(255,255,255,.25);
+    animation: step-pulse 2s ease-out infinite;
     pointer-events: none;
+    will-change: transform, opacity;
   }
   .progress-step.done .step-num { background: var(--green-muted); color: var(--green); }
   .progress-step .step-label { font-size: 15px; font-weight: 600; letter-spacing: -.015em; }
