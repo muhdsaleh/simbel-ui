@@ -1355,6 +1355,55 @@
 
   // Restore language preference on load
   if (localStorage.getItem('simbel-lang') === 'ar') applyLang(true);
+
+  // ── LIGHTBOX ──
+  const lbBackdrop = document.getElementById('lbBackdrop');
+  const lbClose    = document.getElementById('lbClose');
+
+  function lbOpen() {
+    lbBackdrop.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    // Re-apply language to lightbox content
+    const isAr = document.body.classList.contains('rtl');
+    lbBackdrop.querySelectorAll('[data-en]').forEach(el => {
+      const val = el.getAttribute(isAr ? 'data-ar' : 'data-en');
+      if (val) el.textContent = val;
+    });
+  }
+  function lbClose_() {
+    lbBackdrop.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('.lb-open-btn').forEach(btn => btn.addEventListener('click', lbOpen));
+  lbClose.addEventListener('click', lbClose_);
+  lbBackdrop.addEventListener('click', e => { if (e.target === lbBackdrop) lbClose_(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') lbClose_(); });
+
+  // Lightbox tabs
+  const lbTabs   = document.querySelectorAll('.lb-tab');
+  const lbPanels = document.querySelectorAll('.lb-panel');
+  lbTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      lbTabs.forEach(t => t.classList.remove('active'));
+      lbPanels.forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('lbp-' + tab.dataset.lbtab).classList.add('active');
+      // Reset scroll
+      document.querySelector('.lb-body').scrollTop = 0;
+    });
+  });
+
+  // Lightbox week switcher
+  document.querySelectorAll('.lb-week-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      document.querySelectorAll('.lb-week-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      const w = pill.dataset.lbweek;
+      document.getElementById('lbWeek1').style.display = w === '1' ? '' : 'none';
+      document.getElementById('lbWeek2').style.display = w === '2' ? '' : 'none';
+    });
+  });
 </script>
 </body>
 </html>
