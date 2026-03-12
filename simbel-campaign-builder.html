@@ -1181,6 +1181,7 @@
     const isRtl = document.body.classList.contains('rtl');
     const lk = isRtl ? 'ar' : 'en';
     const t = (en, ar) => isRtl ? ar : en;
+    const sep = isRtl ? '، ' : ', ';
 
     // Name
     const name = document.getElementById('campaignName').value;
