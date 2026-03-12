@@ -1085,6 +1085,8 @@
     const saved = currentSection;
     currentSection = null;
     moveIndicator(saved, false);
+    // Re-render review values in new language
+    updateReview();
   });
 
   function swapLang(isAr) {
