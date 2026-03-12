@@ -263,9 +263,23 @@
     font-size: 12px; font-weight: 700;
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0; font-family: 'adapter-arabic-text', sans-serif;
+    position: relative;
     transition: background .2s cubic-bezier(.4, 0, .2, 1), color .2s cubic-bezier(.4, 0, .2, 1);
   }
   .progress-step.active .step-num { background: rgba(255,255,255,.2); color: #fff; }
+  @keyframes step-orbit {
+    to { transform: rotate(360deg); }
+  }
+  .progress-step.active .step-num::before {
+    content: '';
+    position: absolute; inset: -3px;
+    border-radius: 50%;
+    border: 1.5px solid transparent;
+    border-top-color: rgba(255,255,255,.55);
+    border-right-color: rgba(255,255,255,.18);
+    animation: step-orbit 2.4s linear infinite;
+    pointer-events: none;
+  }
   .progress-step.done .step-num { background: var(--green-muted); color: var(--green); }
   .progress-step .step-label { font-size: 15px; font-weight: 600; letter-spacing: -.015em; }
   body.rtl .progress-step .step-label { letter-spacing: 0; }
