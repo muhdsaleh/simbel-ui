@@ -181,13 +181,13 @@
 
   /* Collapse tab — full bleed, line on left, arrow centered in square */
   .sidebar-bottom {
-    padding: 0 0 0 6px;
+    padding: 6px 8px 8px;
     flex-shrink: 0;
     display: flex;
     align-items: stretch;
-    min-height: 46px;
+    border-top: 1px solid var(--border);
   }
-  .sidebar-bottom .nav-item { flex: 1; align-self: center; padding: 8px 10px; }
+  .sidebar-bottom .nav-item { flex: 1; align-self: center; padding: 7px 8px; }
   .sidebar.collapsed .sidebar-bottom { padding: 0; flex-direction: column; align-items: center; min-height: unset; }
   .sidebar.collapsed .sidebar-bottom .nav-item { flex: unset; padding: 8px; justify-content: center; gap: 0; align-self: auto; }
 
@@ -223,7 +223,7 @@
   body.rtl .sidebar:not(.collapsed) #sidebarToggle { transform: rotate(180deg); }
   body.rtl #sidebarToggle { border-right: none; }
   body.rtl .sidebar.collapsed #sidebarToggle { border-top: none; }
-  body.rtl .sidebar-bottom { flex-direction: row-reverse; padding: 0 6px 0 0; }
+  body.rtl .sidebar-bottom { flex-direction: row-reverse; padding: 6px 8px 8px; }
   body.rtl .sidebar.collapsed .sidebar-bottom { flex-direction: column; padding: 0; }
   body.rtl .lock-icon { margin-left: unset; margin-right: auto; }
   body.rtl #arabicToggle { color: var(--primary); border-color: var(--primary-border); background: var(--primary-muted); }
