@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test Campaign — Simbel</title>
+<link rel="stylesheet" href="https://use.typekit.net/jvc7lrv.css">
+<style>
+
+  /* ══════════════════════════════════════════════
+     DESIGN TOKENS
+     ══════════════════════════════════════════════ */
+  :root {
+    --primary:        #3333CC;
+    --primary-muted:  rgba(51,51,204,0.10);
+    --primary-border: rgba(51,51,204,0.25);
+    --foreground:     #27274E;
+    --muted-fg:       #6E6E9A;
+    --background:     #F7F7FC;
+    --card:           #FFFFFF;
+    --border:         #E4E4F0;
+    --input:          #E4E4F0;
+    --muted:          #F2F2F8;
+    --green:          #16A34A;
+    --green-muted:    rgba(22,163,74,0.10);
+    --shadow:         0 1px 3px rgb(0 0 0 / .06), 0 1px 2px -1px rgb(0 0 0 / .04);
+
+    --space-1: 4px;  --space-2: 8px;   --space-3: 12px;
+    --space-4: 16px; --space-5: 20px;  --space-6: 24px;
+    --space-8: 32px;
+
+    --radius-sm: 8px; --radius: 12px; --radius-lg: 16px;
+    --topbar-h:    56px;
+    --sidebar-w:   220px;
+    --sidebar-coll: 52px;
+  }
+
+  .dark {
+    --primary-muted:  rgba(51,51,204,0.28);
+    --primary-border: rgba(51,51,204,0.45);
+    --foreground:     #E8E8FF;
+    --muted-fg:       #8888BB;
+    --background:     #0F0F1A;
+    --card:           #16162A;
+    --border:         #1D1D2E;
+    --input:          #1D1D2E;
+    --muted:          #13131F;
+    --green:          #4ADE80;
+    --green-muted:    rgba(74,222,128,0.12);
+    --shadow:         0 1px 3px rgb(0 0 0 / .4);
+  }
+
+  /* ── RESET ── */
+  *, *::before, *::after {
+    margin: 0; padding: 0; box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  button, input, select, textarea { font-family: inherit; }
+  :root { font-feature-settings: "lnum" 1; }
+
+  body {
+    font-family: 'adapter-arabic-text', sans-serif;
+    font-feature-settings: "lnum" 1;
+    font-optical-sizing: auto;
+    font-synthesis: none;
+    background: var(--background);
+    color: var(--foreground);
+    font-size: 14px;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+    text-rendering: optimizeLegibility;
+    font-weight: 500;
+    transition: background-color .15s, color .1s;
+  }
+
+  /* ══════════════════════════════════════════════
+     SIDEBAR
+     ══════════════════════════════════════════════ */
+  .sidebar {
+    width: var(--sidebar-w);
+    flex-shrink: 0;
+    background: var(--card);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    transition: width .2s ease, background-color .15s;
+    position: relative; z-index: 10;
+  }
+  .dark .sidebar { background: var(--card); }
+  .sidebar.collapsed { width: var(--sidebar-coll); }
+
+  .sidebar-logo {
+    display: flex; align-items: center;
+    padding: 0 var(--space-4);
+    height: var(--topbar-h); flex-shrink: 0;
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .logo-wordmark { height: 17px; width: auto; display: block; flex-shrink: 0; shape-rendering: geometricPrecision; }
+  .logo-mark { display: none; }
+  .sidebar.collapsed .logo-wordmark { display: none; }
+  .sidebar.collapsed .logo-mark { display: block; width: 28px; height: 28px; border-radius: 7px; overflow: hidden; }
+
+  .sidebar-nav {
+    flex: 1; overflow-y: auto;
+    padding: var(--space-3) var(--space-2);
+    scrollbar-width: none;
+  }
+  .sidebar-nav::-webkit-scrollbar { display: none; }
+
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px var(--space-2); border-radius: 9px;
+    color: var(--muted-fg); font-size: 13.5px; font-weight: 500;
+    cursor: pointer; transition: background .12s, color .12s;
+    white-space: nowrap; overflow: hidden;
+    text-decoration: none;
+  }
+  .nav-item svg { flex-shrink: 0; width: 18px; height: 18px; opacity: .75; }
+  .nav-item:hover { background: var(--muted); color: var(--foreground); }
+  .nav-item.active { background: var(--primary-muted); color: var(--primary); font-weight: 600; }
+  .nav-item.active svg { opacity: 1; }
+  .dark .nav-item.active { color: #7878E8; }
+  .nav-label { transition: opacity .15s; }
+  .sidebar.collapsed .nav-label { display: none; }
+
+  .sidebar-bottom {
+    padding: 6px 8px 8px;
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; gap: var(--space-2);
+  }
+  body.rtl .sidebar-bottom { padding: 6px 8px 8px; }
+
+  #sidebarToggle {
+    width: 36px; height: 36px; border-radius: 9px; border: none;
+    background: transparent; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted-fg); transition: background .12s, color .12s;
+    flex-shrink: 0;
+  }
+  #sidebarToggle:hover { background: var(--muted); color: var(--foreground); }
+  .sidebar.collapsed #sidebarToggle { transform: rotate(180deg); }
+  body.rtl #sidebarToggle { transform: rotate(180deg); }
+  body.rtl .sidebar.collapsed #sidebarToggle { transform: rotate(0deg); }
+
+  /* ══════════════════════════════════════════════
+     MAIN
+     ══════════════════════════════════════════════ */
+  .main { flex: 1; display: flex; flex-direction: column; min-width: 0; overflow: hidden; }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    height: var(--topbar-h); flex-shrink: 0;
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center;
+    padding: 0 var(--space-6); gap: var(--space-3);
+    transition: background-color .15s;
+  }
+  .dark .topbar { background: var(--card); }
+
+  .topbar-back {
+    width: 32px; height: 32px; border-radius: 8px;
+    border: 1px solid var(--border); background: transparent;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    color: var(--muted-fg); transition: background .12s, color .12s;
+    flex-shrink: 0; text-decoration: none;
+  }
+  .topbar-back:hover { background: var(--muted); color: var(--foreground); }
+  .topbar-back svg { width: 15px; height: 15px; }
+  body.rtl .topbar-back svg { transform: scaleX(-1); }
+
+  .topbar-divider { width: 1px; height: 20px; background: var(--border); flex-shrink: 0; }
+
+  .topbar-identity {
+    display: flex; align-items: center; gap: var(--space-3);
+    flex: 1; min-width: 0;
+  }
+  .topbar-campaign-icon {
+    width: 30px; height: 30px; border-radius: 8px;
+    background: var(--primary);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .topbar-campaign-icon svg { width: 15px; height: 15px; color: #fff; }
+  .topbar-campaign-name {
+    font-size: 14.5px; font-weight: 700; letter-spacing: -.02em;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  .topbar-right {
+    display: flex; align-items: center; gap: var(--space-2); flex-shrink: 0;
+  }
+  body.rtl .topbar-right { flex-direction: row-reverse; }
+
+  /* Shared topbar util button */
+  .topbar-util-btn {
+    width: 34px; height: 34px; border-radius: 9px;
+    border: 1px solid var(--border); background: transparent;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    color: var(--muted-fg); transition: background .12s, color .12s;
+    font-family: 'adapter-arabic-text', sans-serif;
+    font-size: 14px; font-weight: 600; line-height: 1; padding-bottom: 2px;
+  }
+  .topbar-util-btn:hover { background: var(--muted); color: var(--foreground); }
+  .topbar-util-btn svg { width: 17px; height: 17px; }
+  body.rtl #arabicToggle { font-size: 13.5px; font-weight: 500; padding-bottom: 0; }
+
+  .user-avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--primary-muted);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; color: var(--primary);
+    cursor: pointer; flex-shrink: 0;
+  }
+  .dark .user-avatar { color: #7878E8; }
+
+  /* ── BUTTONS ── */
+  .btn {
+    display: inline-flex; align-items: center; gap: var(--space-2);
+    height: 34px; padding: 0 var(--space-4); border-radius: 9px;
+    font-family: 'adapter-arabic-text', sans-serif;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    border: none; transition: opacity .12s, background .12s;
+    white-space: nowrap; text-decoration: none;
+  }
+  .btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+  .btn-primary { background: var(--primary); color: #fff; }
+  .btn-primary:hover { opacity: .88; }
+  .btn-outline { background: transparent; color: var(--foreground); border: 1px solid var(--border); }
+  .btn-outline:hover { background: var(--muted); }
+  .btn-sm { height: 30px; padding: 0 12px; font-size: 12.5px; border-radius: 7px; }
+
+  /* ── BADGES ── */
+  .badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 12px; font-weight: 500;
+    height: 24px; padding: 0 10px; border-radius: 9999px;
+    line-height: 1; flex-shrink: 0;
+  }
+  .badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+  .badge-success { background: var(--green-muted); color: var(--green); }
+  .badge-success::before { background: var(--green); }
+  .badge-secondary { background: rgba(232,114,12,0.11); color: #C45E00; }
+  .badge-secondary::before { background: #E8720C; opacity: .7; }
+  .dark .badge-secondary { background: rgba(232,114,12,0.15); color: #F5963A; }
+  .dark .badge-secondary::before { background: #F5963A; }
+
+  /* ══════════════════════════════════════════════
+     TAB NAV
+     ══════════════════════════════════════════════ */
+  .tab-nav {
+    display: flex; align-items: flex-end;
+    padding: 0 var(--space-6);
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0; gap: 2px;
+    transition: background-color .15s;
+  }
+  .dark .tab-nav { background: var(--card); }
+
+  .tab-btn {
+    position: relative;
+    padding: 10px 16px 11px;
+    border: none; background: transparent;
+    font-family: 'adapter-arabic-text', sans-serif;
+    font-size: 13.5px; font-weight: 500;
+    color: var(--muted-fg); cursor: pointer;
+    transition: color .12s; white-space: nowrap;
+  }
+  .tab-btn:hover { color: var(--foreground); }
+  .tab-btn.active { color: var(--primary); font-weight: 700; }
+  .tab-btn.active::after {
+    content: ''; position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px; border-radius: 2px 2px 0 0;
+    background: var(--primary);
+  }
+  .dark .tab-btn.active { color: #7878E8; }
+  .dark .tab-btn.active::after { background: #7878E8; }
+
+  /* ══════════════════════════════════════════════
+     CONTENT WELL
+     ══════════════════════════════════════════════ */
+  .content-well {
+    flex: 1; overflow-y: auto;
+    background: var(--background);
+    transition: background-color .15s;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  .content-well::-webkit-scrollbar { width: 5px; }
+  .content-well::-webkit-scrollbar-thumb { background: var(--border); border-radius: 9999px; }
+
+  .tab-panel { display: none; padding: var(--space-6); }
+  .tab-panel.active { display: block; }
+
+  /* ══════════════════════════════════════════════
+     CAMPAIGN PLAN TAB
+     ══════════════════════════════════════════════ */
+  .plan-toprow {
+    display: flex; align-items: flex-start;
+    justify-content: space-between; gap: var(--space-4);
+    margin-bottom: var(--space-6);
+    flex-wrap: wrap;
+  }
+  .plan-meta-row { display: flex; gap: var(--space-3); flex-wrap: wrap; }
+  .plan-meta-chip {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 11px var(--space-4);
+    display: flex; flex-direction: column; gap: 4px; min-width: 128px;
+  }
+  .plan-meta-label {
+    font-size: 10.5px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .055em; color: var(--muted-fg);
+  }
+  .plan-meta-value { font-size: 15px; font-weight: 800; letter-spacing: -.02em; }
+  .plan-meta-value.green { color: var(--green); }
+
+  .section-head { margin-bottom: var(--space-5); }
+  .section-title { font-size: 16px; font-weight: 800; letter-spacing: -.03em; margin-bottom: 3px; }
+  .section-sub { font-size: 13px; color: var(--muted-fg); }
+
+  /* 3-column insights grid */
+  .insights-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+  }
+
+  .insight-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: var(--space-5);
+    display: flex; flex-direction: column; gap: var(--space-3);
+  }
+  .insight-card-header {
+    display: flex; align-items: center; gap: var(--space-2);
+  }
+  .insight-card-icon {
+    width: 28px; height: 28px; border-radius: 8px;
+    background: var(--primary-muted);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .insight-card-icon svg { width: 14px; height: 14px; color: var(--primary); }
+  .insight-card-title {
+    font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .055em; color: var(--muted-fg);
+  }
+  .insight-body { font-size: 13.5px; line-height: 1.6; }
+  .insight-body.ar { direction: rtl; text-align: right; }
+
+  /* Key–value rows (market sizing) */
+  .kv-rows { display: flex; flex-direction: column; }
+  .kv-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    gap: var(--space-2); padding: 7px 0; border-bottom: 1px solid var(--border);
+  }
+  .kv-row:last-child { border-bottom: none; }
+  .kv-label { font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--muted-fg); }
+  .kv-value { font-size: 13px; font-weight: 700; color: var(--primary); text-align: right; }
+
+  /* Bullet points */
+  .insight-points { display: flex; flex-direction: column; gap: 5px; margin-top: 2px; }
+  .insight-point {
+    display: flex; gap: 7px; align-items: flex-start;
+    font-size: 13px; color: var(--muted-fg); line-height: 1.45;
+    direction: rtl; text-align: right;
+  }
+  .insight-point::before {
+    content: '·'; color: var(--primary); font-size: 16px;
+    font-weight: 700; flex-shrink: 0; margin-top: -1px;
+  }
+
+  /* Tone chips */
+  .tone-chips { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+  .tone-chip {
+    background: var(--primary-muted); color: var(--primary);
+    border-radius: 9999px; padding: 3px 10px;
+    font-size: 12px; font-weight: 600;
+  }
+
+  /* Channel priority */
+  .channel-section { display: flex; flex-direction: column; gap: var(--space-3); }
+  .channel-group { display: flex; flex-direction: column; gap: var(--space-2); }
+  .channel-group-label {
+    font-size: 10.5px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .055em; color: var(--muted-fg);
+  }
+  .channel-chips { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+  .chip-essential { background: var(--green-muted); color: var(--green); border-radius: 9999px; padding: 4px 12px; font-size: 12.5px; font-weight: 600; }
+  .chip-rec { background: var(--primary-muted); color: var(--primary); border-radius: 9999px; padding: 4px 12px; font-size: 12.5px; font-weight: 600; }
+
+  /* Competitor items */
+  .competitor-items { display: flex; flex-direction: column; }
+  .competitor-item { padding: 9px 0; border-bottom: 1px solid var(--border); }
+  .competitor-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .competitor-name { font-size: 13.5px; font-weight: 700; margin-bottom: 4px; }
+  .competitor-tag {
+    display: inline-block; font-size: 11.5px;
+    border-radius: 9999px; padding: 2px 8px; margin-bottom: 4px;
+  }
+  .tag-strength { background: rgba(22,163,74,.1); color: var(--green); }
+  .tag-gap { background: rgba(99,102,241,.1); color: #6366F1; }
+  .competitor-desc { font-size: 12.5px; color: var(--muted-fg); line-height: 1.45; direction: rtl; text-align: right; }
+
+  /* Timeline */
+  .timeline-items { display: flex; flex-direction: column; }
+  .timeline-item { display: flex; gap: var(--space-3); align-items: flex-start; padding: 9px 0; border-bottom: 1px solid var(--border); }
+  .timeline-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .timeline-week {
+    background: var(--primary-muted); color: var(--primary);
+    border-radius: 9999px; padding: 3px 10px;
+    font-size: 11.5px; font-weight: 700; white-space: nowrap; flex-shrink: 0;
+  }
+  .timeline-text { font-size: 13px; line-height: 1.5; padding-top: 2px; direction: rtl; text-align: right; }
+
+  /* ══════════════════════════════════════════════
+     CONTENT TAB
+     ══════════════════════════════════════════════ */
+  .content-toprow {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: var(--space-5); gap: var(--space-4);
+  }
+  .week-pills { display: flex; gap: var(--space-2); }
+  .week-pill {
+    display: inline-flex; align-items: center; gap: 7px;
+    height: 34px; padding: 0 16px; border-radius: 9999px;
+    border: 1px solid var(--border); background: var(--card);
+    font-family: 'adapter-arabic-text', sans-serif;
+    font-size: 13px; font-weight: 600; color: var(--muted-fg);
+    cursor: pointer; transition: all .12s;
+  }
+  .week-pill:hover { color: var(--foreground); background: var(--muted); }
+  .week-pill.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+  .week-pill-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+  .week-pill.active .week-pill-dot { background: rgba(255,255,255,.7); }
+
+  .week-label-row { margin-bottom: var(--space-5); }
+  .week-label-title { font-size: 15px; font-weight: 800; letter-spacing: -.02em; margin-bottom: 2px; }
+  .week-label-sub { font-size: 12.5px; color: var(--muted-fg); }
+
+  .posts-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-5);
+  }
+
+  .post-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); overflow: hidden;
+    display: flex; flex-direction: column;
+    transition: box-shadow .15s;
+  }
+  .post-card:hover { box-shadow: 0 4px 20px rgb(0 0 0 / .07); }
+
+  .post-card-header {
+    padding: var(--space-2) var(--space-3);
+    display: flex; align-items: center; gap: var(--space-2);
+    border-bottom: 1px solid var(--border);
+  }
+  .platform-chip { background: var(--foreground); color: var(--card); border-radius: 9999px; padding: 3px 10px; font-size: 11.5px; font-weight: 700; }
+  .type-chip { background: var(--muted); color: var(--muted-fg); border-radius: 9999px; padding: 3px 10px; font-size: 11.5px; font-weight: 500; }
+  .post-week-chip { background: var(--primary-muted); color: var(--primary); border-radius: 9999px; padding: 3px 9px; font-size: 11.5px; font-weight: 600; margin-left: auto; }
+  body.rtl .post-week-chip { margin-left: 0; margin-right: auto; }
+
+  .post-image-wrap { aspect-ratio: 16/7; background: var(--muted); overflow: hidden; }
+  .post-image-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .post-image-placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, var(--primary-muted) 0%, var(--muted) 100%);
+  }
+  .post-image-placeholder svg { width: 28px; height: 28px; color: var(--primary); opacity: .3; }
+
+  .post-card-body {
+    padding: var(--space-4); flex: 1;
+    display: flex; flex-direction: column; gap: var(--space-3);
+  }
+  .post-caption { font-size: 13.5px; line-height: 1.65; direction: rtl; text-align: right; }
+  .post-hashtags { display: flex; flex-wrap: wrap; gap: 5px; }
+  .hashtag { font-size: 12px; color: var(--primary); font-weight: 500; }
+  .post-cta {
+    background: var(--primary); color: #fff; border: none;
+    border-radius: 9px; padding: 9px var(--space-4);
+    font-family: 'adapter-arabic-text', sans-serif;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    width: 100%; direction: rtl;
+  }
+
+  .post-card-footer {
+    padding: var(--space-2) var(--space-3);
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between; gap: var(--space-2);
+  }
+  .char-count { font-size: 12px; color: var(--muted-fg); }
+  .post-actions { display: flex; gap: var(--space-2); }
+  .act-btn {
+    height: 27px; padding: 0 11px; border-radius: 7px; border: none;
+    font-family: 'adapter-arabic-text', sans-serif;
+    font-size: 12px; font-weight: 600; cursor: pointer;
+  }
+  .act-edit { background: var(--primary-muted); color: var(--primary); }
+  .act-delete { background: rgba(220,38,38,.08); color: #DC2626; }
+  .act-approve { background: var(--green-muted); color: var(--green); }
+
+  /* ══════════════════════════════════════════════
+     PUBLISHING TAB
+     ══════════════════════════════════════════════ */
+  .pub-controls {
+    display: flex; align-items: center;
+    justify-content: space-between; margin-bottom: var(--space-5); gap: var(--space-4);
+  }
+  .pub-left { display: flex; align-items: center; gap: var(--space-3); }
+
+  .seg-group {
+    display: flex; background: var(--muted); border-radius: 10px; padding: 3px; gap: 2px;
+  }
+  .seg-btn {
+    height: 28px; padding: 0 13px; border-radius: 7px; border: none;
+    background: transparent; font-family: 'adapter-arabic-text', sans-serif;
+    font-size: 13px; font-weight: 500; color: var(--muted-fg); cursor: pointer; transition: all .12s;
+  }
+  .seg-btn.active {
+    background: var(--card); color: var(--foreground); font-weight: 700;
+    box-shadow: 0 1px 3px rgb(0 0 0 / .08);
+  }
+
+  .pub-filter { display: flex; align-items: center; gap: var(--space-2); font-size: 13px; color: var(--muted-fg); }
+  .pub-filter select {
+    height: 32px; padding: 0 28px 0 10px; border-radius: 8px;
+    border: 1px solid var(--border); background: var(--card);
+    color: var(--foreground); font-family: 'adapter-arabic-text', sans-serif;
+    font-size: 13px; font-weight: 500; cursor: pointer; appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236E6E9A' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 8px center;
+  }
+
+  .cal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: var(--space-4);
+  }
+  .cal-month-title { font-size: 16px; font-weight: 800; letter-spacing: -.02em; }
+  .cal-nav-group { display: flex; align-items: center; gap: var(--space-2); }
+  .cal-nav-btn {
+    width: 30px; height: 30px; border-radius: 8px;
+    border: 1px solid var(--border); background: var(--card);
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    color: var(--muted-fg); transition: background .12s;
+  }
+  .cal-nav-btn:hover { background: var(--muted); }
+  .cal-nav-btn svg { width: 14px; height: 14px; }
+  .cal-today-btn {
+    height: 30px; padding: 0 13px; border-radius: 8px;
+    border: 1px solid var(--border); background: var(--card);
+    font-family: 'adapter-arabic-text', sans-serif;
+    font-size: 12.5px; font-weight: 600; color: var(--foreground); cursor: pointer;
+  }
+  .cal-today-btn:hover { background: var(--muted); }
+
+  .cal-grid {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); overflow: hidden;
+  }
+  .cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); border-bottom: 1px solid var(--border); }
+  .cal-weekday { padding: var(--space-2) var(--space-3); text-align: center; font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--muted-fg); }
+  .cal-body { display: grid; grid-template-columns: repeat(7, 1fr); }
+
+  .cal-cell {
+    min-height: 90px; padding: 7px var(--space-2) var(--space-3);
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .cal-cell:nth-child(7n) { border-right: none; }
+  .cal-cell.faded { opacity: .4; background: var(--muted); }
+  .cal-cell.today { background: var(--primary-muted); }
+
+  .cal-date {
+    font-size: 12px; font-weight: 600; color: var(--muted-fg);
+    align-self: flex-end; line-height: 1;
+  }
+  .cal-cell.today .cal-date {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--primary); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11.5px;
+  }
+
+  .cal-event {
+    background: var(--primary); color: #fff;
+    border-radius: 5px; padding: 3px 7px;
+    font-size: 11px; font-weight: 600; cursor: pointer;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    transition: opacity .12s;
+  }
+  .cal-event:hover { opacity: .82; }
+
+  /* ══════════════════════════════════════════════
+     ANALYTICS TAB
+     ══════════════════════════════════════════════ */
+  .analytics-banner {
+    background: var(--green-muted); border: 1px solid rgba(22,163,74,.2);
+    border-radius: var(--radius-lg); padding: var(--space-6);
+    margin-bottom: var(--space-5);
+    display: flex; gap: var(--space-4); align-items: flex-start;
+  }
+  .analytics-banner-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: rgba(22,163,74,.15); border: 1px solid rgba(22,163,74,.25);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .analytics-banner-icon svg { width: 22px; height: 22px; color: var(--green); }
+  .analytics-banner-content { flex: 1; }
+  .analytics-banner-title { font-size: 16px; font-weight: 800; letter-spacing: -.02em; color: var(--green); margin-bottom: 5px; }
+  .analytics-banner-desc { font-size: 13.5px; color: var(--muted-fg); line-height: 1.55; margin-bottom: 5px; }
+  .analytics-banner-note { font-size: 13px; color: var(--muted-fg); display: flex; align-items: center; gap: var(--space-2); }
+
+  .atl-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: var(--space-6);
+  }
+  .atl-card-title { font-size: 13.5px; font-weight: 700; color: var(--primary); margin-bottom: var(--space-5); }
+  .atl-items { display: flex; flex-direction: column; }
+  .atl-item { display: flex; gap: var(--space-4); padding: var(--space-4) 0; border-bottom: 1px solid var(--border); }
+  .atl-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .atl-dot-col { display: flex; flex-direction: column; align-items: center; padding-top: 3px; }
+  .atl-dot { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--border); background: var(--card); flex-shrink: 0; }
+  .atl-dot.upcoming { border-color: var(--primary); background: var(--primary-muted); }
+  .atl-content { flex: 1; }
+  .atl-label { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+  .atl-desc { font-size: 13px; color: var(--muted-fg); line-height: 1.5; }
+
+  /* ══════════════════════════════════════════════
+     RESPONSIVE
+     ══════════════════════════════════════════════ */
+  @media (max-width: 1100px) {
+    .insights-grid { grid-template-columns: repeat(2, 1fr); }
+    .posts-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    .insights-grid { grid-template-columns: 1fr; }
+  }
+
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════ SIDEBAR ══════════════════════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <svg class="logo-wordmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 776.45 121.77" fill="#3333CC" shape-rendering="geometricPrecision">
+      <path d="M267.42,88.41l22.99-2.08c2.31,11.42,8.95,16.36,25.23,16.36,13.12,0,20.75-5.4,20.75-13.89,0-8.02-4.86-11.03-17.51-13.42l-15.43-2.85c-21.76-4.09-33.1-14.27-33.1-32.63,0-20.75,15.28-33.02,43.36-33.02,29.62,0,43.28,11.03,45.52,32.56l-22.76,2.01c-2.01-11.65-7.56-16.2-22.61-16.2-12.81,0-20.13,4.47-20.13,13.04,0,8.02,4.86,12.04,17.67,14.2l14.58,2.62c23.84,4.24,33.79,13.58,33.79,32.09,0,21.06-15.82,33.87-44.82,33.87-31.24,0-45.83-10.96-47.52-32.63Z"/>
+      <path d="M372.98,12.42c0-8.33,5.4-12.42,13.96-12.42s13.73,4.09,13.73,12.42-5.4,12.58-13.73,12.58-13.96-4.24-13.96-12.58ZM375.14,36.8h23.14v81.93h-23.14V36.8Z"/>
+      <path d="M416.89,36.8h20.21l2.47,15.2h.93c5.32-10.57,13.58-17.51,27.16-17.51,14.66,0,22.37,7.17,25.15,18.36h.93c5.4-10.57,13.04-18.36,28.16-18.36,18.28,0,26.54,11.26,26.54,29.93v54.31h-23.14v-47.68c0-10.72-4.01-16.43-13.04-16.43-10.26,0-18.05,7.95-18.05,20.14v43.97h-23.14v-47.68c0-10.72-3.93-16.43-12.96-16.43-10.34,0-18.05,7.95-18.05,20.14v43.97h-23.14V36.8Z"/>
+      <path d="M589.09,104.3h-.93l-2.31,14.43h-20.21V3.01h23.14v46.75h.93c3.86-9.33,11.88-15.28,25.23-15.28,21.6,0,34.18,16.12,34.18,43.2s-12.58,43.36-33.79,43.36c-13.81,0-21.76-6.71-26.23-16.74ZM625.66,77.69c0-16.66-5.79-24.84-18.67-24.84s-18.52,9.1-18.52,24.84,5.63,25,18.52,25,18.67-8.18,18.67-25Z"/>
+      <path d="M681.15,84.32c1.39,13.58,7.64,19.75,19.06,19.75,9.57,0,14.27-3.63,16.43-9.88l21.76,2.01c-3.93,15.51-14.66,24.84-38.57,24.84-27.7,0-42.12-16.12-42.12-43.2s15.74-43.67,41.43-43.67,40.35,14.81,40.35,40.12v10.03h-58.32ZM681.22,69.59h35.95c-.85-12.27-6.33-18.59-17.82-18.59-10.8,0-16.66,5.79-18.13,18.59Z"/>
+      <path d="M753.3,3.01h23.14v115.72h-23.14V3.01Z"/>
+      <path d="M206.28,93.31c6.78-6.6,10.52-15.37,10.52-24.7s-3.74-18.1-10.52-24.7c-6.78-6.6-15.8-10.23-25.4-10.23s-18.61,3.63-25.4,10.23l-76.93,74.81h35.22l59.32-57.69c2.08-2.02,4.85-3.14,7.79-3.14s5.71,1.11,7.79,3.14c2.08,2.02,3.23,4.71,3.23,7.57s-1.15,5.55-3.23,7.57l-43.75,42.54h35.22l26.14-25.42Z"/>
+      <path d="M102.72,37.02l-59.03,57.4c-2.08,2.02-4.85,3.14-7.79,3.14s-5.71-1.11-7.79-3.14c-4.29-4.18-4.29-10.97,0-15.15l43.45-42.25h-35.22l-25.84,25.13c-14,13.62-14,35.78,0,49.39,6.78,6.6,15.8,10.23,25.4,10.23s18.61-3.63,25.4-10.23l76.64-74.52h-35.22Z"/>
+    </svg>
+    <svg class="logo-mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 203.14 203.14">
+      <rect fill="#3333CC" width="203.14" height="203.14" rx="14"/>
+      <path fill="#f7f3f0" d="M160.68,80.98c-4.12-4-9.59-6.21-15.42-6.21s-11.3,2.21-15.42,6.21l-46.81,45.52h20.8l36.43-35.42c1.34-1.3,3.12-2.02,5.01-2.02s3.67.72,5.01,2.02c1.34,1.3,2.08,3.04,2.08,4.88s-.74,3.58-2.08,4.88l-26.39,25.66h20.8l16-15.56c4.12-4,6.38-9.32,6.38-14.98s-2.27-10.98-6.38-14.98Z"/>
+      <path fill="#f7f3f0" d="M99.12,76.82l-36.25,35.25c-1.34,1.3-3.12,2.02-5.01,2.02s-3.67-.72-5.01-2.02c-1.34-1.3-2.08-3.04-2.08-4.88s.74-3.58,2.08-4.88l26.2-25.48h-20.8l-15.82,15.38c-4.11,4-6.37,9.32-6.37,14.98s2.26,10.99,6.37,14.98c4.12,4,9.59,6.21,15.42,6.21s11.3-2.21,15.42-6.21l46.63-45.35h-20.8Z"/>
+    </svg>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="nav-item active" href="simbel-campaigns.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      <span class="nav-label" data-en="Campaigns" data-ar="الحملات">Campaigns</span>
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+      <span class="nav-label" data-en="Schedule" data-ar="الجدول الزمني">Schedule</span>
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      <span class="nav-label" data-en="Content Library" data-ar="مكتبة المحتوى">Content Library</span>
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      <span class="nav-label" data-en="Media Library" data-ar="مكتبة الوسائط">Media Library</span>
+    </a>
+    <a class="nav-item" href="simbel-campaign-builder.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      <span class="nav-label" data-en="Create Post" data-ar="إنشاء منشور">Create Post</span>
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      <span class="nav-label" data-en="Studio" data-ar="الاستوديو">Studio</span>
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      <span class="nav-label" data-en="Analytics" data-ar="التحليلات">Analytics</span>
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+      <span class="nav-label" data-en="Paid Ads" data-ar="الإعلانات المدفوعة">Paid Ads</span>
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <span class="nav-label" data-en="SEO" data-ar="تحسين محركات البحث">SEO</span>
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+      <span class="nav-label" data-en="Brand Context" data-ar="سياق العلامة التجارية">Brand Context</span>
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8H6a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2z"/></svg>
+      <span class="nav-label" data-en="Integrations" data-ar="التكاملات">Integrations</span>
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span class="nav-label" data-en="Contact Lists" data-ar="قوائم جهات الاتصال">Contact Lists</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-bottom">
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span class="nav-label" data-en="Account" data-ar="الحساب">Account</span>
+    </a>
+    <button id="sidebarToggle" title="Collapse sidebar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+  </div>
+</aside>
+
+<!-- ══════════════════════════ MAIN ══════════════════════════ -->
+<div class="main">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <a href="simbel-campaigns.html" class="topbar-back" title="Back to Campaigns">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    </a>
+    <div class="topbar-divider"></div>
+    <div class="topbar-identity">
+      <div class="topbar-campaign-icon">
+        <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="15" rx="3" fill="white" opacity=".2"/><path d="M3 10C3 8.114 3 7.172 3.586 6.586C4.172 6 5.114 6 7 6H17C18.886 6 19.828 6 20.414 6.586C21 7.172 21 8.114 21 10H3Z" fill="white"/><path d="M7 3V6M17 3V6" stroke="white" stroke-width="1.5" stroke-linecap="round"/><path d="M8 14H8.01M12 14H12.01M16 14H16.01M8 17.5H8.01M12 17.5H12.01" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <span class="topbar-campaign-name" data-en="Test Campaign" data-ar="حملة تجريبية">Test Campaign</span>
+      <span class="badge badge-success" data-en="Publishing Scheduled" data-ar="مجدول للنشر">Publishing Scheduled</span>
+    </div>
+    <div class="topbar-right">
+      <button class="btn btn-outline btn-sm" data-en="Download PDF" data-ar="تحميل PDF">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span data-en="Download PDF" data-ar="تحميل PDF">Download PDF</span>
+      </button>
+      <button class="btn btn-outline btn-sm" data-en="Pause" data-ar="إيقاف مؤقت">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+        <span data-en="Pause" data-ar="إيقاف مؤقت">Pause</span>
+      </button>
+      <button class="topbar-util-btn" id="themeToggle" title="Toggle dark mode">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" style="display:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+      <button class="topbar-util-btn" id="arabicToggle" title="Toggle Arabic">ع</button>
+      <div class="user-avatar">B</div>
+    </div>
+  </header>
+
+  <!-- TAB NAV -->
+  <nav class="tab-nav">
+    <button class="tab-btn active" data-tab="plan" data-en="Campaign Plan" data-ar="خطة الحملة">Campaign Plan</button>
+    <button class="tab-btn" data-tab="content" data-en="Content" data-ar="المحتوى">Content</button>
+    <button class="tab-btn" data-tab="publishing" data-en="Publishing" data-ar="النشر">Publishing</button>
+    <button class="tab-btn" data-tab="analytics" data-en="Analytics" data-ar="التحليلات">Analytics</button>
+  </nav>
+
+  <!-- CONTENT WELL -->
+  <div class="content-well">
+
+    <!-- ═══════════════════ TAB: CAMPAIGN PLAN ═══════════════════ -->
+    <div class="tab-panel active" id="panel-plan">
+
+      <!-- Top row: meta chips + Download PDF -->
+      <div class="plan-toprow">
+        <div class="plan-meta-row">
+          <div class="plan-meta-chip">
+            <span class="plan-meta-label" data-en="Created" data-ar="تاريخ الإنشاء">Created</span>
+            <span class="plan-meta-value" data-en="Mar 7, 2026" data-ar="7 مارس 2026">Mar 7, 2026</span>
+          </div>
+          <div class="plan-meta-chip">
+            <span class="plan-meta-label" data-en="Duration" data-ar="المدة">Duration</span>
+            <span class="plan-meta-value" data-en="2 Weeks" data-ar="أسبوعان">2 Weeks</span>
+          </div>
+          <div class="plan-meta-chip">
+            <span class="plan-meta-label" data-en="Iterations" data-ar="التكرارات">Iterations</span>
+            <span class="plan-meta-value">2</span>
+          </div>
+          <div class="plan-meta-chip">
+            <span class="plan-meta-label" data-en="Status" data-ar="الحالة">Status</span>
+            <span class="plan-meta-value green" data-en="Approved" data-ar="معتمد">Approved</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section heading -->
+      <div class="section-head">
+        <div class="section-title" data-en="Strategy Highlights" data-ar="أبرز نقاط الاستراتيجية">Strategy Highlights</div>
+        <div class="section-sub" data-en="Key insights extracted from the AI-generated campaign plan" data-ar="أهم الرؤى المستخلصة من خطة الحملة المُولَّدة بالذكاء الاصطناعي">Key insights extracted from the AI-generated campaign plan</div>
+      </div>
+
+      <!-- Insights grid -->
+      <div class="insights-grid">
+
+        <!-- Market Sizing -->
+        <div class="insight-card">
+          <div class="insight-card-header">
+            <div class="insight-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            </div>
+            <span class="insight-card-title" data-en="Market Sizing" data-ar="حجم السوق">Market Sizing</span>
+          </div>
+          <div class="kv-rows">
+            <div class="kv-row">
+              <span class="kv-label">TAM</span>
+              <span class="kv-value" data-en="111,775,346" data-ar="111,775,346">111,775,346</span>
+            </div>
+            <div class="kv-row">
+              <span class="kv-label">SAM</span>
+              <span class="kv-value" data-en="76,682,987" data-ar="76,682,987">76,682,987</span>
+            </div>
+            <div class="kv-row">
+              <span class="kv-label">SOM</span>
+              <span class="kv-value" data-en="47,350,000" data-ar="47,350,000">47,350,000</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Target Persona -->
+        <div class="insight-card">
+          <div class="insight-card-header">
+            <div class="insight-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <span class="insight-card-title" data-en="Target Persona" data-ar="الشخصية المستهدفة">Target Persona</span>
+          </div>
+          <p class="insight-body ar">الشركات الصغيرة والمتوسطة في منطقة الشرق الأوسط وشمال إفريقيا</p>
+          <div class="insight-points">
+            <span class="insight-point">تكلفة عالية للبرامج المعقدة</span>
+            <span class="insight-point">عدم وجود تكامل مع منصات أخرى</span>
+            <span class="insight-point">غياب الدعم باللغة العربية</span>
+          </div>
+        </div>
+
+        <!-- Competitive Positioning -->
+        <div class="insight-card">
+          <div class="insight-card-header">
+            <div class="insight-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            <span class="insight-card-title" data-en="Competitive Positioning" data-ar="التموضع التنافسي">Competitive Positioning</span>
+          </div>
+          <p class="insight-body ar">تقديم حل أتمتة تسويق بأسعار معقولة مع ميزات قوية مصممة خصيصًا للشركات الصغيرة والمتوسطة في منطقة الشرق الأوسط وشمال إفريقيا.</p>
+          <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:4px;">
+            <span style="background:var(--muted); color:var(--muted-fg); border-radius:9999px; padding:3px 10px; font-size:12px; font-weight:500;">HubSpot</span>
+            <span style="background:var(--muted); color:var(--muted-fg); border-radius:9999px; padding:3px 10px; font-size:12px; font-weight:500;">ActiveCampaign</span>
+            <span style="background:var(--muted); color:var(--muted-fg); border-radius:9999px; padding:3px 10px; font-size:12px; font-weight:500;">WhatsApp Business</span>
+          </div>
+        </div>
+
+        <!-- Competitive Landscape -->
+        <div class="insight-card">
+          <div class="insight-card-header">
+            <div class="insight-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            </div>
+            <span class="insight-card-title" data-en="Competitive Landscape" data-ar="المشهد التنافسي">Competitive Landscape</span>
+          </div>
+          <div class="competitor-items">
+            <div class="competitor-item">
+              <div class="competitor-name">HubSpot</div>
+              <span class="competitor-tag tag-strength" data-en="Wide feature set" data-ar="مجموعة واسعة من الميزات">Wide feature set</span>
+              <div class="competitor-desc">مجموعة واسعة من الميزات</div>
+            </div>
+            <div class="competitor-item">
+              <div class="competitor-name">ActiveCampaign</div>
+              <span class="competitor-tag tag-strength" data-en="Strong automation" data-ar="أتمتة قوية">Strong automation</span>
+              <div class="competitor-desc">أثمنة قوية</div>
+            </div>
+            <div class="competitor-item">
+              <div class="competitor-name" data-en="Gap" data-ar="الفجوة">Gap</div>
+              <span class="competitor-tag tag-gap" data-en="Opportunity" data-ar="فرصة">Opportunity</span>
+              <div class="competitor-desc">دعم اللغة العربية واللهجات المحلية، ميزات مصممة خصيصًا للشركات الصغيرة والمتوسطة</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Key Messaging -->
+        <div class="insight-card">
+          <div class="insight-card-header">
+            <div class="insight-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <span class="insight-card-title" data-en="Key Messaging" data-ar="الرسائل الرئيسية">Key Messaging</span>
+          </div>
+          <p class="insight-body ar">"أتمتة المهام التسويقية وتحسين الحملات الإعلانية للشركات الصغيرة والمتوسطة"</p>
+          <div>
+            <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--muted-fg); margin-bottom:8px;" data-en="Tone" data-ar="النبرة">Tone</div>
+            <div class="tone-chips">
+              <span class="tone-chip" data-en="Professional" data-ar="احترافي">Professional</span>
+              <span class="tone-chip" data-en="Confident" data-ar="موثوق">Confident</span>
+              <span class="tone-chip" data-en="Supportive" data-ar="داعم">Supportive</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Channel Priority -->
+        <div class="insight-card">
+          <div class="insight-card-header">
+            <div class="insight-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.99 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.92 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </div>
+            <span class="insight-card-title" data-en="Channel Priority" data-ar="أولوية القنوات">Channel Priority</span>
+          </div>
+          <div class="channel-section">
+            <div class="channel-group">
+              <div class="channel-group-label" data-en="Essential" data-ar="أساسي">Essential</div>
+              <div class="channel-chips">
+                <span class="chip-essential" data-en="Instagram" data-ar="إنستغرام">Instagram</span>
+                <span class="chip-essential" data-en="Email" data-ar="البريد الإلكتروني">Email</span>
+              </div>
+            </div>
+            <div class="channel-group">
+              <div class="channel-group-label" data-en="Recommended" data-ar="موصى به">Recommended</div>
+              <div class="channel-chips">
+                <span class="chip-rec" data-en="Facebook" data-ar="فيسبوك">Facebook</span>
+                <span class="chip-rec" data-en="LinkedIn" data-ar="لينكدإين">LinkedIn</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Positioning -->
+        <div class="insight-card">
+          <div class="insight-card-header">
+            <div class="insight-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+            </div>
+            <span class="insight-card-title" data-en="Positioning" data-ar="التموضع">Positioning</span>
+          </div>
+          <p class="insight-body ar">"تقديم حل أتمتة تسويق بأسعار معقولة مع ميزات قوية مصممة خصيصًا للشركات الصغيرة والمتوسطة في منطقة الشرق الأوسط وشمال إفريقيا."</p>
+        </div>
+
+        <!-- Timeline -->
+        <div class="insight-card" style="grid-column: span 2;">
+          <div class="insight-card-header">
+            <div class="insight-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            </div>
+            <span class="insight-card-title" data-en="Campaign Timeline" data-ar="الجدول الزمني للحملة">Campaign Timeline</span>
+          </div>
+          <div class="timeline-items">
+            <div class="timeline-item">
+              <span class="timeline-week" data-en="Week 1" data-ar="الأسبوع 1">Week 1</span>
+              <span class="timeline-text">إطلاق حملة تسويقية على Instagram وبدء النشر على منصة Twitter / X</span>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-week" data-en="Week 2" data-ar="الأسبوع 2">Week 2</span>
+              <span class="timeline-text">تحليل الأداء وتحسين المحتوى بناءً على التفاعل، وإطلاق حملة البريد الإلكتروني</span>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /.insights-grid -->
+    </div><!-- /#panel-plan -->
+
+
+    <!-- ═══════════════════ TAB: CONTENT ═══════════════════ -->
+    <div class="tab-panel" id="panel-content">
+
+      <div class="content-toprow">
+        <div class="week-pills">
+          <button class="week-pill active" data-week="1">
+            <span class="week-pill-dot"></span>
+            <span data-en="Week 1" data-ar="الأسبوع 1">Week 1</span>
+          </button>
+          <button class="week-pill" data-week="2">
+            <span class="week-pill-dot"></span>
+            <span data-en="Week 2" data-ar="الأسبوع 2">Week 2</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Week 1 posts -->
+      <div id="week-1-content">
+        <div class="week-label-row">
+          <div class="week-label-title" data-en="Week 1 Content" data-ar="محتوى الأسبوع الأول">Week 1 Content</div>
+          <div class="week-label-sub" data-en="5 items scheduled" data-ar="5 عناصر مجدولة">5 items scheduled</div>
+        </div>
+        <div class="posts-grid">
+
+          <!-- Post 1 -->
+          <div class="post-card">
+            <div class="post-card-header">
+              <span class="platform-chip">Twitter / X</span>
+              <span class="type-chip" data-en="standalone" data-ar="منفرد">standalone</span>
+              <span class="post-week-chip" data-en="Week 1" data-ar="الأسبوع 1">Week 1</span>
+              <span class="badge badge-success" style="margin-left:4px;" data-en="Approved" data-ar="معتمد">Approved</span>
+            </div>
+            <div class="post-image-wrap">
+              <div class="post-image-placeholder">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              </div>
+            </div>
+            <div class="post-card-body">
+              <p class="post-caption">الذكاء الاصطناعي مش بس للمستقبل، ده لشغلك النهارده! 🤖 سيمبل بيساعدك تسوق بذكاء وتوفر وقتك. #سيمبل #التسويق_بالذكاء_الاصطناعي #بيزنس</p>
+              <div class="post-hashtags">
+                <span class="hashtag">#سيمبل</span>
+                <span class="hashtag">#التسويق_بالذكاء_الاصطناعي</span>
+                <span class="hashtag">#بيزنس</span>
+                <span class="hashtag">#التسويق_الإلكتروني</span>
+              </div>
+            </div>
+            <div class="post-card-footer">
+              <span class="char-count">187 / 280</span>
+              <div class="post-actions">
+                <button class="act-btn act-edit" data-en="Edit" data-ar="تعديل">Edit</button>
+                <button class="act-btn act-delete" data-en="Delete" data-ar="حذف">Delete</button>
+                <button class="act-btn act-approve" data-en="Approved" data-ar="معتمد">Approved</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Post 2 -->
+          <div class="post-card">
+            <div class="post-card-header">
+              <span class="platform-chip">Twitter / X</span>
+              <span class="type-chip" data-en="standalone" data-ar="منفرد">standalone</span>
+              <span class="post-week-chip" data-en="Week 1" data-ar="الأسبوع 1">Week 1</span>
+              <span class="badge badge-success" style="margin-left:4px;" data-en="Approved" data-ar="معتمد">Approved</span>
+            </div>
+            <div class="post-image-wrap">
+              <div class="post-image-placeholder" style="background: linear-gradient(135deg, rgba(51,51,204,0.08) 0%, var(--muted) 100%);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              </div>
+            </div>
+            <div class="post-card-body">
+              <p class="post-caption">نشر محتواك على كل المنصات بنقرة واحدة! 🚀 متخليش التسويق الإلكتروني يأخذ كله وقتك. جرب سيمبل دلوقتي. #خلاص #التسويق_الإلكتروني #رياده_الأعمال</p>
+              <div class="post-hashtags">
+                <span class="hashtag">#سيمبل</span>
+                <span class="hashtag">#التسويق_الإلكتروني</span>
+                <span class="hashtag">#خلاص</span>
+                <span class="hashtag">#رياده_الأعمال</span>
+              </div>
+              <button class="post-cta" data-en="Visit our website for more" data-ar="زوروا موقعنا للمزيد من المعلومات">زوروا موقعنا للمزيد من المعلومات</button>
+            </div>
+            <div class="post-card-footer">
+              <span class="char-count">204 / 280</span>
+              <div class="post-actions">
+                <button class="act-btn act-edit" data-en="Edit" data-ar="تعديل">Edit</button>
+                <button class="act-btn act-delete" data-en="Delete" data-ar="حذف">Delete</button>
+                <button class="act-btn act-approve" data-en="Approved" data-ar="معتمد">Approved</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Post 3 -->
+          <div class="post-card">
+            <div class="post-card-header">
+              <span class="platform-chip">Twitter / X</span>
+              <span class="type-chip" data-en="standalone" data-ar="منفرد">standalone</span>
+              <span class="post-week-chip" data-en="Week 1" data-ar="الأسبوع 1">Week 1</span>
+              <span class="badge badge-success" style="margin-left:4px;" data-en="Approved" data-ar="معتمد">Approved</span>
+            </div>
+            <div class="post-image-wrap">
+              <div class="post-image-placeholder" style="background: linear-gradient(135deg, rgba(22,163,74,0.07) 0%, var(--muted) 100%);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              </div>
+            </div>
+            <div class="post-card-body">
+              <p class="post-caption">مش عارف تقيس نجاح حملتك؟ 📊 مع #سيمبل، هتقدر تشوف النتائج في الوقت الحقيقي واتخذ القرارات الصح. #التسويق_الإلكتروني #بيزنس</p>
+              <div class="post-hashtags">
+                <span class="hashtag">#سيمبل</span>
+                <span class="hashtag">#التسويق_الإلكتروني</span>
+                <span class="hashtag">#بيزنس</span>
+                <span class="hashtag">#التسويق_الإلكتروني</span>
+              </div>
+              <button class="post-cta" data-en="Start your free trial today" data-ar="ابدأ تجربتك المجانية اليوم">ابدأ تجربتك المجانية اليوم</button>
+            </div>
+            <div class="post-card-footer">
+              <span class="char-count">198 / 280</span>
+              <div class="post-actions">
+                <button class="act-btn act-edit" data-en="Edit" data-ar="تعديل">Edit</button>
+                <button class="act-btn act-delete" data-en="Delete" data-ar="حذف">Delete</button>
+                <button class="act-btn act-approve" data-en="Approved" data-ar="معتمد">Approved</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Post 4 -->
+          <div class="post-card">
+            <div class="post-card-header">
+              <span class="platform-chip">Twitter / X</span>
+              <span class="type-chip" data-en="standalone" data-ar="منفرد">standalone</span>
+              <span class="post-week-chip" data-en="Week 1" data-ar="الأسبوع 1">Week 1</span>
+              <span class="badge badge-success" style="margin-left:4px;" data-en="Approved" data-ar="معتمد">Approved</span>
+            </div>
+            <div class="post-image-wrap">
+              <div class="post-image-placeholder" style="background: linear-gradient(135deg, rgba(232,114,12,0.07) 0%, var(--muted) 100%);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              </div>
+            </div>
+            <div class="post-card-body">
+              <p class="post-caption">90% من المصريين بيستخدموا الموبايل! 📱 خلي تسويقك يوصلهم في مكانهم مع #سيمبل بالذكاء الاصطناعي. #التسويق_بالذكاء_الاصطناعي #رياده_الأعمال</p>
+              <div class="post-hashtags">
+                <span class="hashtag">#سيمبل</span>
+                <span class="hashtag">#التسويق_بالذكاء_الاصطناعي</span>
+                <span class="hashtag">#رياده_الأعمال</span>
+                <span class="hashtag">#التسويق_الإلكتروني</span>
+              </div>
+              <button class="post-cta" data-en="Learn more on our website" data-ar="تعرف على المزيد على موقعنا">تعرف على المزيد على موقعنا</button>
+            </div>
+            <div class="post-card-footer">
+              <span class="char-count">212 / 280</span>
+              <div class="post-actions">
+                <button class="act-btn act-edit" data-en="Edit" data-ar="تعديل">Edit</button>
+                <button class="act-btn act-delete" data-en="Delete" data-ar="حذف">Delete</button>
+                <button class="act-btn act-approve" data-en="Approved" data-ar="معتمد">Approved</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Post 5 -->
+          <div class="post-card" style="grid-column: span 1;">
+            <div class="post-card-header">
+              <span class="platform-chip">Twitter / X</span>
+              <span class="type-chip" data-en="standalone" data-ar="منفرد">standalone</span>
+              <span class="post-week-chip" data-en="Week 1" data-ar="الأسبوع 1">Week 1</span>
+              <span class="badge badge-success" style="margin-left:4px;" data-en="Approved" data-ar="معتمد">Approved</span>
+            </div>
+            <div class="post-image-wrap">
+              <div class="post-image-placeholder">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              </div>
+            </div>
+            <div class="post-card-body">
+              <p class="post-caption">عايز توفر وقتك في التسويق؟ 🎯 مع #سيمبل، التسويق الإلكتروني بيبقى أسهل من أي وقت. جرب دلوقتي! #التسويق_الإلكتروني #رياده_الأعمال</p>
+              <div class="post-hashtags">
+                <span class="hashtag">#سيمبل</span>
+                <span class="hashtag">#التسويق_الإلكتروني</span>
+                <span class="hashtag">#رياده_الأعمال</span>
+              </div>
+              <button class="post-cta" data-en="Try now for free" data-ar="جرب الآن مجانًا">جرب الآن مجانًا</button>
+            </div>
+            <div class="post-card-footer">
+              <span class="char-count">176 / 280</span>
+              <div class="post-actions">
+                <button class="act-btn act-edit" data-en="Edit" data-ar="تعديل">Edit</button>
+                <button class="act-btn act-delete" data-en="Delete" data-ar="حذف">Delete</button>
+                <button class="act-btn act-approve" data-en="Approved" data-ar="معتمد">Approved</button>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /.posts-grid -->
+      </div><!-- /#week-1-content -->
+
+      <!-- Week 2 posts (hidden by default) -->
+      <div id="week-2-content" style="display:none;">
+        <div class="week-label-row">
+          <div class="week-label-title" data-en="Week 2 Content" data-ar="محتوى الأسبوع الثاني">Week 2 Content</div>
+          <div class="week-label-sub" data-en="5 items scheduled" data-ar="5 عناصر مجدولة">5 items scheduled</div>
+        </div>
+        <div class="posts-grid">
+          <!-- Post Week 2 placeholder -->
+          <div class="post-card">
+            <div class="post-card-header">
+              <span class="platform-chip">Twitter / X</span>
+              <span class="type-chip" data-en="standalone" data-ar="منفرد">standalone</span>
+              <span class="post-week-chip" data-en="Week 2" data-ar="الأسبوع 2">Week 2</span>
+              <span class="badge badge-success" style="margin-left:4px;" data-en="Approved" data-ar="معتمد">Approved</span>
+            </div>
+            <div class="post-image-wrap">
+              <div class="post-image-placeholder">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              </div>
+            </div>
+            <div class="post-card-body">
+              <p class="post-caption">استمر في النمو مع #سيمبل! 📈 الأسبوع الثاني من حملتك بيبدأ — وفريقنا معاك في كل خطوة. #التسويق_الرقمي #رياده_الأعمال</p>
+              <div class="post-hashtags">
+                <span class="hashtag">#سيمبل</span>
+                <span class="hashtag">#التسويق_الرقمي</span>
+                <span class="hashtag">#رياده_الأعمال</span>
+              </div>
+            </div>
+            <div class="post-card-footer">
+              <span class="char-count">142 / 280</span>
+              <div class="post-actions">
+                <button class="act-btn act-edit" data-en="Edit" data-ar="تعديل">Edit</button>
+                <button class="act-btn act-delete" data-en="Delete" data-ar="حذف">Delete</button>
+                <button class="act-btn act-approve" data-en="Approved" data-ar="معتمد">Approved</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /#panel-content -->
+
+
+    <!-- ═══════════════════ TAB: PUBLISHING ═══════════════════ -->
+    <div class="tab-panel" id="panel-publishing">
+
+      <div class="pub-controls">
+        <div class="pub-left">
+          <div class="seg-group">
+            <button class="seg-btn active" data-en="Calendar" data-ar="التقويم">Calendar</button>
+            <button class="seg-btn" data-en="List" data-ar="قائمة">List</button>
+          </div>
+        </div>
+        <div class="pub-filter">
+          <span data-en="Filter:" data-ar="تصفية:">Filter:</span>
+          <select>
+            <option data-en="All Platforms (10)" data-ar="جميع المنصات (10)">All Platforms (10)</option>
+            <option data-en="Twitter / X" data-ar="تويتر / إكس">Twitter / X</option>
+            <option data-en="Instagram" data-ar="إنستغرام">Instagram</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Calendar header -->
+      <div class="cal-header">
+        <div class="cal-month-title" data-en="March 2026" data-ar="مارس 2026">March 2026</div>
+        <div class="cal-nav-group">
+          <button class="cal-nav-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <button class="cal-today-btn" data-en="Today" data-ar="اليوم">Today</button>
+          <button class="cal-nav-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Calendar grid -->
+      <div class="cal-grid">
+        <div class="cal-weekdays">
+          <div class="cal-weekday" data-en="Sun" data-ar="أح">Sun</div>
+          <div class="cal-weekday" data-en="Mon" data-ar="إث">Mon</div>
+          <div class="cal-weekday" data-en="Tue" data-ar="ثل">Tue</div>
+          <div class="cal-weekday" data-en="Wed" data-ar="أر">Wed</div>
+          <div class="cal-weekday" data-en="Thu" data-ar="خم">Thu</div>
+          <div class="cal-weekday" data-en="Fri" data-ar="جم">Fri</div>
+          <div class="cal-weekday" data-en="Sat" data-ar="سب">Sat</div>
+        </div>
+        <div class="cal-body">
+          <!-- Row 1 (Feb overflow) -->
+          <div class="cal-cell faded"><div class="cal-date">23</div></div>
+          <div class="cal-cell faded"><div class="cal-date">24</div></div>
+          <div class="cal-cell faded"><div class="cal-date">25</div></div>
+          <div class="cal-cell faded"><div class="cal-date">26</div></div>
+          <div class="cal-cell faded"><div class="cal-date">27</div></div>
+          <div class="cal-cell faded"><div class="cal-date">28</div></div>
+          <div class="cal-cell"><div class="cal-date">1</div></div>
+          <!-- Row 2 -->
+          <div class="cal-cell"><div class="cal-date">2</div></div>
+          <div class="cal-cell"><div class="cal-date">3</div></div>
+          <div class="cal-cell"><div class="cal-date">4</div></div>
+          <div class="cal-cell"><div class="cal-date">5</div></div>
+          <div class="cal-cell"><div class="cal-date">6</div></div>
+          <div class="cal-cell"><div class="cal-date">7</div></div>
+          <div class="cal-cell"><div class="cal-date">8</div>
+            <div class="cal-event">02:00 PM</div>
+          </div>
+          <!-- Row 3 -->
+          <div class="cal-cell"><div class="cal-date">9</div>
+            <div class="cal-event">04:00 PM</div>
+          </div>
+          <div class="cal-cell"><div class="cal-date">10</div>
+            <div class="cal-event">12:00 PM</div>
+          </div>
+          <div class="cal-cell"><div class="cal-date">11</div>
+            <div class="cal-event">06:00 PM</div>
+          </div>
+          <div class="cal-cell today"><div class="cal-date">12</div>
+            <div class="cal-event">03:00 PM</div>
+          </div>
+          <div class="cal-cell"><div class="cal-date">13</div></div>
+          <div class="cal-cell"><div class="cal-date">14</div></div>
+          <div class="cal-cell"><div class="cal-date">15</div>
+            <div class="cal-event">10:00 AM</div>
+          </div>
+          <!-- Row 4 -->
+          <div class="cal-cell"><div class="cal-date">16</div>
+            <div class="cal-event">02:00 PM</div>
+          </div>
+          <div class="cal-cell"><div class="cal-date">17</div>
+            <div class="cal-event">05:00 PM</div>
+          </div>
+          <div class="cal-cell"><div class="cal-date">18</div></div>
+          <div class="cal-cell"><div class="cal-date">19</div>
+            <div class="cal-event">11:00 AM</div>
+          </div>
+          <div class="cal-cell"><div class="cal-date">20</div>
+            <div class="cal-event">03:30 PM</div>
+          </div>
+          <div class="cal-cell"><div class="cal-date">21</div></div>
+          <div class="cal-cell"><div class="cal-date">22</div></div>
+          <!-- Row 5 -->
+          <div class="cal-cell"><div class="cal-date">23</div></div>
+          <div class="cal-cell"><div class="cal-date">24</div></div>
+          <div class="cal-cell"><div class="cal-date">25</div></div>
+          <div class="cal-cell"><div class="cal-date">26</div></div>
+          <div class="cal-cell"><div class="cal-date">27</div></div>
+          <div class="cal-cell"><div class="cal-date">28</div></div>
+          <div class="cal-cell"><div class="cal-date">29</div></div>
+          <!-- Row 6 -->
+          <div class="cal-cell"><div class="cal-date">30</div></div>
+          <div class="cal-cell"><div class="cal-date">31</div></div>
+          <div class="cal-cell faded"><div class="cal-date">1</div></div>
+          <div class="cal-cell faded"><div class="cal-date">2</div></div>
+          <div class="cal-cell faded"><div class="cal-date">3</div></div>
+          <div class="cal-cell faded"><div class="cal-date">4</div></div>
+          <div class="cal-cell faded"><div class="cal-date">5</div></div>
+        </div>
+      </div>
+
+    </div><!-- /#panel-publishing -->
+
+
+    <!-- ═══════════════════ TAB: ANALYTICS ═══════════════════ -->
+    <div class="tab-panel" id="panel-analytics">
+
+      <!-- Success banner -->
+      <div class="analytics-banner">
+        <div class="analytics-banner-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="analytics-banner-content">
+          <div class="analytics-banner-title" data-en="Campaign Publishing Complete!" data-ar="اكتمل نشر الحملة!">Campaign Publishing Complete!</div>
+          <p class="analytics-banner-desc" data-en="Your content is now scheduled and will be published automatically at optimal times across all selected platforms." data-ar="تم جدولة محتواك وسيتم نشره تلقائيًا في الأوقات المثلى عبر جميع المنصات المحددة.">Your content is now scheduled and will be published automatically at optimal times across all selected platforms.</p>
+          <p class="analytics-banner-note" data-en="Analytics will be collected every 24 hours, with comprehensive weekly reports for continuous learning." data-ar="سيتم جمع التحليلات كل 24 ساعة، مع تقارير أسبوعية شاملة للتعلم المستمر.">Analytics will be collected every 24 hours, with comprehensive weekly reports for continuous learning.</p>
+        </div>
+      </div>
+
+      <!-- Analytics collection timeline -->
+      <div class="atl-card">
+        <div class="atl-card-title" data-en="Analytics Collection Timeline" data-ar="جدول جمع التحليلات">Analytics Collection Timeline</div>
+        <div class="atl-items">
+          <div class="atl-item">
+            <div class="atl-dot-col"><div class="atl-dot upcoming"></div></div>
+            <div class="atl-content">
+              <div class="atl-label" data-en="After 24 Hours" data-ar="بعد 24 ساعة">After 24 Hours</div>
+              <div class="atl-desc" data-en="Analytics agents will automatically collect performance data from all connected platforms." data-ar="ستقوم وكلاء التحليلات تلقائيًا بجمع بيانات الأداء من جميع المنصات المتصلة.">Analytics agents will automatically collect performance data from all connected platforms.</div>
+            </div>
+          </div>
+          <div class="atl-item">
+            <div class="atl-dot-col"><div class="atl-dot upcoming"></div></div>
+            <div class="atl-content">
+              <div class="atl-label" data-en="Weekly Reports" data-ar="التقارير الأسبوعية">Weekly Reports</div>
+              <div class="atl-desc" data-en="Automated insights and recommendations delivered to your email every week." data-ar="رؤى وتوصيات آلية تُرسل إلى بريدك الإلكتروني كل أسبوع.">Automated insights and recommendations delivered to your email every week.</div>
+            </div>
+          </div>
+          <div class="atl-item">
+            <div class="atl-dot-col"><div class="atl-dot upcoming"></div></div>
+            <div class="atl-content">
+              <div class="atl-label" data-en="Continuous Learning" data-ar="التعلم المستمر">Continuous Learning</div>
+              <div class="atl-desc" data-en="Campaign learnings are stored in your brand knowledge base to improve future campaigns automatically." data-ar="يتم تخزين مخرجات الحملة في قاعدة معرفة علامتك التجارية لتحسين الحملات المستقبلية تلقائيًا.">Campaign learnings are stored in your brand knowledge base to improve future campaigns automatically.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /#panel-analytics -->
+
+  </div><!-- /.content-well -->
+</div><!-- /.main -->
+
+<script>
+  /* ── Tab switching ── */
+  const tabBtns  = document.querySelectorAll('.tab-btn');
+  const tabPanels = document.querySelectorAll('.tab-panel');
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabBtns.forEach(b => b.classList.remove('active'));
+      tabPanels.forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+      // Translate tab button text if in RTL
+      if (document.body.classList.contains('rtl')) {
+        const ar = btn.getAttribute('data-ar');
+        if (ar) btn.textContent = ar;
+      }
+    });
+  });
+
+  /* ── Week switcher ── */
+  document.querySelectorAll('.week-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      document.querySelectorAll('.week-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      const w = pill.dataset.week;
+      document.getElementById('week-1-content').style.display = w === '1' ? '' : 'none';
+      document.getElementById('week-2-content').style.display = w === '2' ? '' : 'none';
+    });
+  });
+
+  /* ── Sidebar collapse ── */
+  const sidebar = document.getElementById('sidebar');
+  document.getElementById('sidebarToggle').addEventListener('click', () => {
+    sidebar.classList.toggle('collapsed');
+  });
+
+  /* ── Dark mode ── */
+  const themeBtn = document.getElementById('themeToggle');
+  const moon = themeBtn.querySelector('.icon-moon');
+  const sun  = themeBtn.querySelector('.icon-sun');
+  themeBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+    const isDark = document.body.classList.contains('dark');
+    moon.style.display = isDark ? 'none' : '';
+    sun.style.display  = isDark ? ''     : 'none';
+  });
+
+  /* ── Arabic / RTL toggle ── */
+  const arabicBtn = document.getElementById('arabicToggle');
+
+  function applyLang(isAr) {
+    document.body.classList.toggle('rtl', isAr);
+    document.documentElement.lang = isAr ? 'ar' : 'en';
+    arabicBtn.textContent = isAr ? 'En' : 'ع';
+
+    document.querySelectorAll('[data-en]').forEach(el => {
+      const val = el.getAttribute(isAr ? 'data-ar' : 'data-en');
+      if (!val) return;
+      if ((el.tagName === 'BUTTON' || el.tagName === 'SPAN') && el.querySelector('svg')) {
+        const svg = el.querySelector('svg');
+        el.textContent = val;
+        el.insertBefore(svg, el.firstChild);
+      } else {
+        el.textContent = val;
+      }
+    });
+
+    document.querySelectorAll('select option[data-en]').forEach(opt => {
+      opt.textContent = isAr ? opt.getAttribute('data-ar') : opt.getAttribute('data-en');
+    });
+  }
+
+  arabicBtn.addEventListener('click', () => {
+    const isAr = !document.body.classList.contains('rtl');
+    applyLang(isAr);
+    localStorage.setItem('simbel-lang', isAr ? 'ar' : 'en');
+  });
+
+  /* ── Restore language preference ── */
+  if (localStorage.getItem('simbel-lang') === 'ar') applyLang(true);
+</script>
+</body>
+</html>
