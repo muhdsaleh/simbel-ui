@@ -744,26 +744,17 @@
 
   // Arabic toggle
   const arabicBtn = document.getElementById('arabicToggle');
-  arabicBtn.addEventListener('click', () => {
-    const isAr = !document.body.classList.contains('rtl');
+
+  function applyLang(isAr) {
     document.body.classList.toggle('rtl', isAr);
     document.documentElement.lang = isAr ? 'ar' : 'en';
-
     arabicBtn.textContent = isAr ? 'En' : 'ع';
 
-    // Swap all data-en / data-ar text nodes
     document.querySelectorAll('[data-en]').forEach(el => {
       const target = isAr ? 'data-ar' : 'data-en';
       const val = el.getAttribute(target);
       if (!val) return;
-
-      // For buttons with SVG inside, preserve SVG and only update text node
-      if (el.tagName === 'BUTTON' && el.querySelector('svg')) {
-        const svg = el.querySelector('svg');
-        el.textContent = val;
-        el.insertBefore(svg, el.firstChild);
-      } else if (el.tagName === 'SPAN' && el.querySelector('svg')) {
-        // platform badges: keep SVG, update text
+      if ((el.tagName === 'BUTTON' || el.tagName === 'SPAN') && el.querySelector('svg')) {
         const svg = el.querySelector('svg');
         el.textContent = val;
         el.insertBefore(svg, el.firstChild);
@@ -772,17 +763,24 @@
       }
     });
 
-    // Swap select option text
     document.querySelectorAll('select option[data-en]').forEach(opt => {
       opt.textContent = isAr ? opt.getAttribute('data-ar') : opt.getAttribute('data-en');
     });
 
-    // Swap placeholder
     const searchInput = document.getElementById('searchInput');
     searchInput.placeholder = isAr
       ? searchInput.getAttribute('data-ar-placeholder')
       : searchInput.getAttribute('data-en-placeholder');
+  }
+
+  arabicBtn.addEventListener('click', () => {
+    const isAr = !document.body.classList.contains('rtl');
+    applyLang(isAr);
+    localStorage.setItem('simbel-lang', isAr ? 'ar' : 'en');
   });
+
+  // Restore language preference on load
+  if (localStorage.getItem('simbel-lang') === 'ar') applyLang(true);
 </script>
 </body>
 </html>
