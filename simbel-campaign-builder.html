@@ -1327,6 +1327,17 @@
   }
 
   updateReview();
+
+  // Restore language preference on load
+  if (localStorage.getItem('simbel-lang') === 'ar') {
+    document.body.classList.add('rtl');
+    document.documentElement.setAttribute('dir', 'rtl');
+    arabicToggle.textContent = 'En';
+    swapLang(true);
+    currentSection = null;
+    moveIndicator('basics', false);
+    updateReview();
+  }
 </script>
 </body>
 </html>
