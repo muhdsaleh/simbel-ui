@@ -1236,7 +1236,8 @@
   let currentSection = 'basics';
 
   function moveIndicator(section, animate) {
-    if (section === currentSection && indicator.style.left) return;
+    const isRtl = document.body.classList.contains('rtl');
+    if (section === currentSection && (indicator.style.left || indicator.style.right)) return;
     currentSection = section;
 
     const step = document.querySelector(`.progress-step[data-section="${section}"]`);
@@ -1245,11 +1246,16 @@
     // Read position BEFORE any class changes
     const parentRect = indicator.parentElement.getBoundingClientRect();
     const stepRect = step.getBoundingClientRect();
-    const left = stepRect.left - parentRect.left;
     const width = stepRect.width;
 
     if (!animate) indicator.style.transition = 'none';
-    indicator.style.left = left + 'px';
+    if (isRtl) {
+      indicator.style.right = (parentRect.right - stepRect.right) + 'px';
+      indicator.style.left = '';
+    } else {
+      indicator.style.left = (stepRect.left - parentRect.left) + 'px';
+      indicator.style.right = '';
+    }
     indicator.style.width = width + 'px';
     if (!animate) {
       indicator.offsetLeft; // force reflow
