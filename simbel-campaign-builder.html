@@ -1076,16 +1076,6 @@
     const isRtl = document.body.classList.toggle('rtl');
     document.documentElement.setAttribute('dir', isRtl ? 'rtl' : 'ltr');
     arabicToggle.textContent = isRtl ? 'En' : 'ع';
-    arabicToggle.style.fontFamily = "";
-    if (isRtl) {
-      arabicToggle.style.color = 'var(--primary)';
-      arabicToggle.style.borderColor = 'var(--primary-border)';
-      arabicToggle.style.background = 'var(--primary-muted)';
-    } else {
-      arabicToggle.style.color = '';
-      arabicToggle.style.borderColor = '';
-      arabicToggle.style.background = '';
-    }
     swapLang(isRtl);
   });
 
