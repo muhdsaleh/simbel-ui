@@ -108,15 +108,15 @@
   .logo-mark { display: none; flex-shrink: 0; }
   .sidebar.collapsed .logo-mark { display: block; width: var(--sidebar-coll); height: var(--topbar-h); }
   .sidebar-nav {
-    flex: 1; padding: var(--space-2) var(--space-1);
-    display: flex; flex-direction: column; gap: var(--space-1);
+    flex: 1; padding: 8px 8px;
+    display: flex; flex-direction: column; gap: 2px;
     overflow-y: auto; overflow-x: hidden;
   }
-  .nav-spacer { height: 16px; flex-shrink: 0; }
-  .sidebar.collapsed .nav-spacer { height: 8px; }
+  .nav-spacer { height: 8px; flex-shrink: 0; }
+  .sidebar.collapsed .nav-spacer { height: 6px; }
   .nav-item {
     display: flex; align-items: center; gap: 8px;
-    padding: 8px 10px; border-radius: var(--radius);
+    padding: 7px 8px; border-radius: var(--radius);
     color: var(--muted-fg); font-size: 13.5px; font-weight: 400;
     cursor: pointer; transition: background .12s, color .12s;
     text-decoration: none; line-height: 1; height: 34px; white-space: nowrap;
