@@ -107,13 +107,15 @@
     --shadow-sm:       0 1px 2px 0 rgb(0 0 0 / .3);
     --shadow:          0 1px 3px 0 rgb(0 0 0 / .4), 0 1px 2px -1px rgb(0 0 0 / .4);
   }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
   button, input, select, textarea { font-family: inherit; }
   /* Force Western Arabic numerals (1,2,3) — never Hindi (١,٢,٣) */
   :root { font-feature-settings: "lnum" 1; }
   body {
     font-family: 'adapter-arabic-text', sans-serif;
     font-feature-settings: "lnum" 1;
+    font-optical-sizing: auto;
+    font-synthesis: none;
     background: var(--muted);
     color: var(--foreground);
     font-size: 14px;
@@ -151,7 +153,7 @@
     flex-shrink: 0;
   }
   .sidebar.collapsed .sidebar-logo { padding: 0; align-items: stretch; }
-  .logo-wordmark { height: 17px; width: auto; display: block; flex-shrink: 0; transform: translateZ(0); shape-rendering: geometricPrecision; -webkit-font-smoothing: antialiased; }
+  .logo-wordmark { height: 17px; width: auto; display: block; flex-shrink: 0; shape-rendering: geometricPrecision; }
   .dark .logo-wordmark { fill: #E8E8F5; }
   .sidebar.collapsed .logo-wordmark { display: none; }
   .logo-mark { display: none; flex-shrink: 0; }
