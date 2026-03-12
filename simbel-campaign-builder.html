@@ -1103,6 +1103,10 @@
       document.querySelectorAll(`#section-audience .pill[data-value]`).forEach(p => p.classList.remove('selected'));
     } else if (group === 'gender') {
       document.querySelector('#section-audience .pill[data-value="all"]')?.classList.remove('selected');
+    } else if (group === 'cta' && pill.dataset.value === 'none') {
+      pill.closest('.pill-group').querySelectorAll('.pill').forEach(p => p.classList.remove('selected'));
+    } else if (group === 'cta') {
+      pill.closest('.pill-group').querySelector('.pill[data-value="none"]')?.classList.remove('selected');
     }
     pill.classList.toggle('selected');
     updateReview();
