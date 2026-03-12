@@ -975,6 +975,318 @@
   </main>
 </div>
 
+<!-- ══════════════════════════ LIGHTBOX ══════════════════════════ -->
+<div class="lb-backdrop" id="lbBackdrop" role="dialog" aria-modal="true">
+  <div class="lb" id="lb">
+
+    <!-- Header -->
+    <div class="lb-header">
+      <div class="lb-campaign-icon">
+        <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="15" rx="3" fill="white" opacity=".2"/><path d="M3 10C3 8.114 3 7.172 3.586 6.586C4.172 6 5.114 6 7 6H17C18.886 6 19.828 6 20.414 6.586C21 7.172 21 8.114 21 10H3Z" fill="white"/><path d="M7 3V6M17 3V6" stroke="white" stroke-width="1.5" stroke-linecap="round"/><path d="M8 14H8.01M12 14H12.01M16 14H16.01M8 17.5H8.01M12 17.5H12.01" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <span class="lb-campaign-name" data-en="Test Campaign" data-ar="حملة تجريبية">Test Campaign</span>
+      <span class="badge badge-success" data-en="Publishing Scheduled" data-ar="مجدول للنشر">Publishing Scheduled</span>
+      <div class="lb-spacer"></div>
+      <button class="btn btn-outline btn-sm" style="margin-right:var(--space-1);" data-en="Download PDF" data-ar="تحميل PDF">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span data-en="Download PDF" data-ar="تحميل PDF">Download PDF</span>
+      </button>
+      <button class="btn btn-outline btn-sm" style="margin-right:var(--space-2);" data-en="Pause" data-ar="إيقاف مؤقت">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+        <span data-en="Pause" data-ar="إيقاف مؤقت">Pause</span>
+      </button>
+      <button class="lb-close" id="lbClose" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <!-- Tab nav -->
+    <nav class="lb-tabs">
+      <button class="lb-tab active" data-lbtab="plan" data-en="Campaign Plan" data-ar="خطة الحملة">Campaign Plan</button>
+      <button class="lb-tab" data-lbtab="content" data-en="Content" data-ar="المحتوى">Content</button>
+      <button class="lb-tab" data-lbtab="publishing" data-en="Publishing" data-ar="النشر">Publishing</button>
+      <button class="lb-tab" data-lbtab="analytics" data-en="Analytics" data-ar="التحليلات">Analytics</button>
+    </nav>
+
+    <!-- Scrollable body -->
+    <div class="lb-body">
+
+      <!-- ── CAMPAIGN PLAN ── -->
+      <div class="lb-panel active" id="lbp-plan">
+        <div class="lb-meta-row">
+          <div class="lb-meta-chip">
+            <span class="lb-meta-label" data-en="Created" data-ar="تاريخ الإنشاء">Created</span>
+            <span class="lb-meta-value" data-en="Mar 7, 2026" data-ar="7 مارس 2026">Mar 7, 2026</span>
+          </div>
+          <div class="lb-meta-chip">
+            <span class="lb-meta-label" data-en="Duration" data-ar="المدة">Duration</span>
+            <span class="lb-meta-value" data-en="2 Weeks" data-ar="أسبوعان">2 Weeks</span>
+          </div>
+          <div class="lb-meta-chip">
+            <span class="lb-meta-label" data-en="Iterations" data-ar="التكرارات">Iterations</span>
+            <span class="lb-meta-value">2</span>
+          </div>
+          <div class="lb-meta-chip">
+            <span class="lb-meta-label" data-en="Status" data-ar="الحالة">Status</span>
+            <span class="lb-meta-value green" data-en="Approved" data-ar="معتمد">Approved</span>
+          </div>
+        </div>
+
+        <div class="lb-section-title" data-en="Strategy Highlights" data-ar="أبرز نقاط الاستراتيجية">Strategy Highlights</div>
+        <div class="lb-section-sub" data-en="Key insights extracted from the AI-generated campaign plan" data-ar="أهم الرؤى المستخلصة من خطة الحملة المُولَّدة بالذكاء الاصطناعي">Key insights extracted from the AI-generated campaign plan</div>
+
+        <div class="lb-grid">
+          <!-- Market Sizing -->
+          <div class="lb-card">
+            <div class="lb-card-head">
+              <div class="lb-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+              <span class="lb-card-title" data-en="Market Sizing" data-ar="حجم السوق">Market Sizing</span>
+            </div>
+            <div class="lb-kv">
+              <div class="lb-kv-row"><span class="lb-kv-label">TAM</span><span class="lb-kv-value">111,775,346</span></div>
+              <div class="lb-kv-row"><span class="lb-kv-label">SAM</span><span class="lb-kv-value">76,682,987</span></div>
+              <div class="lb-kv-row"><span class="lb-kv-label">SOM</span><span class="lb-kv-value">47,350,000</span></div>
+            </div>
+          </div>
+          <!-- Target Persona -->
+          <div class="lb-card">
+            <div class="lb-card-head">
+              <div class="lb-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+              <span class="lb-card-title" data-en="Target Persona" data-ar="الشخصية المستهدفة">Target Persona</span>
+            </div>
+            <p class="lb-body-text ar">الشركات الصغيرة والمتوسطة في منطقة الشرق الأوسط وشمال إفريقيا</p>
+            <div class="lb-points">
+              <span class="lb-point">تكلفة عالية للبرامج المعقدة</span>
+              <span class="lb-point">عدم وجود تكامل مع منصات أخرى</span>
+              <span class="lb-point">غياب الدعم باللغة العربية</span>
+            </div>
+          </div>
+          <!-- Competitive Positioning -->
+          <div class="lb-card">
+            <div class="lb-card-head">
+              <div class="lb-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+              <span class="lb-card-title" data-en="Competitive Positioning" data-ar="التموضع التنافسي">Competitive Positioning</span>
+            </div>
+            <p class="lb-body-text ar">تقديم حل أتمتة تسويق بأسعار معقولة مع ميزات قوية مصممة خصيصًا للشركات الصغيرة والمتوسطة في منطقة الشرق الأوسط وشمال إفريقيا.</p>
+            <div class="lb-chips">
+              <span class="lb-chip-muted">HubSpot</span>
+              <span class="lb-chip-muted">ActiveCampaign</span>
+              <span class="lb-chip-muted">WhatsApp Business</span>
+            </div>
+          </div>
+          <!-- Competitive Landscape -->
+          <div class="lb-card">
+            <div class="lb-card-head">
+              <div class="lb-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
+              <span class="lb-card-title" data-en="Competitive Landscape" data-ar="المشهد التنافسي">Competitive Landscape</span>
+            </div>
+            <div>
+              <div class="lb-competitor"><div class="lb-competitor-name">HubSpot</div><span class="lb-competitor-tag tag-str" data-en="Wide feature set" data-ar="مجموعة واسعة">Wide feature set</span><div class="lb-competitor-desc">مجموعة واسعة من الميزات</div></div>
+              <div class="lb-competitor"><div class="lb-competitor-name">ActiveCampaign</div><span class="lb-competitor-tag tag-str" data-en="Strong automation" data-ar="أتمتة قوية">Strong automation</span><div class="lb-competitor-desc">أثمنة قوية</div></div>
+              <div class="lb-competitor"><div class="lb-competitor-name" data-en="Gap" data-ar="الفجوة">Gap</div><span class="lb-competitor-tag tag-opp" data-en="Opportunity" data-ar="فرصة">Opportunity</span><div class="lb-competitor-desc">دعم اللغة العربية واللهجات المحلية</div></div>
+            </div>
+          </div>
+          <!-- Key Messaging -->
+          <div class="lb-card">
+            <div class="lb-card-head">
+              <div class="lb-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+              <span class="lb-card-title" data-en="Key Messaging" data-ar="الرسائل الرئيسية">Key Messaging</span>
+            </div>
+            <p class="lb-body-text ar">"أتمتة المهام التسويقية وتحسين الحملات للشركات الصغيرة والمتوسطة"</p>
+            <div>
+              <div style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.055em;color:var(--muted-fg);margin-bottom:8px;" data-en="Tone" data-ar="النبرة">Tone</div>
+              <div class="lb-chips">
+                <span class="lb-chip-primary" data-en="Professional" data-ar="احترافي">Professional</span>
+                <span class="lb-chip-primary" data-en="Confident" data-ar="موثوق">Confident</span>
+                <span class="lb-chip-primary" data-en="Supportive" data-ar="داعم">Supportive</span>
+              </div>
+            </div>
+          </div>
+          <!-- Channel Priority -->
+          <div class="lb-card">
+            <div class="lb-card-head">
+              <div class="lb-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.99 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.92 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+              <span class="lb-card-title" data-en="Channel Priority" data-ar="أولوية القنوات">Channel Priority</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:var(--space-3);">
+              <div class="lb-channel-group">
+                <div class="lb-channel-label" data-en="Essential" data-ar="أساسي">Essential</div>
+                <div class="lb-chips" style="margin-top:6px;">
+                  <span class="lb-chip-green" data-en="Instagram" data-ar="إنستغرام">Instagram</span>
+                  <span class="lb-chip-green" data-en="Email" data-ar="البريد الإلكتروني">Email</span>
+                </div>
+              </div>
+              <div class="lb-channel-group">
+                <div class="lb-channel-label" data-en="Recommended" data-ar="موصى به">Recommended</div>
+                <div class="lb-chips" style="margin-top:6px;">
+                  <span class="lb-chip-indigo" data-en="Facebook" data-ar="فيسبوك">Facebook</span>
+                  <span class="lb-chip-indigo" data-en="LinkedIn" data-ar="لينكدإين">LinkedIn</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Positioning -->
+          <div class="lb-card">
+            <div class="lb-card-head">
+              <div class="lb-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg></div>
+              <span class="lb-card-title" data-en="Positioning" data-ar="التموضع">Positioning</span>
+            </div>
+            <p class="lb-body-text ar">"تقديم حل أتمتة تسويق بأسعار معقولة مع ميزات قوية مصممة خصيصًا للشركات الصغيرة والمتوسطة في منطقة الشرق الأوسط وشمال إفريقيا."</p>
+          </div>
+          <!-- Timeline (spans 2 cols) -->
+          <div class="lb-card" style="grid-column:span 2;">
+            <div class="lb-card-head">
+              <div class="lb-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+              <span class="lb-card-title" data-en="Campaign Timeline" data-ar="الجدول الزمني للحملة">Campaign Timeline</span>
+            </div>
+            <div>
+              <div class="lb-timeline-item"><span class="lb-week-tag" data-en="Week 1" data-ar="الأسبوع 1">Week 1</span><span class="lb-timeline-text">إطلاق حملة تسويقية على Instagram وبدء النشر على منصة Twitter / X</span></div>
+              <div class="lb-timeline-item"><span class="lb-week-tag" data-en="Week 2" data-ar="الأسبوع 2">Week 2</span><span class="lb-timeline-text">تحليل الأداء وتحسين المحتوى بناءً على التفاعل، وإطلاق حملة البريد الإلكتروني</span></div>
+            </div>
+          </div>
+        </div>
+      </div><!-- /lbp-plan -->
+
+      <!-- ── CONTENT ── -->
+      <div class="lb-panel" id="lbp-content">
+        <div class="lb-week-pills">
+          <button class="lb-week-pill active" data-lbweek="1"><span class="lb-week-dot"></span><span data-en="Week 1" data-ar="الأسبوع 1">Week 1</span></button>
+          <button class="lb-week-pill" data-lbweek="2"><span class="lb-week-dot"></span><span data-en="Week 2" data-ar="الأسبوع 2">Week 2</span></button>
+        </div>
+
+        <div id="lbWeek1">
+          <div class="lb-week-label"><div class="lb-week-title" data-en="Week 1 Content" data-ar="محتوى الأسبوع الأول">Week 1 Content</div><div class="lb-week-sub" data-en="5 items scheduled" data-ar="5 عناصر مجدولة">5 items scheduled</div></div>
+          <div class="lb-posts-grid">
+            <!-- Post 1 -->
+            <div class="lb-post">
+              <div class="lb-post-head"><span class="lb-plat-chip">Twitter / X</span><span class="lb-type-chip" data-en="standalone" data-ar="منفرد">standalone</span><span class="lb-wk-chip" data-en="Week 1" data-ar="الأسبوع 1">Week 1</span><span class="lb-appr-chip" data-en="Approved" data-ar="معتمد">Approved</span></div>
+              <div class="lb-post-img" style="background:linear-gradient(135deg,var(--primary-muted) 0%,var(--muted) 100%);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              <div class="lb-post-body">
+                <p class="lb-caption">الذكاء الاصطناعي مش بس للمستقبل، ده لشغلك النهارده! 🤖 سيمبل بيساعدك تسوق بذكاء وتوفر وقتك. #سيمبل #التسويق_بالذكاء_الاصطناعي #بيزنس</p>
+                <div class="lb-hashtags"><span class="lb-hashtag">#سيمبل</span><span class="lb-hashtag">#التسويق_بالذكاء_الاصطناعي</span><span class="lb-hashtag">#بيزنس</span></div>
+              </div>
+              <div class="lb-post-foot"><span class="lb-char">187 / 280</span><div class="lb-post-actions"><button class="lb-act lb-act-edit" data-en="Edit" data-ar="تعديل">Edit</button><button class="lb-act lb-act-del" data-en="Delete" data-ar="حذف">Delete</button><button class="lb-act lb-act-appr" data-en="Approved" data-ar="معتمد">Approved</button></div></div>
+            </div>
+            <!-- Post 2 -->
+            <div class="lb-post">
+              <div class="lb-post-head"><span class="lb-plat-chip">Twitter / X</span><span class="lb-type-chip" data-en="standalone" data-ar="منفرد">standalone</span><span class="lb-wk-chip" data-en="Week 1" data-ar="الأسبوع 1">Week 1</span><span class="lb-appr-chip" data-en="Approved" data-ar="معتمد">Approved</span></div>
+              <div class="lb-post-img" style="background:linear-gradient(135deg,rgba(22,163,74,0.07) 0%,var(--muted) 100%);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              <div class="lb-post-body">
+                <p class="lb-caption">نشر محتواك على كل المنصات بنقرة واحدة! 🚀 متخليش التسويق الإلكتروني يأخذ كله وقتك. جرب سيمبل دلوقتي.</p>
+                <div class="lb-hashtags"><span class="lb-hashtag">#سيمبل</span><span class="lb-hashtag">#التسويق_الإلكتروني</span><span class="lb-hashtag">#رياده_الأعمال</span></div>
+                <button class="lb-cta" data-en="Visit our website" data-ar="زوروا موقعنا للمزيد من المعلومات">زوروا موقعنا للمزيد من المعلومات</button>
+              </div>
+              <div class="lb-post-foot"><span class="lb-char">204 / 280</span><div class="lb-post-actions"><button class="lb-act lb-act-edit" data-en="Edit" data-ar="تعديل">Edit</button><button class="lb-act lb-act-del" data-en="Delete" data-ar="حذف">Delete</button><button class="lb-act lb-act-appr" data-en="Approved" data-ar="معتمد">Approved</button></div></div>
+            </div>
+            <!-- Post 3 -->
+            <div class="lb-post">
+              <div class="lb-post-head"><span class="lb-plat-chip">Twitter / X</span><span class="lb-type-chip" data-en="standalone" data-ar="منفرد">standalone</span><span class="lb-wk-chip" data-en="Week 1" data-ar="الأسبوع 1">Week 1</span><span class="lb-appr-chip" data-en="Approved" data-ar="معتمد">Approved</span></div>
+              <div class="lb-post-img" style="background:linear-gradient(135deg,rgba(232,114,12,0.07) 0%,var(--muted) 100%);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              <div class="lb-post-body">
+                <p class="lb-caption">مش عارف تقيس نجاح حملتك؟ 📊 مع #سيمبل، هتقدر تشوف النتائج في الوقت الحقيقي واتخذ القرارات الصح. #التسويق_الإلكتروني</p>
+                <div class="lb-hashtags"><span class="lb-hashtag">#سيمبل</span><span class="lb-hashtag">#التسويق_الإلكتروني</span><span class="lb-hashtag">#بيزنس</span></div>
+                <button class="lb-cta" data-en="Start your free trial" data-ar="ابدأ تجربتك المجانية اليوم">ابدأ تجربتك المجانية اليوم</button>
+              </div>
+              <div class="lb-post-foot"><span class="lb-char">198 / 280</span><div class="lb-post-actions"><button class="lb-act lb-act-edit" data-en="Edit" data-ar="تعديل">Edit</button><button class="lb-act lb-act-del" data-en="Delete" data-ar="حذف">Delete</button><button class="lb-act lb-act-appr" data-en="Approved" data-ar="معتمد">Approved</button></div></div>
+            </div>
+            <!-- Post 4 -->
+            <div class="lb-post">
+              <div class="lb-post-head"><span class="lb-plat-chip">Twitter / X</span><span class="lb-type-chip" data-en="standalone" data-ar="منفرد">standalone</span><span class="lb-wk-chip" data-en="Week 1" data-ar="الأسبوع 1">Week 1</span><span class="lb-appr-chip" data-en="Approved" data-ar="معتمد">Approved</span></div>
+              <div class="lb-post-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              <div class="lb-post-body">
+                <p class="lb-caption">90% من المصريين بيستخدموا الموبايل! 📱 خلي تسويقك يوصلهم في مكانهم مع #سيمبل. #التسويق_بالذكاء_الاصطناعي</p>
+                <div class="lb-hashtags"><span class="lb-hashtag">#سيمبل</span><span class="lb-hashtag">#التسويق_بالذكاء_الاصطناعي</span><span class="lb-hashtag">#رياده_الأعمال</span></div>
+                <button class="lb-cta" data-en="Learn more" data-ar="تعرف على المزيد على موقعنا">تعرف على المزيد على موقعنا</button>
+              </div>
+              <div class="lb-post-foot"><span class="lb-char">212 / 280</span><div class="lb-post-actions"><button class="lb-act lb-act-edit" data-en="Edit" data-ar="تعديل">Edit</button><button class="lb-act lb-act-del" data-en="Delete" data-ar="حذف">Delete</button><button class="lb-act lb-act-appr" data-en="Approved" data-ar="معتمد">Approved</button></div></div>
+            </div>
+            <!-- Post 5 -->
+            <div class="lb-post">
+              <div class="lb-post-head"><span class="lb-plat-chip">Twitter / X</span><span class="lb-type-chip" data-en="standalone" data-ar="منفرد">standalone</span><span class="lb-wk-chip" data-en="Week 1" data-ar="الأسبوع 1">Week 1</span><span class="lb-appr-chip" data-en="Approved" data-ar="معتمد">Approved</span></div>
+              <div class="lb-post-img" style="background:linear-gradient(135deg,rgba(99,102,241,0.08) 0%,var(--muted) 100%);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              <div class="lb-post-body">
+                <p class="lb-caption">عايز توفر وقتك في التسويق؟ 🎯 مع #سيمبل، التسويق الإلكتروني بيبقى أسهل من أي وقت. جرب دلوقتي!</p>
+                <div class="lb-hashtags"><span class="lb-hashtag">#سيمبل</span><span class="lb-hashtag">#التسويق_الإلكتروني</span><span class="lb-hashtag">#رياده_الأعمال</span></div>
+                <button class="lb-cta" data-en="Try now for free" data-ar="جرب الآن مجانًا">جرب الآن مجانًا</button>
+              </div>
+              <div class="lb-post-foot"><span class="lb-char">176 / 280</span><div class="lb-post-actions"><button class="lb-act lb-act-edit" data-en="Edit" data-ar="تعديل">Edit</button><button class="lb-act lb-act-del" data-en="Delete" data-ar="حذف">Delete</button><button class="lb-act lb-act-appr" data-en="Approved" data-ar="معتمد">Approved</button></div></div>
+            </div>
+          </div>
+        </div><!-- /lbWeek1 -->
+
+        <div id="lbWeek2" style="display:none;">
+          <div class="lb-week-label"><div class="lb-week-title" data-en="Week 2 Content" data-ar="محتوى الأسبوع الثاني">Week 2 Content</div><div class="lb-week-sub" data-en="5 items scheduled" data-ar="5 عناصر مجدولة">5 items scheduled</div></div>
+          <div class="lb-posts-grid">
+            <div class="lb-post">
+              <div class="lb-post-head"><span class="lb-plat-chip">Twitter / X</span><span class="lb-type-chip" data-en="standalone" data-ar="منفرد">standalone</span><span class="lb-wk-chip" data-en="Week 2" data-ar="الأسبوع 2">Week 2</span><span class="lb-appr-chip" data-en="Approved" data-ar="معتمد">Approved</span></div>
+              <div class="lb-post-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              <div class="lb-post-body"><p class="lb-caption">استمر في النمو مع #سيمبل! 📈 الأسبوع الثاني من حملتك بيبدأ وفريقنا معاك في كل خطوة. #التسويق_الرقمي</p><div class="lb-hashtags"><span class="lb-hashtag">#سيمبل</span><span class="lb-hashtag">#التسويق_الرقمي</span><span class="lb-hashtag">#رياده_الأعمال</span></div></div>
+              <div class="lb-post-foot"><span class="lb-char">142 / 280</span><div class="lb-post-actions"><button class="lb-act lb-act-edit" data-en="Edit" data-ar="تعديل">Edit</button><button class="lb-act lb-act-del" data-en="Delete" data-ar="حذف">Delete</button><button class="lb-act lb-act-appr" data-en="Approved" data-ar="معتمد">Approved</button></div></div>
+            </div>
+          </div>
+        </div><!-- /lbWeek2 -->
+      </div><!-- /lbp-content -->
+
+      <!-- ── PUBLISHING ── -->
+      <div class="lb-panel" id="lbp-publishing">
+        <div class="lb-pub-controls">
+          <div class="lb-seg">
+            <button class="lb-seg-btn active" data-en="Calendar" data-ar="التقويم">Calendar</button>
+            <button class="lb-seg-btn" data-en="List" data-ar="قائمة">List</button>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted-fg);">
+            <span data-en="Filter:" data-ar="تصفية:">Filter:</span>
+            <select style="height:32px;padding:0 28px 0 10px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--foreground);font-family:'adapter-arabic-text',sans-serif;font-size:13px;font-weight:500;cursor:pointer;appearance:none;background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236E6E9A' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:right 8px center;">
+              <option data-en="All Platforms (10)" data-ar="جميع المنصات (10)">All Platforms (10)</option>
+              <option data-en="Twitter / X" data-ar="تويتر / إكس">Twitter / X</option>
+            </select>
+          </div>
+        </div>
+        <div class="lb-cal-header">
+          <div class="lb-cal-month" data-en="March 2026" data-ar="مارس 2026">March 2026</div>
+          <div class="lb-cal-nav">
+            <button class="lb-cal-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+            <button class="lb-today-btn" data-en="Today" data-ar="اليوم">Today</button>
+            <button class="lb-cal-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+          </div>
+        </div>
+        <div class="lb-cal">
+          <div class="lb-cal-days">
+            <div class="lb-cal-day" data-en="Sun" data-ar="أح">Sun</div><div class="lb-cal-day" data-en="Mon" data-ar="إث">Mon</div><div class="lb-cal-day" data-en="Tue" data-ar="ثل">Tue</div><div class="lb-cal-day" data-en="Wed" data-ar="أر">Wed</div><div class="lb-cal-day" data-en="Thu" data-ar="خم">Thu</div><div class="lb-cal-day" data-en="Fri" data-ar="جم">Fri</div><div class="lb-cal-day" data-en="Sat" data-ar="سب">Sat</div>
+          </div>
+          <div class="lb-cal-body">
+            <div class="lb-cal-cell faded"><div class="lb-cal-date">23</div></div><div class="lb-cal-cell faded"><div class="lb-cal-date">24</div></div><div class="lb-cal-cell faded"><div class="lb-cal-date">25</div></div><div class="lb-cal-cell faded"><div class="lb-cal-date">26</div></div><div class="lb-cal-cell faded"><div class="lb-cal-date">27</div></div><div class="lb-cal-cell faded"><div class="lb-cal-date">28</div></div><div class="lb-cal-cell"><div class="lb-cal-date">1</div></div>
+            <div class="lb-cal-cell"><div class="lb-cal-date">2</div></div><div class="lb-cal-cell"><div class="lb-cal-date">3</div></div><div class="lb-cal-cell"><div class="lb-cal-date">4</div></div><div class="lb-cal-cell"><div class="lb-cal-date">5</div></div><div class="lb-cal-cell"><div class="lb-cal-date">6</div></div><div class="lb-cal-cell"><div class="lb-cal-date">7</div></div><div class="lb-cal-cell"><div class="lb-cal-date">8</div><div class="lb-event">02:00 PM</div></div>
+            <div class="lb-cal-cell"><div class="lb-cal-date">9</div><div class="lb-event">04:00 PM</div></div><div class="lb-cal-cell"><div class="lb-cal-date">10</div><div class="lb-event">12:00 PM</div></div><div class="lb-cal-cell"><div class="lb-cal-date">11</div><div class="lb-event">06:00 PM</div></div><div class="lb-cal-cell"><div class="lb-cal-date">12</div><div class="lb-event">03:00 PM</div></div><div class="lb-cal-cell today"><div class="lb-cal-date">13</div><div class="lb-event">11:30 AM</div></div><div class="lb-cal-cell"><div class="lb-cal-date">14</div></div><div class="lb-cal-cell"><div class="lb-cal-date">15</div><div class="lb-event">10:00 AM</div></div>
+            <div class="lb-cal-cell"><div class="lb-cal-date">16</div><div class="lb-event">02:00 PM</div></div><div class="lb-cal-cell"><div class="lb-cal-date">17</div><div class="lb-event">05:00 PM</div></div><div class="lb-cal-cell"><div class="lb-cal-date">18</div></div><div class="lb-cal-cell"><div class="lb-cal-date">19</div><div class="lb-event">11:00 AM</div></div><div class="lb-cal-cell"><div class="lb-cal-date">20</div><div class="lb-event">03:30 PM</div></div><div class="lb-cal-cell"><div class="lb-cal-date">21</div></div><div class="lb-cal-cell"><div class="lb-cal-date">22</div></div>
+            <div class="lb-cal-cell"><div class="lb-cal-date">23</div></div><div class="lb-cal-cell"><div class="lb-cal-date">24</div></div><div class="lb-cal-cell"><div class="lb-cal-date">25</div></div><div class="lb-cal-cell"><div class="lb-cal-date">26</div></div><div class="lb-cal-cell"><div class="lb-cal-date">27</div></div><div class="lb-cal-cell"><div class="lb-cal-date">28</div></div><div class="lb-cal-cell"><div class="lb-cal-date">29</div></div>
+            <div class="lb-cal-cell"><div class="lb-cal-date">30</div></div><div class="lb-cal-cell"><div class="lb-cal-date">31</div></div><div class="lb-cal-cell faded"><div class="lb-cal-date">1</div></div><div class="lb-cal-cell faded"><div class="lb-cal-date">2</div></div><div class="lb-cal-cell faded"><div class="lb-cal-date">3</div></div><div class="lb-cal-cell faded"><div class="lb-cal-date">4</div></div><div class="lb-cal-cell faded"><div class="lb-cal-date">5</div></div>
+          </div>
+        </div>
+      </div><!-- /lbp-publishing -->
+
+      <!-- ── ANALYTICS ── -->
+      <div class="lb-panel" id="lbp-analytics">
+        <div class="lb-analytics-banner">
+          <div class="lb-banner-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div>
+            <div class="lb-banner-title" data-en="Campaign Publishing Complete!" data-ar="اكتمل نشر الحملة!">Campaign Publishing Complete!</div>
+            <p class="lb-banner-desc" data-en="Your content is now scheduled and will be published automatically at optimal times across all selected platforms." data-ar="تم جدولة محتواك وسيتم نشره تلقائيًا في الأوقات المثلى عبر جميع المنصات المحددة.">Your content is now scheduled and will be published automatically at optimal times across all selected platforms.</p>
+            <p class="lb-banner-note" data-en="Analytics will be collected every 24 hours, with comprehensive weekly reports for continuous learning." data-ar="سيتم جمع التحليلات كل 24 ساعة، مع تقارير أسبوعية شاملة للتعلم المستمر.">Analytics will be collected every 24 hours, with comprehensive weekly reports for continuous learning.</p>
+          </div>
+        </div>
+        <div class="lb-atl-card">
+          <div class="lb-atl-title" data-en="Analytics Collection Timeline" data-ar="جدول جمع التحليلات">Analytics Collection Timeline</div>
+          <div class="lb-atl-item"><div class="lb-atl-dot"></div><div><div class="lb-atl-label" data-en="After 24 Hours" data-ar="بعد 24 ساعة">After 24 Hours</div><div class="lb-atl-desc" data-en="Analytics agents will automatically collect performance data from all connected platforms." data-ar="ستقوم وكلاء التحليلات تلقائيًا بجمع بيانات الأداء من جميع المنصات المتصلة.">Analytics agents will automatically collect performance data from all connected platforms.</div></div></div>
+          <div class="lb-atl-item"><div class="lb-atl-dot"></div><div><div class="lb-atl-label" data-en="Weekly Reports" data-ar="التقارير الأسبوعية">Weekly Reports</div><div class="lb-atl-desc" data-en="Automated insights and recommendations delivered to your email every week." data-ar="رؤى وتوصيات آلية تُرسل إلى بريدك الإلكتروني كل أسبوع.">Automated insights and recommendations delivered to your email every week.</div></div></div>
+          <div class="lb-atl-item"><div class="lb-atl-dot"></div><div><div class="lb-atl-label" data-en="Continuous Learning" data-ar="التعلم المستمر">Continuous Learning</div><div class="lb-atl-desc" data-en="Campaign learnings are stored in your brand knowledge base to improve future campaigns automatically." data-ar="يتم تخزين مخرجات الحملة في قاعدة معرفة علامتك التجارية لتحسين الحملات المستقبلية تلقائيًا.">Campaign learnings are stored in your brand knowledge base to improve future campaigns automatically.</div></div></div>
+        </div>
+      </div><!-- /lbp-analytics -->
+
+    </div><!-- /.lb-body -->
+  </div><!-- /.lb -->
+</div><!-- /.lb-backdrop -->
+
 <script>
   // View toggle
   const viewBtns = document.querySelectorAll('.view-btn');
