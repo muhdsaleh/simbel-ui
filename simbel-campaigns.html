@@ -343,8 +343,9 @@
   /* Dark mode: improve contrast on primary-muted tinted elements (not buttons) */
   .dark .nav-item.active,
   .dark .user-avatar,
-  .dark .badge-secondary,
   .dark .campaign-icon { color: #7878E8; }
+  .dark .badge-secondary { background: rgba(232,114,12,0.15); color: #F5963A; }
+  .dark .badge-secondary::before { background: #F5963A; }
 
   /* Bottom row: stats  |  actions */
   .campaign-card-bottom {
