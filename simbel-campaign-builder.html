@@ -1081,6 +1081,7 @@
     document.documentElement.setAttribute('dir', isRtl ? 'rtl' : 'ltr');
     arabicToggle.textContent = isRtl ? 'En' : 'ع';
     swapLang(isRtl);
+    localStorage.setItem('simbel-lang', isRtl ? 'ar' : 'en');
     // Recalculate indicator for the new text direction
     const saved = currentSection;
     currentSection = null;
