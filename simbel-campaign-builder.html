@@ -1081,6 +1081,10 @@
     document.documentElement.setAttribute('dir', isRtl ? 'rtl' : 'ltr');
     arabicToggle.textContent = isRtl ? 'En' : 'ع';
     swapLang(isRtl);
+    // Recalculate indicator for the new text direction
+    const saved = currentSection;
+    currentSection = null;
+    moveIndicator(saved, false);
   });
 
   function swapLang(isAr) {
