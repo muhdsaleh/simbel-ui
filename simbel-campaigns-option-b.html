@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simbel — Campaigns (Option B)</title>
+<link rel="stylesheet" href="https://use.typekit.net/jvc7lrv.css">
+<style>
+*, *::before, *::after {
+  box-sizing: border-box; margin: 0; padding: 0;
+  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+}
+
+:root {
+  --bg:           #EDEAE3;
+  --surface:      #FFFFFF;
+  --surface-2:    #F5F2EB;
+  --border:       rgba(39,39,78,.08);
+  --border-2:     rgba(39,39,78,.15);
+  --primary:      #3333CC;
+  --primary-2:    #4B4BD9;
+  --primary-muted: rgba(51,51,204,.07);
+  --green:        #16A34A;
+  --green-muted:  rgba(22,163,74,.08);
+  --orange:       #C45E00;
+  --orange-muted: rgba(196,94,0,.08);
+  --text:         #27274E;
+  --muted:        #9090B0;
+  --radius:       12px;
+  --radius-lg:    16px;
+  --sidebar-w:    232px;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'adapter-arabic-text', sans-serif;
+  font-optical-sizing: auto; font-synthesis: none;
+  background: var(--bg); color: var(--text);
+  font-feature-settings: "lnum" 1;
+}
+
+.layout { display: flex; height: 100vh; overflow: hidden; }
+
+/* ── Sidebar ─────────────────────────────────────── */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--text); /* #27274E deep navy */
+  display: flex; flex-direction: column;
+  padding: 20px 0; flex-shrink: 0;
+}
+
+.sb-logo-wrap {
+  padding: 0 20px 22px;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+  margin-bottom: 14px;
+}
+.sb-wordmark {
+  height: 20px; width: auto;
+  fill: #F2EEE8;
+  display: block;
+}
+
+.sb-nav { flex: 1; padding: 0 10px; display: flex; flex-direction: column; gap: 1px; }
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  height: 37px; padding: 0 11px; border-radius: 9px;
+  color: rgba(242,238,232,.38); font-size: 13px; font-weight: 500;
+  cursor: pointer; text-decoration: none; transition: all .14s;
+}
+.nav-item:hover { color: rgba(242,238,232,.7); background: rgba(255,255,255,.06); }
+.nav-item.active { color: #F2EEE8; background: rgba(255,255,255,.1); font-weight: 600; }
+.nav-item svg {
+  width: 15px; height: 15px; flex-shrink: 0;
+  fill: none; stroke: currentColor; stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.nav-divider { height: 1px; background: rgba(255,255,255,.06); margin: 7px 10px; }
+.nav-locked { opacity: .35; pointer-events: none; }
+
+.sb-bottom {
+  padding: 16px 20px 0;
+  border-top: 1px solid rgba(255,255,255,.07);
+  margin-top: auto;
+  display: flex; align-items: center; gap: 10px;
+}
+.sb-avatar {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: rgba(255,255,255,.12);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: rgba(242,238,232,.75);
+  flex-shrink: 0;
+}
+.sb-user { font-size: 13px; font-weight: 600; color: rgba(242,238,232,.6); }
+
+/* ── Main ───────────────────────────────────────── */
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+/* ── Page header ─────────────────────────────────── */
+.page-head {
+  padding: 28px 30px 0;
+  display: flex; align-items: flex-end; gap: 16px;
+  flex-shrink: 0;
+}
+.ph-left { flex: 1; }
+.ph-title {
+  font-size: 28px; font-weight: 800; letter-spacing: -.05em;
+  color: var(--text); line-height: 1; margin-bottom: 7px;
+}
+.ph-stats { display: flex; align-items: center; gap: 14px; }
+.ph-stat {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 12px; color: var(--muted); font-weight: 500;
+}
+.ph-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.ph-actions { display: flex; align-items: center; gap: 8px; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 35px; padding: 0 15px; border-radius: 9px;
+  border: none; font-family: 'adapter-arabic-text', sans-serif;
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  transition: all .14s; white-space: nowrap; line-height: 1;
+  font-feature-settings: "lnum" 1;
+}
+.btn-outline {
+  background: var(--surface); color: var(--text);
+  border: 1px solid var(--border-2);
+  box-shadow: 0 1px 2px rgba(39,39,78,.05);
+}
+.btn-outline:hover { background: var(--surface-2); }
+.btn-primary {
+  background: var(--primary); color: #fff;
+  box-shadow: 0 1px 3px rgba(51,51,204,.25);
+}
+.btn-primary:hover { background: var(--primary-2); }
+
+/* ── Filter row ──────────────────────────────────── */
+.filter-row {
+  padding: 16px 30px 0;
+  display: flex; align-items: center; gap: 5px;
+  flex-shrink: 0;
+}
+.ftab {
+  height: 31px; padding: 0 13px; border-radius: 8px;
+  border: 1px solid transparent; background: transparent;
+  font-family: 'adapter-arabic-text', sans-serif;
+  font-size: 12.5px; font-weight: 500; color: var(--muted);
+  cursor: pointer; transition: all .14s;
+  display: inline-flex; align-items: center; gap: 6px; line-height: 1;
+}
+.ftab:hover { color: var(--text); background: rgba(39,39,78,.05); }
+.ftab.active {
+  color: var(--text); background: var(--surface);
+  border-color: var(--border-2); font-weight: 600;
+  box-shadow: 0 1px 2px rgba(39,39,78,.06);
+}
+.ftab-n {
+  font-size: 10.5px; font-weight: 700;
+  background: rgba(39,39,78,.07); color: var(--muted);
+  width: 17px; height: 17px; border-radius: 5px;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.ftab.active .ftab-n { background: var(--primary-muted); color: var(--primary); }
+.fsep { flex: 1; }
+.search-wrap { position: relative; }
+.search-wrap svg {
+  position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+  width: 14px; height: 14px; fill: none; stroke: var(--muted); stroke-width: 2;
+  pointer-events: none;
+}
+.search-input {
+  height: 33px; padding: 0 11px 0 31px;
+  background: var(--surface); border: 1px solid var(--border-2);
+  border-radius: 9px; color: var(--text);
+  font-family: 'adapter-arabic-text', sans-serif; font-size: 12.5px;
+  width: 185px; outline: none; transition: all .14s;
+  box-shadow: 0 1px 2px rgba(39,39,78,.04);
+}
+.search-input::placeholder { color: var(--muted); }
+.search-input:focus { border-color: var(--primary); width: 220px; }
+
+/* ── Cards grid ──────────────────────────────────── */
+.cards-area {
+  flex: 1; overflow-y: auto; padding: 18px 30px 32px;
+  scrollbar-width: thin; scrollbar-color: var(--border-2) transparent;
+}
+.cards-area::-webkit-scrollbar { width: 3px; }
+.cards-area::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 9999px; }
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+/* ── Campaign card ───────────────────────────────── */
+.ccard {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 3px rgba(39,39,78,.05), 0 6px 16px rgba(39,39,78,.04);
+  display: flex; flex-direction: column; overflow: hidden;
+  transition: box-shadow .18s, transform .18s; cursor: pointer;
+}
+.ccard:hover {
+  box-shadow: 0 6px 24px rgba(39,39,78,.1), 0 1px 3px rgba(39,39,78,.06);
+  transform: translateY(-2px);
+}
+
+/* Top accent band */
+.ccard-band { height: 5px; flex-shrink: 0; }
+.band-active    { background: var(--green); }
+.band-scheduled { background: var(--primary); }
+.band-paused    { background: var(--orange); }
+.band-draft     { background: #C8C8D8; }
+
+/* Card body */
+.ccard-body { padding: 18px 20px; flex: 1; display: flex; flex-direction: column; gap: 13px; }
+
+/* Top row: channels + status badge */
+.ccard-top { display: flex; align-items: center; gap: 8px; }
+.ccard-chs { display: flex; gap: 5px; flex: 1; flex-wrap: wrap; }
+.ch-badge {
+  height: 22px; padding: 0 8px; border-radius: 6px;
+  background: var(--surface-2); border: 1px solid var(--border);
+  font-size: 10.5px; font-weight: 600; color: var(--muted);
+  display: inline-flex; align-items: center; line-height: 1;
+}
+
+/* Status badge */
+.cstatus {
+  display: inline-flex; align-items: center; gap: 5px;
+  height: 22px; padding: 0 9px; border-radius: 9999px;
+  font-size: 11px; font-weight: 500; flex-shrink: 0; line-height: 1;
+}
+.cstatus::before { content: ''; width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+.cs-active    { background: var(--green-muted);  color: var(--green); }
+.cs-active::before { background: var(--green); }
+.cs-scheduled { background: var(--primary-muted); color: var(--primary); }
+.cs-scheduled::before { background: var(--primary); }
+.cs-paused    { background: var(--orange-muted); color: var(--orange); }
+.cs-paused::before { background: var(--orange); opacity:.7; }
+.cs-draft     { background: rgba(39,39,78,.06); color: var(--muted); }
+.cs-draft::before { background: var(--muted); }
+
+/* Name + subtitle */
+.ccard-name { font-size: 19px; font-weight: 800; letter-spacing: -.03em; line-height: 1.1; color: var(--text); }
+.ccard-sub  { font-size: 12px; color: var(--muted); margin-top: 3px; }
+
+/* Goal text */
+.ccard-goal {
+  font-size: 12.5px; color: var(--muted); line-height: 1.55;
+  padding-bottom: 13px; border-bottom: 1px solid var(--border);
+}
+
+/* Metrics */
+.ccard-metrics { display: flex; }
+.cmetric {
+  flex: 1; display: flex; flex-direction: column; gap: 3px;
+  padding-right: 14px; border-right: 1px solid var(--border); margin-right: 14px;
+}
+.cmetric:last-child { border-right: none; margin-right: 0; padding-right: 0; }
+.cm-val   { font-size: 22px; font-weight: 800; letter-spacing: -.04em; color: var(--text); line-height: 1; }
+.cm-label {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .07em; color: var(--muted);
+}
+
+/* Card footer */
+.ccard-foot {
+  padding: 12px 20px 16px;
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center; gap: 8px;
+}
+.cfoot-date { font-size: 11.5px; color: var(--muted); flex: 1; font-weight: 500; }
+.cview-btn {
+  height: 30px; padding: 0 13px; border-radius: 8px; border: none;
+  background: var(--primary); color: #fff;
+  font-family: 'adapter-arabic-text', sans-serif;
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  transition: background .14s; display: inline-flex; align-items: center; gap: 5px;
+  line-height: 1;
+}
+.cview-btn:hover { background: var(--primary-2); }
+.cmenu-btn {
+  width: 30px; height: 30px; border-radius: 8px;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--muted); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .14s;
+}
+.cmenu-btn:hover { background: var(--surface-2); color: var(--text); border-color: var(--border-2); }
+.cmenu-btn svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 2; }
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sb-logo-wrap">
+      <svg class="sb-wordmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 776.45 121.77">
+        <path d="M267.42,88.41l22.99-2.08c2.31,11.42,8.95,16.36,25.23,16.36,13.12,0,20.75-5.4,20.75-13.89,0-8.02-4.86-11.03-17.51-13.42l-15.43-2.85c-21.76-4.09-33.1-14.27-33.1-32.63,0-20.75,15.28-33.02,43.36-33.02,29.62,0,43.28,11.03,45.52,32.56l-22.76,2.01c-2.01-11.65-7.56-16.2-22.61-16.2-12.81,0-20.13,4.47-20.13,13.04,0,8.02,4.86,12.04,17.67,14.2l14.58,2.62c23.84,4.24,33.79,13.58,33.79,32.09,0,21.06-15.82,33.87-44.82,33.87-31.24,0-45.83-10.96-47.52-32.63Z"/>
+        <path d="M372.98,12.42c0-8.33,5.4-12.42,13.96-12.42s13.73,4.09,13.73,12.42-5.4,12.58-13.73,12.58-13.96-4.24-13.96-12.58ZM375.14,36.8h23.14v81.93h-23.14V36.8Z"/>
+        <path d="M416.89,36.8h20.21l2.47,15.2h.93c5.32-10.57,13.58-17.51,27.16-17.51,14.66,0,22.37,7.17,25.15,18.36h.93c5.4-10.57,13.04-18.36,28.16-18.36,18.28,0,26.54,11.26,26.54,29.93v54.31h-23.14v-47.68c0-10.72-4.01-16.43-13.04-16.43-10.26,0-18.05,7.95-18.05,20.14v43.97h-23.14v-47.68c0-10.72-3.93-16.43-12.96-16.43-10.34,0-18.05,7.95-18.05,20.14v43.97h-23.14V36.8Z"/>
+        <path d="M589.09,104.3h-.93l-2.31,14.43h-20.21V3.01h23.14v46.75h.93c3.86-9.33,11.88-15.28,25.23-15.28,21.6,0,34.18,16.12,34.18,43.2s-12.58,43.36-33.79,43.36c-13.81,0-21.76-6.71-26.23-16.74ZM625.66,77.69c0-16.66-5.79-24.84-18.67-24.84s-18.52,9.1-18.52,24.84,5.63,25,18.52,25,18.67-8.18,18.67-25Z"/>
+        <path d="M681.15,84.32c1.39,13.58,7.64,19.75,19.06,19.75,9.57,0,14.27-3.63,16.43-9.88l21.76,2.01c-3.93,15.51-14.66,24.84-38.57,24.84-27.7,0-42.12-16.12-42.12-43.2s15.74-43.67,41.43-43.67,40.35,14.81,40.35,40.12v10.03h-58.32ZM681.22,69.59h35.95c-.85-12.27-6.33-18.59-17.82-18.59-10.8,0-16.66,5.79-18.13,18.59Z"/>
+        <path d="M753.3,3.01h23.14v115.72h-23.14V3.01Z"/>
+        <path d="M206.28,93.31c6.78-6.6,10.52-15.37,10.52-24.7s-3.74-18.1-10.52-24.7c-6.78-6.6-15.8-10.23-25.4-10.23s-18.61,3.63-25.4,10.23l-76.93,74.81h35.22l59.32-57.69c2.08-2.02,4.85-3.14,7.79-3.14s5.71,1.11,7.79,3.14c2.08,2.02,3.23,4.71,3.23,7.57s-1.15,5.55-3.23,7.57l-43.75,42.54h35.22l26.14-25.42Z"/>
+        <path d="M102.72,37.02l-59.03,57.4c-2.08,2.02-4.85,3.14-7.79,3.14s-5.71-1.11-7.79-3.14c-4.29-4.18-4.29-10.97,0-15.15l43.45-42.25h-35.22l-25.84,25.13c-14,13.62-14,35.78,0,49.39,6.78,6.6,15.8,10.23,25.4,10.23s18.61-3.63,25.4-10.23l76.64-74.52h-35.22Z"/>
+      </svg>
+    </div>
+
+    <nav class="sb-nav">
+      <a class="nav-item active" href="#">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Campaigns
+      </a>
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Schedule
+      </a>
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Content Library
+      </a>
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        Media Library
+      </a>
+      <div class="nav-divider"></div>
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        Create Post
+      </a>
+      <a class="nav-item nav-locked" href="#">
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        Studio
+      </a>
+      <div class="nav-divider"></div>
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Analytics
+      </a>
+      <a class="nav-item nav-locked" href="#">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+        Audience
+      </a>
+    </nav>
+
+    <div class="sb-bottom">
+      <div class="sb-avatar">S</div>
+      <span class="sb-user">Saleh</span>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+
+    <!-- Page header -->
+    <div class="page-head">
+      <div class="ph-left">
+        <div class="ph-title">Campaigns</div>
+        <div class="ph-stats">
+          <span class="ph-stat"><span class="ph-dot" style="background:var(--green)"></span>2 active</span>
+          <span class="ph-stat"><span class="ph-dot" style="background:var(--primary)"></span>1 scheduled</span>
+          <span class="ph-stat"><span class="ph-dot" style="background:var(--orange)"></span>1 paused</span>
+        </div>
+      </div>
+      <div class="ph-actions">
+        <button class="btn btn-outline">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+          Filter
+        </button>
+        <button class="btn btn-primary">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          New Campaign
+        </button>
+      </div>
+    </div>
+
+    <!-- Filter row -->
+    <div class="filter-row">
+      <button class="ftab active">All <span class="ftab-n">4</span></button>
+      <button class="ftab">Active <span class="ftab-n">2</span></button>
+      <button class="ftab">Scheduled <span class="ftab-n">1</span></button>
+      <button class="ftab">Paused <span class="ftab-n">1</span></button>
+      <button class="ftab">Draft <span class="ftab-n">1</span></button>
+      <div class="fsep"></div>
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input class="search-input" type="text" placeholder="Search campaigns…">
+      </div>
+    </div>
+
+    <!-- Cards -->
+    <div class="cards-area">
+      <div class="cards-grid">
+
+        <!-- Card 1: Active -->
+        <div class="ccard">
+          <div class="ccard-band band-active"></div>
+          <div class="ccard-body">
+            <div class="ccard-top">
+              <div class="ccard-chs">
+                <span class="ch-badge">Instagram</span>
+                <span class="ch-badge">Email</span>
+                <span class="ch-badge">WhatsApp</span>
+              </div>
+              <span class="cstatus cs-active">Active</span>
+            </div>
+            <div>
+              <div class="ccard-name">Ramadan Campaign 2025</div>
+              <div class="ccard-sub">حملة رمضان 2025</div>
+            </div>
+            <div class="ccard-goal">Automating marketing tasks and improving campaigns for SMEs across MENA during the holy month.</div>
+            <div class="ccard-metrics">
+              <div class="cmetric">
+                <div class="cm-val">12</div>
+                <div class="cm-label">Posts</div>
+              </div>
+              <div class="cmetric">
+                <div class="cm-val">4</div>
+                <div class="cm-label">Weeks</div>
+              </div>
+              <div class="cmetric">
+                <div class="cm-val">3</div>
+                <div class="cm-label">Channels</div>
+              </div>
+            </div>
+          </div>
+          <div class="ccard-foot">
+            <span class="cfoot-date">Mar 1 – Mar 30, 2025</span>
+            <button class="cview-btn">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              View Campaign
+            </button>
+            <button class="cmenu-btn">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="12" cy="19" r="1" fill="currentColor"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 2: Scheduled -->
+        <div class="ccard">
+          <div class="ccard-band band-scheduled"></div>
+          <div class="ccard-body">
+            <div class="ccard-top">
+              <div class="ccard-chs">
+                <span class="ch-badge">LinkedIn</span>
+                <span class="ch-badge">Instagram</span>
+                <span class="ch-badge">Email</span>
+              </div>
+              <span class="cstatus cs-scheduled">Scheduled</span>
+            </div>
+            <div>
+              <div class="ccard-name">Product Launch Q2</div>
+              <div class="ccard-sub">إطلاق المنتج — الربع الثاني</div>
+            </div>
+            <div class="ccard-goal">Multi-channel launch targeting SME decision-makers in the Arab world with awareness and conversion content.</div>
+            <div class="ccard-metrics">
+              <div class="cmetric">
+                <div class="cm-val">9</div>
+                <div class="cm-label">Posts</div>
+              </div>
+              <div class="cmetric">
+                <div class="cm-val">3</div>
+                <div class="cm-label">Weeks</div>
+              </div>
+              <div class="cmetric">
+                <div class="cm-val">3</div>
+                <div class="cm-label">Channels</div>
+              </div>
+            </div>
+          </div>
+          <div class="ccard-foot">
+            <span class="cfoot-date">Apr 1 – Apr 21, 2025</span>
+            <button class="cview-btn">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              View Campaign
+            </button>
+            <button class="cmenu-btn">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="12" cy="19" r="1" fill="currentColor"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 3: Paused -->
+        <div class="ccard">
+          <div class="ccard-band band-paused"></div>
+          <div class="ccard-body">
+            <div class="ccard-top">
+              <div class="ccard-chs">
+                <span class="ch-badge">Facebook</span>
+                <span class="ch-badge">Instagram</span>
+              </div>
+              <span class="cstatus cs-paused">Paused</span>
+            </div>
+            <div>
+              <div class="ccard-name">Summer Awareness</div>
+              <div class="ccard-sub">حملة الوعي الصيفية</div>
+            </div>
+            <div class="ccard-goal">Brand awareness campaign to grow Simbel's presence across social channels during the summer season.</div>
+            <div class="ccard-metrics">
+              <div class="cmetric">
+                <div class="cm-val">8</div>
+                <div class="cm-label">Posts</div>
+              </div>
+              <div class="cmetric">
+                <div class="cm-val">2</div>
+                <div class="cm-label">Weeks</div>
+              </div>
+              <div class="cmetric">
+                <div class="cm-val">2</div>
+                <div class="cm-label">Channels</div>
+              </div>
+            </div>
+          </div>
+          <div class="ccard-foot">
+            <span class="cfoot-date">Jun 1 – Jun 14, 2025</span>
+            <button class="cview-btn">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              View Campaign
+            </button>
+            <button class="cmenu-btn">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="12" cy="19" r="1" fill="currentColor"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 4: Draft -->
+        <div class="ccard">
+          <div class="ccard-band band-draft"></div>
+          <div class="ccard-body">
+            <div class="ccard-top">
+              <div class="ccard-chs">
+                <span class="ch-badge">LinkedIn</span>
+                <span class="ch-badge">Twitter/X</span>
+              </div>
+              <span class="cstatus cs-draft">Draft</span>
+            </div>
+            <div>
+              <div class="ccard-name">Brand Story Series</div>
+              <div class="ccard-sub">سلسلة قصص العلامة التجارية</div>
+            </div>
+            <div class="ccard-goal">Long-form storytelling campaign designed to humanize the Simbel brand and build trust with enterprise prospects.</div>
+            <div class="ccard-metrics">
+              <div class="cmetric">
+                <div class="cm-val">16</div>
+                <div class="cm-label">Posts</div>
+              </div>
+              <div class="cmetric">
+                <div class="cm-val">4</div>
+                <div class="cm-label">Weeks</div>
+              </div>
+              <div class="cmetric">
+                <div class="cm-val">2</div>
+                <div class="cm-label">Channels</div>
+              </div>
+            </div>
+          </div>
+          <div class="ccard-foot">
+            <span class="cfoot-date">Not scheduled yet</span>
+            <button class="cview-btn">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              View Campaign
+            </button>
+            <button class="cmenu-btn">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="12" cy="19" r="1" fill="currentColor"/></svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div><!-- /main -->
+</div><!-- /layout -->
+</body>
+</html>
