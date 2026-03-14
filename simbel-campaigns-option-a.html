@@ -37,24 +37,8 @@ html, body {
   height: 100%;
   font-family: 'adapter-arabic-text', sans-serif;
   font-optical-sizing: auto; font-synthesis: none;
-  background:
-    radial-gradient(ellipse 70% 55% at 8% 30%,  rgba(51,51,204,.10) 0%, rgba(51,51,204,0) 70%),
-    radial-gradient(ellipse 50% 40% at 90% 75%,  rgba(70,35,190,.07) 0%, rgba(70,35,190,0) 65%),
-    radial-gradient(ellipse 40% 30% at 55% 5%,   rgba(51,51,204,.05) 0%, rgba(51,51,204,0) 60%),
-    var(--bg);
-  color: var(--text);
+  background: var(--bg); color: var(--text);
   font-feature-settings: "lnum" 1;
-}
-
-/* ── Noise overlay ───────────────────────────────── */
-body::before {
-  content: '';
-  position: fixed; inset: 0; z-index: 0;
-  pointer-events: none;
-  opacity: .09;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>");
-  background-repeat: repeat;
-  background-size: 200px 200px;
 }
 
 /* ── Layout ─────────────────────────────────────── */
