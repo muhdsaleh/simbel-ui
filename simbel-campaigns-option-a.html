@@ -64,11 +64,11 @@ html, body {
 .sb-logo-icon svg { height: 17px; width: auto; }
 .sb-logo-wordmark {
   display: flex; align-items: center; margin-left: 7px; margin-top: -5px;
+  max-width: 0; overflow: hidden;
   opacity: 0;
-  clip-path: inset(0 100% 0 0);
   transform: translateX(-6px);
   transition: opacity .28s cubic-bezier(.4,0,.2,1),
-              clip-path .28s cubic-bezier(.4,0,.2,1),
+              max-width .28s cubic-bezier(.4,0,.2,1),
               transform .28s cubic-bezier(.4,0,.2,1);
 }
 .sb-logo-wordmark svg { height: 16px; width: auto; }
