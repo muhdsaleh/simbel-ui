@@ -352,6 +352,35 @@ html, body {
 .stat-item:last-child { border-right: none; }
 .stat-val { font-size: 18px; font-weight: 800; letter-spacing: -.03em; }
 .stat-label { font-size: 13px; color: var(--text-3); font-weight: 500; }
+
+/* ── Responsive: 1024–1279px ─────────────────────── */
+@media (max-width: 1279px) {
+  .topbar-title { font-size: 72px; }
+}
+
+/* ── Responsive: 768–1023px ──────────────────────── */
+@media (max-width: 1023px) {
+  .topbar-title { font-size: 52px; letter-spacing: -.04em; }
+  .topbar { padding: 18px 20px 12px; }
+  .stats-bar { padding: 0 20px; }
+  .list-wrap { padding: 0 16px 0 20px; }
+  .filter-strip { padding: 10px 20px; }
+  .search-box { width: 160px; }
+
+  /* Hide Channels + Date Range columns */
+  .list-col-head,
+  .crow {
+    grid-template-columns: 40px 1fr 120px 90px;
+  }
+  .list-col-head .col-h:nth-child(4),  /* Channels header */
+  .list-col-head .col-h:nth-child(5),  /* Date Range header */
+  .crow-chs,                            /* Channels cell */
+  .crow-date                            /* Date Range cell */
+  { display: none; }
+
+  /* Hide "Last 90 days" label in filter strip */
+  .flabel { display: none; }
+}
 </style>
 </head>
 <body>
