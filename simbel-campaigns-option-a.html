@@ -249,18 +249,7 @@ html, body {
   cursor: pointer; transition: background .14s, border-color .14s;
   position: relative; margin-bottom: 1px;
 }
-.crow::before {
-  content: ''; position: absolute;
-  left: 0; top: 10px; bottom: 10px;
-  width: 3px; border-radius: 0 3px 3px 0;
-  opacity: 0; transition: opacity .14s;
-}
 .crow:hover { background: var(--surface); border-color: var(--border); }
-.crow:hover::before { opacity: 1; }
-.crow.s-active::before  { background: var(--green); }
-.crow.s-sched::before   { background: var(--primary-lit); }
-.crow.s-paused::before  { background: var(--orange); }
-.crow.s-draft::before   { background: var(--slate); }
 
 /* Row icon */
 .crow-icon {
