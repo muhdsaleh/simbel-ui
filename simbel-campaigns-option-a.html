@@ -46,15 +46,24 @@ html, body {
 
 /* ── Sidebar ─────────────────────────────────────── */
 .sidebar {
+  position: fixed; left: 0; top: 0; bottom: 0; z-index: 100;
   width: 56px; background: var(--bg);
   border-right: 1px solid var(--border);
   display: flex; flex-direction: column;
   align-items: center; padding: 14px 0;
-  flex-shrink: 0; gap: 2px;
-  transition: width .22s cubic-bezier(.4,0,.2,1);
+  gap: 2px;
+  transition: width .26s cubic-bezier(.4,0,.2,1),
+              background .26s cubic-bezier(.4,0,.2,1),
+              backdrop-filter .26s cubic-bezier(.4,0,.2,1);
   overflow: hidden;
 }
-.sidebar:hover { width: 232px; align-items: stretch; }
+.sidebar:hover {
+  width: 232px; align-items: stretch;
+  background: rgba(11,11,21,.72);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border-right-color: rgba(255,255,255,.06);
+}
 
 .sb-logo {
   display: flex; align-items: center; justify-content: center;
