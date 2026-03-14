@@ -54,25 +54,25 @@ html, body {
   transition: width .22s cubic-bezier(.4,0,.2,1);
   overflow: hidden;
 }
-.sidebar.expanded { width: 200px; align-items: stretch; }
+.sidebar.expanded { width: 232px; align-items: stretch; }
 
 .sb-logo {
   display: flex; align-items: center; justify-content: center;
   margin-bottom: 18px; flex-shrink: 0;
 }
 .sb-logo-icon { display: flex; flex-shrink: 0; transition: opacity .12s; }
-.sb-logo-icon svg { height: 24px; width: auto; }
+.sb-logo-icon svg { height: 32px; width: auto; }
 .sb-logo-full {
   opacity: 0; max-width: 0; overflow: hidden;
   display: flex; align-items: center;
   transition: opacity .15s, max-width .22s cubic-bezier(.4,0,.2,1);
 }
-.sb-logo-full svg { height: 24px; width: auto; }
+.sb-logo-full svg { height: 32px; width: auto; }
 .sidebar.expanded .sb-logo {
   justify-content: flex-start; padding-left: 17px;
 }
 .sidebar.expanded .sb-logo-icon { opacity: 0; max-width: 0; overflow: hidden; }
-.sidebar.expanded .sb-logo-full { opacity: 1; max-width: 170px; }
+.sidebar.expanded .sb-logo-full { opacity: 1; max-width: 210px; }
 
 .sb-nav { display: flex; flex-direction: column; gap: 2px; width: 100%; padding: 0 7px; }
 
