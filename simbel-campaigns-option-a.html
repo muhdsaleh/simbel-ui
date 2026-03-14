@@ -60,19 +60,26 @@ html, body {
   display: flex; align-items: center; justify-content: center;
   margin-top: 12px; margin-bottom: 18px; flex-shrink: 0;
 }
-.sb-logo-icon { display: flex; flex-shrink: 0; transition: opacity .12s; }
+.sb-logo-icon { display: flex; flex-shrink: 0; }
 .sb-logo-icon svg { height: 17px; width: auto; }
-.sb-logo-full {
-  opacity: 0; max-width: 0; overflow: hidden;
-  display: flex; align-items: center; margin-top: -5px;
-  transition: opacity .15s, max-width .22s cubic-bezier(.4,0,.2,1);
+.sb-logo-wordmark {
+  display: flex; align-items: center; margin-left: 7px; margin-top: -5px;
+  opacity: 0;
+  clip-path: inset(0 100% 0 0);
+  transform: translateX(-6px);
+  transition: opacity .28s cubic-bezier(.4,0,.2,1),
+              clip-path .28s cubic-bezier(.4,0,.2,1),
+              transform .28s cubic-bezier(.4,0,.2,1);
 }
-.sb-logo-full svg { height: 16px; width: auto; }
+.sb-logo-wordmark svg { height: 16px; width: auto; }
 .sidebar.expanded .sb-logo {
   justify-content: flex-start; padding-left: 17px;
 }
-.sidebar.expanded .sb-logo-icon { opacity: 0; max-width: 0; overflow: hidden; }
-.sidebar.expanded .sb-logo-full { opacity: 1; max-width: 210px; }
+.sidebar.expanded .sb-logo-wordmark {
+  opacity: 1;
+  clip-path: inset(0 0% 0 0);
+  transform: translateX(0);
+}
 
 .sb-nav { display: flex; flex-direction: column; gap: 2px; width: 100%; padding: 0 7px; }
 
