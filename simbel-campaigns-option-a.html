@@ -60,19 +60,18 @@ html, body {
   display: flex; align-items: center; justify-content: center;
   margin-bottom: 18px; flex-shrink: 0;
 }
-.sb-logo-icon { display: flex; transition: opacity .12s; }
+.sb-logo-icon { display: flex; flex-shrink: 0; }
 .sb-logo-icon svg { width: 36px; height: 36px; }
-.sb-logo-full {
+.sb-logo-wordmark {
   opacity: 0; max-width: 0; overflow: hidden;
-  display: flex; align-items: center;
-  transition: opacity .12s, max-width .22s cubic-bezier(.4,0,.2,1);
+  display: flex; align-items: center; margin-left: 6px;
+  transition: opacity .15s, max-width .22s cubic-bezier(.4,0,.2,1);
 }
-.sb-logo-full svg { height: 18px; width: auto; }
+.sb-logo-wordmark svg { height: 16px; width: auto; }
 .sidebar.expanded .sb-logo {
   justify-content: flex-start; padding-left: 17px;
 }
-.sidebar.expanded .sb-logo-icon { opacity: 0; max-width: 0; overflow: hidden; }
-.sidebar.expanded .sb-logo-full { opacity: 1; max-width: 160px; }
+.sidebar.expanded .sb-logo-wordmark { opacity: 1; max-width: 120px; }
 
 .sb-nav { display: flex; flex-direction: column; gap: 2px; width: 100%; padding: 0 7px; }
 
