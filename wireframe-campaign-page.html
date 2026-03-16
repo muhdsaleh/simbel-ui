@@ -1216,6 +1216,16 @@
 </main>
 
 <script>
+  function toggleMenu(e) {
+    e.stopPropagation();
+    const menu = document.getElementById('campaign-menu');
+    menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+  }
+  document.addEventListener('click', () => {
+    const menu = document.getElementById('campaign-menu');
+    if (menu) menu.style.display = 'none';
+  });
+
   function switchTab(id, el) {
     // Hide all tab panels
     document.querySelectorAll('.page-body').forEach(p => p.classList.remove('visible'));
