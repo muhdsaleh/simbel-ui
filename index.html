@@ -345,35 +345,27 @@ body::before {
 /* ── Pipeline ──────────────────────────────── */
 .pipeline-grid {
   display: grid; grid-template-columns: repeat(5, 1fr);
-  gap: 2px; margin-top: 56px;
+  gap: 16px; margin-top: 56px;
 }
 .pipeline-step {
   background: var(--surface); border: 1px solid var(--border);
   border-radius: 12px; padding: 28px 22px; position: relative;
   transition: all .35s cubic-bezier(.16,1,.3,1);
+  display: flex; flex-direction: column;
 }
 .pipeline-step:hover {
   background: var(--surface-2); border-color: var(--border-2);
   transform: translateY(-4px);
 }
 .pipeline-num {
-  font-size: 48px; font-weight: 800; color: var(--primary-soft);
+  font-size: 48px; font-weight: 800; color: rgba(51,51,204,.25);
   letter-spacing: -.04em; line-height: 1; margin-bottom: 16px;
   transition: color .35s; font-feature-settings: "lnum" 1;
 }
-.pipeline-step:hover .pipeline-num { color: var(--primary-glow); }
+.pipeline-step:hover .pipeline-num { color: rgba(51,51,204,.4); }
 .pipeline-name { font-size: 16px; font-weight: 600; margin-bottom: 8px; line-height: 1.3; }
-.pipeline-desc { font-size: 13px; color: var(--text-3); line-height: 1.5; }
-.pipeline-arrow {
-  position: absolute; right: -14px; top: 50%; transform: translateY(-50%); z-index: 2;
-  width: 24px; height: 24px; border-radius: 50%;
-  background: var(--surface-2); border: 1px solid var(--border-2);
-  display: flex; align-items: center; justify-content: center; color: var(--text-3);
-}
-.pipeline-arrow svg {
-  width: 12px; height: 12px; fill: none;
-  stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
-}
+.pipeline-desc { font-size: 13px; color: var(--text-3); line-height: 1.5; flex: 1; }
+.pipeline-arrow { display: none; }
 
 /* ── Pipeline expand ──────────────────────── */
 .pipeline-step { cursor: pointer; }
