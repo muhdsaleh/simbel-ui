@@ -415,7 +415,9 @@ body::before {
   display: grid; grid-template-columns: 1fr 1fr;
   gap: 40px; align-items: center;
   background: var(--surface); border: 1px solid var(--border-2);
-  border-radius: 12px; padding: 36px 32px;
+  border-top: 2px solid var(--primary);
+  border-radius: 12px; border-top-left-radius: 0; border-top-right-radius: 0;
+  padding: 36px 32px;
 }
 .pipeline-detail-text h3 {
   font-size: 20px; font-weight: 700; margin-bottom: 12px; line-height: 1.3;
