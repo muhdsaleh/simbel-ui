@@ -1045,6 +1045,36 @@ window.addEventListener('scroll', () => {
   nav.style.background = window.scrollY > 20 ? 'rgba(11,11,21,.92)' : 'rgba(11,11,21,.7)';
 });
 
+// ── Pipeline step expand ────────────────────
+const pipelineSteps = document.querySelectorAll('.pipeline-step[data-step]');
+const pipelineGrid = document.querySelector('.pipeline-grid');
+
+pipelineSteps.forEach(step => {
+  step.addEventListener('click', () => {
+    const stepNum = step.dataset.step;
+    const detail = document.getElementById('detail-' + stepNum);
+    const wasActive = step.classList.contains('active');
+
+    // Close all
+    pipelineSteps.forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.pipeline-detail').forEach(d => d.classList.remove('open'));
+
+    // If clicking a different step, open it
+    if (!wasActive) {
+      step.classList.add('active');
+      // Move detail panel right after the step's row in grid
+      // For 5-col layout, detail goes after all 5 steps (they're all in one row)
+      // Just open the correct detail panel
+      detail.classList.add('open');
+
+      // Smooth scroll to detail if it's below fold
+      setTimeout(() => {
+        detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 100);
+    }
+  });
+});
+
 // ── Particle canvas ─────────────────────────
 const canvas = document.getElementById('particles');
 const ctx = canvas.getContext('2d');
