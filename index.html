@@ -481,6 +481,24 @@ body::before {
   font-size: 15px; color: var(--text-2);
   direction: rtl; text-align: right; line-height: 1.5;
 }
+.dialect-play {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--primary-soft); border: 1px solid rgba(51,51,204,.2);
+  color: var(--primary-lit); cursor: pointer;
+  transition: all .25s; margin-top: 12px;
+}
+.dialect-play:hover {
+  background: var(--primary); color: #fff;
+  transform: scale(1.1);
+}
+.dialect-play.playing {
+  background: var(--primary); color: #fff;
+  animation: pulse 1s ease-in-out infinite;
+}
+.dialect-play svg {
+  width: 14px; height: 14px; fill: currentColor;
+}
 
 .arabic-visual {
   background: var(--surface); border: 1px solid var(--border);
