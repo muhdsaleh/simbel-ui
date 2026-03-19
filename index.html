@@ -1049,6 +1049,35 @@ window.addEventListener('scroll', () => {
   nav.style.background = window.scrollY > 20 ? 'rgba(11,11,21,.92)' : 'rgba(11,11,21,.7)';
 });
 
+// ── Dialect TTS playback ────────────────────
+document.querySelectorAll('.dialect-play').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    // Stop any current speech
+    speechSynthesis.cancel();
+    document.querySelectorAll('.dialect-play.playing').forEach(b => b.classList.remove('playing'));
+
+    const text = btn.dataset.text;
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'ar';
+    utterance.rate = 0.9;
+
+    // Try to find an Arabic voice
+    const voices = speechSynthesis.getVoices();
+    const arVoice = voices.find(v => v.lang.startsWith('ar'));
+    if (arVoice) utterance.voice = arVoice;
+
+    btn.classList.add('playing');
+    utterance.onend = () => btn.classList.remove('playing');
+    utterance.onerror = () => btn.classList.remove('playing');
+    speechSynthesis.speak(utterance);
+  });
+});
+
+// Preload voices (some browsers load async)
+speechSynthesis.getVoices();
+speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
+
 // ── Pipeline step expand ────────────────────
 const pipelineSteps = document.querySelectorAll('.pipeline-step[data-step]');
 const pipelineGrid = document.querySelector('.pipeline-grid');
