@@ -702,34 +702,170 @@ body::before {
     <h2 class="section-title reveal reveal-d1">One brief. Five stages. Complete campaign.</h2>
     <p class="section-desc reveal reveal-d2">Fill in a brief and Simbel's AI agents handle research, strategy, content creation, scheduling, and analytics. You approve at every stage.</p>
     <div class="pipeline-grid">
-      <div class="pipeline-step reveal reveal-d1">
+      <div class="pipeline-step reveal reveal-d1" data-step="1">
         <div class="pipeline-num">01</div>
         <div class="pipeline-name">Brief</div>
         <div class="pipeline-desc">Define your objectives, audience, platforms, language, and dialect.</div>
+        <span class="expand-hint"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg> Details</span>
         <div class="pipeline-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
-      <div class="pipeline-step reveal reveal-d2">
+      <div class="pipeline-step reveal reveal-d2" data-step="2">
         <div class="pipeline-num">02</div>
         <div class="pipeline-name">Research &amp; Strategy</div>
         <div class="pipeline-desc">AI analyzes competitors, audience, and market. Generates a full strategy document.</div>
+        <span class="expand-hint"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg> Details</span>
         <div class="pipeline-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
-      <div class="pipeline-step reveal reveal-d3">
+      <div class="pipeline-step reveal reveal-d3" data-step="3">
         <div class="pipeline-num">03</div>
         <div class="pipeline-name">Content</div>
         <div class="pipeline-desc">Platform-specific posts generated in your chosen Arabic dialect or English.</div>
+        <span class="expand-hint"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg> Details</span>
         <div class="pipeline-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
-      <div class="pipeline-step reveal reveal-d4">
+      <div class="pipeline-step reveal reveal-d4" data-step="4">
         <div class="pipeline-num">04</div>
         <div class="pipeline-name">Publish</div>
         <div class="pipeline-desc">Smart scheduling optimized for MENA engagement patterns and time zones.</div>
+        <span class="expand-hint"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg> Details</span>
         <div class="pipeline-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
-      <div class="pipeline-step reveal reveal-d5">
+      <div class="pipeline-step reveal reveal-d5" data-step="5">
         <div class="pipeline-num">05</div>
         <div class="pipeline-name">Analytics</div>
         <div class="pipeline-desc">Performance tracking with AI recommendations that improve future campaigns.</div>
+        <span class="expand-hint"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg> Details</span>
+      </div>
+
+      <!-- Detail panels (inserted dynamically via JS after the clicked step's row) -->
+      <div class="pipeline-detail" id="detail-1">
+        <div class="pipeline-detail-inner">
+          <div class="pipeline-detail-text">
+            <h3>Start with what matters</h3>
+            <p>One structured brief replaces hours of back-and-forth. Define your campaign goals, target audience, tone of voice, and preferred platforms. Simbel uses this single input to drive every downstream decision.</p>
+            <ul class="pipeline-detail-features">
+              <li>Set objectives, KPIs, and budget constraints</li>
+              <li>Choose platforms, languages, and Arabic dialects</li>
+              <li>Define audience segments and personas</li>
+              <li>Upload brand guidelines and reference materials</li>
+            </ul>
+          </div>
+          <div class="pipeline-detail-visual">
+            <div class="pdv-flow">
+              <div class="pdv-flow-step"><div class="pdv-flow-dot">🎯</div><div class="pdv-flow-label">Objective</div></div>
+              <div class="pdv-flow-arrow">→</div>
+              <div class="pdv-flow-step"><div class="pdv-flow-dot">👥</div><div class="pdv-flow-label">Audience</div></div>
+              <div class="pdv-flow-arrow">→</div>
+              <div class="pdv-flow-step"><div class="pdv-flow-dot">📱</div><div class="pdv-flow-label">Platforms</div></div>
+              <div class="pdv-flow-arrow">→</div>
+              <div class="pdv-flow-step"><div class="pdv-flow-dot">🗣️</div><div class="pdv-flow-label">Language</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pipeline-detail" id="detail-2">
+        <div class="pipeline-detail-inner">
+          <div class="pipeline-detail-text">
+            <h3>AI-driven market intelligence</h3>
+            <p>Simbel's research agents analyze your industry, competitors, and target audience in real time. The output is a comprehensive strategy document you can review, edit, and approve before any content is created.</p>
+            <ul class="pipeline-detail-features">
+              <li>Competitor content analysis and gap identification</li>
+              <li>Audience behavior patterns by platform and region</li>
+              <li>Optimal posting frequency and content mix</li>
+              <li>Full strategy document with actionable recommendations</li>
+            </ul>
+          </div>
+          <div class="pipeline-detail-visual">
+            <div class="pdv-flow">
+              <div class="pdv-flow-step"><div class="pdv-flow-dot">🔍</div><div class="pdv-flow-label">Research</div></div>
+              <div class="pdv-flow-arrow">→</div>
+              <div class="pdv-flow-step"><div class="pdv-flow-dot">📊</div><div class="pdv-flow-label">Analysis</div></div>
+              <div class="pdv-flow-arrow">→</div>
+              <div class="pdv-flow-step"><div class="pdv-flow-dot">📋</div><div class="pdv-flow-label">Strategy</div></div>
+              <div class="pdv-flow-arrow">→</div>
+              <div class="pdv-flow-step"><div class="pdv-flow-dot">✅</div><div class="pdv-flow-label">Approval</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pipeline-detail" id="detail-3">
+        <div class="pipeline-detail-inner">
+          <div class="pipeline-detail-text">
+            <h3>Content that speaks your audience's language</h3>
+            <p>AI generates platform-native content in the exact Arabic dialect your audience uses. Not stiff MSA translations, but natural, conversational copy tailored to each platform's format and character limits.</p>
+            <ul class="pipeline-detail-features">
+              <li>Platform-specific formats: reels scripts, tweets, carousels</li>
+              <li>Five Arabic dialects plus English</li>
+              <li>Hashtag research optimized for each market</li>
+              <li>Visual suggestions and caption variations</li>
+            </ul>
+          </div>
+          <div class="pipeline-detail-visual">
+            <div class="pdv-flow">
+              <div class="pdv-flow-step"><div class="pdv-flow-dot">✍️</div><div class="pdv-flow-label">Generate</div></div>
+              <div class="pdv-flow-arrow">→</div>
+              <div class="pdv-flow-step"><div class="pdv-flow-dot">🌐</div><div class="pdv-flow-label">Localize</div></div>
+              <div class="pdv-flow-arrow">→</div>
+              <div class="pdv-flow-step"><div class="pdv-flow-dot">🔄</div><div class="pdv-flow-label">Adapt</div></div>
+              <div class="pdv-flow-arrow">→</div>
+              <div class="pdv-flow-step"><div class="pdv-flow-dot">📝</div><div class="pdv-flow-label">Review</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pipeline-detail" id="detail-4">
+        <div class="pipeline-detail-inner">
+          <div class="pipeline-detail-text">
+            <h3>Smart scheduling for MENA time zones</h3>
+            <p>Simbel analyzes engagement patterns across MENA markets and schedules posts at optimal times. Supports Ramadan-aware scheduling, weekend differences (Friday-Saturday vs. Saturday-Sunday), and regional holidays.</p>
+            <ul class="pipeline-detail-features">
+              <li>Optimal timing per platform and country</li>
+              <li>Ramadan and regional holiday awareness</li>
+              <li>Cross-platform queue with drag-and-drop reordering</li>
+              <li>Auto-publish or approval-gated workflows</li>
+            </ul>
+          </div>
+          <div class="pipeline-detail-visual">
+            <div class="pdv-flow">
+              <div class="pdv-flow-step"><div class="pdv-flow-dot">🕐</div><div class="pdv-flow-label">Timing</div></div>
+              <div class="pdv-flow-arrow">→</div>
+              <div class="pdv-flow-step"><div class="pdv-flow-dot">📅</div><div class="pdv-flow-label">Schedule</div></div>
+              <div class="pdv-flow-arrow">→</div>
+              <div class="pdv-flow-step"><div class="pdv-flow-dot">👁️</div><div class="pdv-flow-label">Review</div></div>
+              <div class="pdv-flow-arrow">→</div>
+              <div class="pdv-flow-step"><div class="pdv-flow-dot">🚀</div><div class="pdv-flow-label">Publish</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pipeline-detail" id="detail-5">
+        <div class="pipeline-detail-inner">
+          <div class="pipeline-detail-text">
+            <h3>Learn, improve, repeat</h3>
+            <p>Track performance across all platforms in one dashboard. Simbel's AI identifies what worked, what didn't, and automatically adjusts future campaign strategies based on real engagement data.</p>
+            <ul class="pipeline-detail-features">
+              <li>Unified dashboard across all connected platforms</li>
+              <li>AI-generated performance insights and recommendations</li>
+              <li>Engagement, reach, and conversion tracking</li>
+              <li>Automatic strategy refinement for future campaigns</li>
+            </ul>
+          </div>
+          <div class="pipeline-detail-visual">
+            <div class="pdv-flow">
+              <div class="pdv-flow-step"><div class="pdv-flow-dot">📈</div><div class="pdv-flow-label">Track</div></div>
+              <div class="pdv-flow-arrow">→</div>
+              <div class="pdv-flow-step"><div class="pdv-flow-dot">🧠</div><div class="pdv-flow-label">Analyze</div></div>
+              <div class="pdv-flow-arrow">→</div>
+              <div class="pdv-flow-step"><div class="pdv-flow-dot">💡</div><div class="pdv-flow-label">Insights</div></div>
+              <div class="pdv-flow-arrow">→</div>
+              <div class="pdv-flow-step"><div class="pdv-flow-dot">⚡</div><div class="pdv-flow-label">Optimize</div></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
