@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Hide from Dock — this is a menu bar-only app -->
+    <key>LSUIElement</key>
+    <true/>
+
+    <!-- Minimum macOS version: Monterey (12.0) required for stable AirPlay CoreAudio device IDs -->
+    <key>LSMinimumSystemVersion</key>
+    <string>12.0</string>
+
+    <key>CFBundleName</key>
+    <string>AudioMirror</string>
+
+    <key>CFBundleDisplayName</key>
+    <string>AudioMirror</string>
+
+    <key>CFBundleIdentifier</key>
+    <string>com.audiomirror.app</string>
+
+    <key>CFBundleVersion</key>
+    <string>1</string>
+
+    <key>CFBundleShortVersionString</key>
+    <string>1.0</string>
+
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+
+    <key>CFBundleExecutable</key>
+    <string>AudioMirror</string>
+
+    <key>NSPrincipalClass</key>
+    <string>NSApplication</string>
+
+    <key>NSHighResolutionCapable</key>
+    <true/>
+</dict>
+</plist>
