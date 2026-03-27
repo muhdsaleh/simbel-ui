@@ -20,27 +20,38 @@ final class AudioAggregateBuilder {
     func createMultiOutputDevice(subDevices: [AudioDevice], masterUID: String) throws -> AudioDeviceID {
         guard subDevices.count >= 2 else { throw AudioMirrorError.needsAtLeastTwo }
 
+        // Use raw string keys — avoids Swift overlay issues with `as String` casts.
+        // Raw values from CoreAudio/AudioHardware.h:
+        //   kAudioSubDeviceUIDKey                   = "uid"
+        //   kAudioSubDeviceDriftCompensationKey      = "drift compensation"
+        //   kAudioAggregateDeviceNameKey             = "name"
+        //   kAudioAggregateDeviceUIDKey              = "uid"
+        //   kAudioAggregateDeviceSubDeviceListKey    = "subdevices"
+        //   kAudioAggregateDeviceMasterSubDeviceKey  = "master"
+        //   kAudioAggregateDeviceIsStackedKey        = "stacked"   (1 = Multi-Output mirror mode)
+        //   kAudioAggregateDeviceIsPrivateKey        = "private"
+
         let subDeviceList: [[String: Any]] = subDevices.map { device in
-            var entry: [String: Any] = [kAudioSubDeviceUIDKey as String: device.uid]
+            var entry: [String: Any] = ["uid": device.uid]
             if device.uid != masterUID {
-                // Enable drift compensation for non-master devices (important for AirPlay)
-                entry[kAudioSubDeviceDriftCompensationKey as String] = true
+                entry["drift compensation"] = NSNumber(value: 1)
             }
             return entry
         }
 
-        let description: [String: Any] = [
-            kAudioAggregateDeviceNameKey as String:           "AudioMirror Output",
-            kAudioAggregateDeviceUIDKey as String:            "com.audiomirror.multiout.\(UUID().uuidString)",
-            kAudioAggregateDeviceSubDeviceListKey as String:  subDeviceList,
-            kAudioAggregateDeviceMasterSubDeviceKey as String: masterUID,
-            // isStacked = 1 → Multi-Output (mirror) mode, not interleaved aggregate
-            kAudioAggregateDeviceIsStackedKey as String:      1,
-            // isPrivate = 1 → invisible in Audio MIDI Setup and other apps
-            kAudioAggregateDeviceIsPrivateKey as String:      1,
+        let description: NSDictionary = [
+            "name":       "AudioMirror Output",
+            "uid":        "com.audiomirror.multiout.\(UUID().uuidString)",
+            "subdevices": subDeviceList,
+            "master":     masterUID,
+            "stacked":    NSNumber(value: 1),   // Multi-Output (mirror) mode
+            "private":    NSNumber(value: 1),   // Invisible in Audio MIDI Setup
         ]
 
         let pluginID = try fetchHALPluginID()
+        print("[AudioMirror] HAL plugin ID: \(pluginID)")
+        print("[AudioMirror] Creating multi-output with \(subDevices.count) devices, master: \(masterUID)")
+        print("[AudioMirror] Description: \(description)")
 
         var address = AudioObjectPropertyAddress(
             mSelector: kAudioPlugInCreateAggregateDevice,
@@ -51,9 +62,11 @@ final class AudioAggregateBuilder {
         var newDeviceID = AudioDeviceID(kAudioObjectUnknown)
         var outSize = UInt32(MemoryLayout<AudioDeviceID>.size)
 
-        // The qualifier IS a CFDictionaryRef — pass a pointer to the reference (8 bytes on 64-bit)
-        let cfDescription: CFDictionary = description as CFDictionary
-        let err = withUnsafePointer(to: cfDescription) { qualPtr in
+        // CoreAudio expects: const void* → pointer to a CFDictionaryRef (an 8-byte value).
+        // Using withUnsafeMutablePointer(to:) on a var ensures the reference is on the stack
+        // and its address is stable for the duration of the call.
+        var cfDescription: CFDictionary = description as CFDictionary
+        let err = withUnsafeMutablePointer(to: &cfDescription) { qualPtr in
             AudioObjectGetPropertyData(
                 pluginID,
                 &address,
@@ -63,6 +76,8 @@ final class AudioAggregateBuilder {
                 &newDeviceID
             )
         }
+
+        print("[AudioMirror] createMultiOutputDevice → err=\(err), newDeviceID=\(newDeviceID)")
 
         guard err == noErr, newDeviceID != kAudioObjectUnknown else {
             throw AudioMirrorError.createFailed(err)
