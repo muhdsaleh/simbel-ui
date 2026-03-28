@@ -127,10 +127,12 @@ final class AudioAggregateBuilder {
 
         let count = Int(dataSize) / MemoryLayout<AudioObjectID>.size
         var pluginIDs = [AudioObjectID](repeating: 0, count: count)
-        AudioObjectGetPropertyData(
-            AudioObjectID(kAudioObjectSystemObject),
-            &address, 0, nil, &dataSize, &pluginIDs
-        )
+        pluginIDs.withUnsafeMutableBytes { ptr in
+            AudioObjectGetPropertyData(
+                AudioObjectID(kAudioObjectSystemObject),
+                &address, 0, nil, &dataSize, ptr.baseAddress!
+            )
+        }
 
         for pid in pluginIDs {
             var bundleAddress = AudioObjectPropertyAddress(
@@ -140,7 +142,9 @@ final class AudioAggregateBuilder {
             )
             var bundleRef: CFString? = nil
             var sz = UInt32(MemoryLayout<CFString?>.size)
-            AudioObjectGetPropertyData(pid, &bundleAddress, 0, nil, &sz, &bundleRef)
+            withUnsafeMutablePointer(to: &bundleRef) { ptr in
+                AudioObjectGetPropertyData(pid, &bundleAddress, 0, nil, &sz, ptr)
+            }
             if let bundle = bundleRef as String?, bundle == "com.apple.audio.CoreAudio" {
                 return pid
             }

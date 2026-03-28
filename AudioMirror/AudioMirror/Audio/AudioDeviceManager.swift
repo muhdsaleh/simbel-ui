@@ -49,7 +49,7 @@ final class AudioDeviceManager: ObservableObject {
         listenerBlock = nil
     }
 
-    // MARK: - Static CoreAudio helpers (thread-safe, callable from any thread)
+    // MARK: - Static CoreAudio helpers
 
     static func fetchOutputDevices() -> [AudioDevice] {
         var address = AudioObjectPropertyAddress(
@@ -65,10 +65,13 @@ final class AudioDeviceManager: ObservableObject {
 
         let count = Int(dataSize) / MemoryLayout<AudioDeviceID>.size
         var deviceIDs = [AudioDeviceID](repeating: 0, count: count)
-        guard AudioObjectGetPropertyData(
-            AudioObjectID(kAudioObjectSystemObject),
-            &address, 0, nil, &dataSize, &deviceIDs
-        ) == noErr else { return [] }
+        let fetchErr = deviceIDs.withUnsafeMutableBytes { ptr in
+            AudioObjectGetPropertyData(
+                AudioObjectID(kAudioObjectSystemObject),
+                &address, 0, nil, &dataSize, ptr.baseAddress!
+            )
+        }
+        guard fetchErr == noErr else { return [] }
 
         return deviceIDs.compactMap { deviceID -> AudioDevice? in
             guard hasOutputStream(deviceID: deviceID) else { return nil }
@@ -87,10 +90,12 @@ final class AudioDeviceManager: ObservableObject {
         )
         var deviceID = AudioDeviceID(kAudioObjectUnknown)
         var size = UInt32(MemoryLayout<AudioDeviceID>.size)
-        AudioObjectGetPropertyData(
-            AudioObjectID(kAudioObjectSystemObject),
-            &address, 0, nil, &size, &deviceID
-        )
+        withUnsafeMutablePointer(to: &deviceID) { ptr in
+            AudioObjectGetPropertyData(
+                AudioObjectID(kAudioObjectSystemObject),
+                &address, 0, nil, &size, ptr
+            )
+        }
         return deviceID
     }
 
@@ -136,7 +141,7 @@ final class AudioDeviceManager: ObservableObject {
         return size > 0
     }
 
-    private static func stringProperty(
+    static func stringProperty(
         _ id: AudioDeviceID,
         _ selector: AudioObjectPropertySelector
     ) -> String? {
@@ -147,12 +152,14 @@ final class AudioDeviceManager: ObservableObject {
         )
         var ref: CFString? = nil
         var size = UInt32(MemoryLayout<CFString?>.size)
-        let err = AudioObjectGetPropertyData(id, &address, 0, nil, &size, &ref)
+        let err = withUnsafeMutablePointer(to: &ref) { ptr in
+            AudioObjectGetPropertyData(id, &address, 0, nil, &size, ptr)
+        }
         guard err == noErr, let s = ref else { return nil }
         return s as String
     }
 
-    private static func uint32Property(
+    static func uint32Property(
         _ id: AudioDeviceID,
         _ selector: AudioObjectPropertySelector
     ) -> UInt32? {
@@ -163,7 +170,9 @@ final class AudioDeviceManager: ObservableObject {
         )
         var value: UInt32 = 0
         var size = UInt32(MemoryLayout<UInt32>.size)
-        let err = AudioObjectGetPropertyData(id, &address, 0, nil, &size, &value)
+        let err = withUnsafeMutablePointer(to: &value) { ptr in
+            AudioObjectGetPropertyData(id, &address, 0, nil, &size, ptr)
+        }
         return err == noErr ? value : nil
     }
 }
