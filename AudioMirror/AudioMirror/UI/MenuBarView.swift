@@ -3,10 +3,12 @@ import SwiftUI
 struct MenuBarView: View {
     @ObservedObject var deviceManager: AudioDeviceManager
     let aggregateBuilder: AudioAggregateBuilder
+    @ObservedObject var mirrorState: MirrorState
 
     @State private var selectedUIDs: Set<String> = []
-    @State private var isActive = false
     @State private var errorMessage: String?
+
+    private var isActive: Bool { mirrorState.isActive }
     @AppStorage("savedSelectedUIDs") private var savedUIDsJSON = "[]"
 
     private var canActivate: Bool { selectedUIDs.count >= 2 }
@@ -22,6 +24,7 @@ struct MenuBarView: View {
         .frame(width: 300)
         .onAppear {
             loadSavedSelection()
+            mirrorState.deactivateHandler = { deactivateMirroring() }
         }
         .onChange(of: selectedUIDs) { _ in
             saveSelection()
@@ -179,7 +182,7 @@ struct MenuBarView: View {
             )
             try AudioDeviceManager.setDefaultOutputDevice(newID)
             AudioDeviceManager.setSystemSoundDevice(newID)
-            isActive = true
+            mirrorState.isActive = true
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -198,7 +201,7 @@ struct MenuBarView: View {
         }
 
         aggregateBuilder.destroyMultiOutputDevice()
-        isActive = false
+        mirrorState.isActive = false
         deviceManager.refresh()
     }
 

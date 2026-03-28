@@ -128,7 +128,7 @@ final class AudioDeviceManager: ObservableObject {
     private static func hasOutputStream(deviceID: AudioDeviceID) -> Bool {
         var address = AudioObjectPropertyAddress(
             mSelector: kAudioDevicePropertyStreams,
-            mScope:    kAudioDevicePropertyScopeOutput,
+            mScope:    kAudioObjectPropertyScopeOutput,
             mElement:  kAudioObjectPropertyElementMain
         )
         var size: UInt32 = 0

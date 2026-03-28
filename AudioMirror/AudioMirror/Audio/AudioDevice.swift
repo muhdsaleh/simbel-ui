@@ -1,9 +1,15 @@
 import CoreAudio
 import Foundation
 
-// kAudioDeviceTransportTypeAirPlay may not be exported as a Swift symbol in all SDK versions.
-// Raw value is the FourCC 'airp' = 0x61697270.
-let kAudioTransportTypeAirPlay: UInt32 = 0x61697270
+// CoreAudio transport type constants — using raw FourCC values to avoid
+// Swift overlay export issues with C macros / less common constants.
+private let kTransportAirPlay:     UInt32 = 0x61697270  // 'airp'
+private let kTransportBuiltIn:     UInt32 = 0x626C746E  // 'bltn'
+private let kTransportBluetooth:   UInt32 = 0x626C7565  // 'blue'
+private let kTransportBluetoothLE: UInt32 = 0x626C6561  // 'blea'
+private let kTransportUSB:         UInt32 = 0x20757362  // ' usb'
+private let kTransportHDMI:        UInt32 = 0x68646D69  // 'hdmi'
+private let kTransportDisplayPort: UInt32 = 0x64707274  // 'dprt'
 
 struct AudioDevice: Identifiable, Hashable {
     let id: AudioDeviceID
@@ -12,22 +18,21 @@ struct AudioDevice: Identifiable, Hashable {
     let uid: String
     let transportType: UInt32
 
-    var isAirPlay: Bool { transportType == kAudioTransportTypeAirPlay }
-    var isBuiltIn: Bool { transportType == kAudioDeviceTransportTypeBuiltIn }
+    var isAirPlay: Bool  { transportType == kTransportAirPlay }
+    var isBuiltIn: Bool  { transportType == kTransportBuiltIn }
     var isBluetooth: Bool {
-        transportType == kAudioDeviceTransportTypeBluetooth ||
-        transportType == kAudioDeviceTransportTypeBluetoothLE
+        transportType == kTransportBluetooth || transportType == kTransportBluetoothLE
     }
 
     var systemIconName: String {
-        if isAirPlay       { return "appletv.fill" }
-        if isBuiltIn       { return "speaker.wave.2.fill" }
-        if isBluetooth     { return "headphones" }
+        if isAirPlay   { return "appletv.fill" }
+        if isBuiltIn   { return "speaker.wave.2.fill" }
+        if isBluetooth { return "headphones" }
         switch transportType {
-        case kAudioDeviceTransportTypeUSB:         return "cable.connector"
-        case kAudioDeviceTransportTypeHDMI:        return "tv"
-        case kAudioDeviceTransportTypeDisplayPort: return "display"
-        default:                                   return "hifispeaker.fill"
+        case kTransportUSB:         return "cable.connector"
+        case kTransportHDMI:        return "tv"
+        case kTransportDisplayPort: return "display"
+        default:                    return "hifispeaker.fill"
         }
     }
 }

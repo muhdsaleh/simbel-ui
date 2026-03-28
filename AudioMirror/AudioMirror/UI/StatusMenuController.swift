@@ -7,7 +7,9 @@ final class StatusMenuController {
     private let popover = NSPopover()
     private let deviceManager = AudioDeviceManager()
     private let aggregateBuilder = AudioAggregateBuilder()
-    private var menuBarView: MenuBarView?
+    // MirrorState is a reference type shared between StatusMenuController and MenuBarView
+    // so cleanup() can trigger deactivation on the live state, not a struct copy.
+    private let mirrorState = MirrorState()
     private var eventMonitor: Any?
 
     init() {
@@ -23,8 +25,7 @@ final class StatusMenuController {
             button.target = self
         }
 
-        let view = MenuBarView(deviceManager: deviceManager, aggregateBuilder: aggregateBuilder)
-        menuBarView = view
+        let view = MenuBarView(deviceManager: deviceManager, aggregateBuilder: aggregateBuilder, mirrorState: mirrorState)
 
         let hostingController = NSHostingController(rootView: view)
         popover.contentViewController = hostingController
@@ -51,7 +52,7 @@ final class StatusMenuController {
     }
 
     func cleanup() {
-        menuBarView?.deactivateMirroring()
+        mirrorState.deactivate()
         if let monitor = eventMonitor {
             NSEvent.removeMonitor(monitor)
             eventMonitor = nil
@@ -77,6 +78,6 @@ final class StatusMenuController {
     }
 
     @objc private func systemWillSleep(_ notification: Notification) {
-        menuBarView?.deactivateMirroring()
+        mirrorState.deactivate()
     }
 }
