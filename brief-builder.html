@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simbel — Brief Builder</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #ffffff;
+  --surface: #f7f7f8;
+  --surface-2: #ededf0;
+  --border: #e0e0e4;
+  --border-active: #111;
+  --text: #111111;
+  --text-2: #555555;
+  --text-3: #999999;
+  --accent: #111111;
+  --green: #22C55E;
+  --radius: 6px;
+  --radius-lg: 10px;
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+html, body { height: 100%; }
+body { font-family: var(--font); color: var(--text); background: var(--bg); font-size: 14px; line-height: 1.5; }
+
+.screen { display: none; }
+.screen.active { display: flex; }
+
+#app { display: flex; flex-direction: column; height: 100vh; }
+
+header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 24px; border-bottom: 1px solid var(--border); flex-shrink: 0;
+}
+.logo { font-weight: 700; font-size: 16px; letter-spacing: -0.02em; }
+.header-label { font-size: 13px; color: var(--text-2); }
+
+/* ─── Entry Screen ─── */
+#entry {
+  flex: 1; display: none; align-items: center; justify-content: center;
+  flex-direction: column; padding: 40px 24px;
+}
+#entry.active { display: flex; }
+.entry-heading { font-size: 24px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 6px; text-align: center; }
+.entry-sub { font-size: 14px; color: var(--text-2); margin-bottom: 40px; text-align: center; }
+.entry-cards { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 480px; }
+.entry-card {
+  border: 1px solid var(--border); border-radius: var(--radius-lg);
+  padding: 20px; cursor: pointer; transition: all 0.15s;
+}
+.entry-card:hover { border-color: var(--text-3); }
+.entry-card.primary { border: 2px solid var(--accent); background: var(--surface); }
+.entry-card-title { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
+.entry-card-desc { font-size: 13px; color: var(--text-2); line-height: 1.5; }
+.entry-card.disabled { opacity: 0.45; cursor: default; }
+.entry-card.disabled:hover { border-color: var(--border); }
+.entry-card-badge {
+  display: inline-block; font-size: 10px; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--text-3); margin-top: 6px; font-weight: 600;
+}
+
+/* ─── Main Layout ─── */
+#main { flex: 1; overflow: hidden; }
+#main.active { display: flex; }
+.conversation-panel { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.messages-scroll { flex: 1; overflow-y: auto; padding: 32px 24px 16px; }
+.messages { max-width: 620px; margin: 0 auto; display: flex; flex-direction: column; gap: 6px; }
+
+/* ─── Messages ─── */
+.msg { max-width: 520px; animation: msgIn 0.3s ease-out; }
+.msg-system { align-self: flex-start; }
+.msg-system .msg-bubble {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 10px 14px; font-size: 14px; line-height: 1.55;
+}
+.msg-user { align-self: flex-end; }
+.msg-user .msg-bubble {
+  background: var(--accent); color: #fff;
+  border-radius: var(--radius-lg); padding: 10px 14px; font-size: 14px; line-height: 1.55;
+}
+
+/* Typing */
+.typing-indicator {
+  display: flex; gap: 5px; padding: 14px 16px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); width: fit-content;
+}
+.typing-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text-3); animation: bounce 1.4s infinite; }
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+/* Research */
+.research-box {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 16px; min-width: 300px;
+  animation: msgIn 0.3s ease-out;
+}
+.research-title {
+  font-size: 11px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--text-2); margin-bottom: 12px;
+}
+.research-step {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 13px; color: var(--text-3); padding: 4px 0; transition: color 0.3s;
+}
+.research-step.done { color: var(--text); }
+.research-step .r-icon {
+  width: 18px; height: 18px; border-radius: 50%;
+  border: 1.5px solid var(--border); display: flex;
+  align-items: center; justify-content: center;
+  font-size: 10px; flex-shrink: 0; transition: all 0.3s;
+}
+.research-step.active .r-icon { border-color: var(--accent); animation: pulse 1s infinite; }
+.research-step.done .r-icon { border-color: var(--green); background: var(--green); color: #fff; }
+
+/* ─── Recommendation Block ─── */
+.rec-block {
+  align-self: flex-start; max-width: 540px; width: 100%;
+  animation: msgIn 0.35s ease-out;
+}
+.rec-card {
+  border: 1px solid var(--border); border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.rec-header {
+  padding: 12px 16px; background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.rec-label {
+  font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--text-3); font-weight: 600;
+}
+.rec-step-count { font-size: 11px; color: var(--text-3); }
+
+.rec-body { padding: 16px; }
+.rec-value { font-size: 16px; font-weight: 600; line-height: 1.4; margin-bottom: 8px; }
+.rec-rationale { font-size: 13px; color: var(--text-2); line-height: 1.55; margin-bottom: 14px; }
+
+/* Evidence / context inside rec */
+.rec-evidence {
+  background: var(--surface); border-radius: var(--radius);
+  padding: 10px 12px; margin-bottom: 14px;
+}
+.rec-evidence-title {
+  font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--text-3); font-weight: 600; margin-bottom: 6px;
+}
+.rec-evidence-list { list-style: none; }
+.rec-evidence-list li {
+  font-size: 12px; color: var(--text-2); padding: 2px 0;
+  display: flex; align-items: baseline; gap: 6px;
+}
+.rec-evidence-list li::before { content: '·'; color: var(--text-3); font-weight: 700; }
+
+/* Example preview inside rec */
+.rec-example {
+  border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 10px 12px; margin-bottom: 14px;
+}
+.rec-example-label {
+  font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--text-3); font-weight: 600; margin-bottom: 6px;
+}
+.rec-example-text {
+  font-size: 13px; color: var(--text); line-height: 1.5;
+}
+
+.rec-actions { display: flex; gap: 8px; padding-top: 4px; }
+.rec-btn {
+  padding: 8px 20px; border-radius: var(--radius);
+  font-family: var(--font); font-size: 13px; font-weight: 500;
+  cursor: pointer; transition: all 0.15s; border: 1px solid var(--border);
+}
+.rec-btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+.rec-btn.primary:hover { opacity: 0.85; }
+.rec-btn.secondary { background: var(--bg); color: var(--text); }
+.rec-btn.secondary:hover { border-color: var(--text-3); }
+
+/* ─── Inline Editors ─── */
+.editor-area {
+  border-top: 1px solid var(--border);
+  padding: 14px 16px; animation: msgIn 0.2s ease-out;
+}
+
+/* Pills */
+.pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.pill {
+  padding: 7px 14px; border: 1px solid var(--border); border-radius: 100px;
+  background: var(--bg); font-family: var(--font); font-size: 13px;
+  cursor: pointer; transition: all 0.15s; color: var(--text);
+}
+.pill:hover { border-color: var(--text-3); }
+.pill.selected { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+/* Cards */
+.cards { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.card {
+  padding: 10px; border: 1px solid var(--border); border-radius: var(--radius);
+  cursor: pointer; transition: all 0.15s; position: relative;
+}
+.card:hover { border-color: var(--text-3); }
+.card.selected { border-color: var(--accent); background: var(--surface); }
+.card-label { font-size: 12px; font-weight: 500; display: block; }
+.card-desc { font-size: 11px; color: var(--text-3); display: block; margin-top: 1px; }
+.card-check {
+  position: absolute; top: 8px; right: 8px; width: 16px; height: 16px;
+  border: 1px solid var(--border); border-radius: 3px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; transition: all 0.15s;
+}
+.card.selected .card-check { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* Tags */
+.tag-input-wrap { border: 1px solid var(--border); border-radius: var(--radius); padding: 6px 8px; }
+.tags-row { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 5px; }
+.tags-row:empty { display: none; }
+.tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 9px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 100px; font-size: 12px;
+}
+.tag-x { cursor: pointer; color: var(--text-3); font-size: 13px; line-height: 1; }
+.tag-x:hover { color: var(--text); }
+.tag-field {
+  border: none; outline: none; font-family: var(--font);
+  font-size: 12px; width: 100%; background: transparent; color: var(--text);
+}
+.tag-suggestions { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+.tag-sug {
+  padding: 3px 10px; border: 1px dashed var(--border); border-radius: 100px;
+  font-size: 11px; font-family: var(--font); cursor: pointer;
+  background: transparent; color: var(--text-2); transition: all 0.15s;
+}
+.tag-sug:hover { border-style: solid; border-color: var(--text-3); color: var(--text); }
+
+/* Sliders */
+.slider-group { display: flex; flex-direction: column; gap: 16px; }
+.slider-wrap { display: flex; flex-direction: column; gap: 4px; }
+.slider-ends { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-2); }
+input[type="range"] {
+  -webkit-appearance: none; width: 100%; height: 3px;
+  background: var(--surface-2); border-radius: 2px; outline: none;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%;
+  background: var(--accent); cursor: pointer;
+  border: 2px solid #fff; box-shadow: 0 0 0 1px var(--border);
+}
+
+.editor-save {
+  display: inline-block; margin-top: 12px;
+  padding: 7px 18px; background: var(--accent); color: #fff;
+  border: none; border-radius: var(--radius);
+  font-family: var(--font); font-size: 12px; font-weight: 500; cursor: pointer;
+}
+.editor-save:hover { opacity: 0.85; }
+
+/* ─── Confirmed chip (shows in chat after confirming) ─── */
+.confirmed-chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 5px 12px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 100px;
+  font-size: 12px; animation: msgIn 0.2s ease-out; color: var(--text-2);
+}
+.confirmed-chip .cc-check { color: var(--green); font-weight: 700; }
+
+/* ─── Input Bar ─── */
+.input-bar {
+  padding: 12px 24px 16px; border-top: 1px solid var(--border);
+  display: flex; gap: 8px; align-items: flex-end;
+  max-width: 668px; margin: 0 auto; width: 100%;
+}
+.input-bar.hidden { display: none; }
+.input-bar textarea {
+  flex: 1; resize: none; border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 10px 14px; font-family: var(--font); font-size: 14px;
+  line-height: 1.4; background: var(--bg); color: var(--text);
+  outline: none; min-height: 42px; max-height: 120px;
+}
+.input-bar textarea:focus { border-color: var(--border-active); }
+.input-bar textarea:disabled { opacity: 0.4; cursor: not-allowed; }
+.input-bar button {
+  width: 42px; height: 42px; border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--accent); color: #fff; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.input-bar button:disabled { opacity: 0.25; cursor: not-allowed; }
+.input-bar button svg { width: 16px; height: 16px; }
+
+/* ─── Sidebar ─── */
+.sidebar {
+  width: 272px; flex-shrink: 0; border-left: 1px solid var(--border);
+  padding: 24px 20px; display: flex; flex-direction: column; gap: 24px; overflow-y: auto;
+}
+.progress-section { text-align: center; }
+.progress-ring { width: 96px; height: 96px; }
+.ring-bg { fill: none; stroke: var(--surface-2); stroke-width: 8; }
+.ring-fill {
+  fill: none; stroke: var(--green); stroke-width: 8; stroke-linecap: round;
+  stroke-dasharray: 326.73; stroke-dashoffset: 326.73;
+  transform: rotate(-90deg); transform-origin: center; transition: stroke-dashoffset 0.6s ease;
+}
+.progress-pct { font-size: 26px; font-weight: 700; margin-top: -65px; position: relative; letter-spacing: -0.02em; }
+.progress-sublabel { font-size: 10px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 2px; }
+
+.section-list { display: flex; flex-direction: column; gap: 2px; }
+.section-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 8px; border-radius: var(--radius);
+  font-size: 12px; color: var(--text-3); transition: all 0.15s;
+}
+.section-item.active { color: var(--text); font-weight: 500; }
+.section-item.confirmed { color: var(--text); }
+.section-item .s-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  border: 1.5px solid var(--border); flex-shrink: 0; transition: all 0.3s;
+}
+.section-item.active .s-dot { border-color: var(--accent); background: var(--accent); }
+.section-item.confirmed .s-dot { background: var(--green); border-color: var(--green); }
+
+.preview-section { margin-top: auto; }
+.preview-label { font-size: 10px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+.preview-card { border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 14px; min-height: 100px; }
+.preview-empty {
+  color: var(--text-3); font-size: 12px;
+  display: flex; align-items: center; justify-content: center;
+  min-height: 80px; text-align: center; line-height: 1.6;
+}
+.preview-post .p-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.preview-post .p-avatar {
+  width: 30px; height: 30px; border-radius: 50%; background: var(--surface-2);
+  border: 1px solid var(--border); display: flex; align-items: center;
+  justify-content: center; font-size: 13px; font-weight: 600;
+}
+.preview-post .p-name { font-weight: 600; font-size: 12px; }
+.preview-post .p-handle { color: var(--text-3); font-size: 11px; }
+.preview-post .p-body { color: var(--text-2); font-size: 12px; line-height: 1.6; }
+.preview-post .p-meta {
+  margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border);
+  font-size: 10px; color: var(--text-3);
+}
+
+/* ─── Summary / CTA ─── */
+.summary-block {
+  align-self: flex-start; max-width: 540px; width: 100%;
+  animation: msgIn 0.4s ease-out;
+}
+.summary-card {
+  border: 2px solid var(--accent); border-radius: var(--radius-lg); overflow: hidden;
+}
+.summary-title { padding: 12px 16px; background: var(--accent); color: #fff; font-weight: 700; font-size: 15px; }
+.summary-row { padding: 10px 16px; border-bottom: 1px solid var(--border); }
+.summary-row:last-child { border-bottom: none; }
+.summary-row-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-3); font-weight: 600; margin-bottom: 1px; }
+.summary-row-value { font-size: 13px; }
+.cta-btn {
+  display: block; width: 100%; margin-top: 16px; padding: 14px;
+  background: var(--accent); color: #fff; border: none; border-radius: var(--radius);
+  font-family: var(--font); font-size: 15px; font-weight: 600; cursor: pointer;
+  animation: msgIn 0.4s ease-out;
+}
+.cta-btn:hover { opacity: 0.85; }
+.cta-sub { text-align: center; margin-top: 8px; font-size: 12px; color: var(--text-3); }
+
+@keyframes msgIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes bounce { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-4px); } }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+</style>
+</head>
+<body>
+
+<div id="app">
+  <header>
+    <div class="logo">Simbel</div>
+    <div class="header-label">Brief Builder</div>
+  </header>
+
+  <div id="entry" class="screen active">
+    <h1 class="entry-heading">Build your campaign brief</h1>
+    <p class="entry-sub">Choose how you'd like to get started</p>
+    <div class="entry-cards">
+      <div class="entry-card primary" id="startGuided">
+        <div class="entry-card-title">Tell me about my brand</div>
+        <div class="entry-card-desc">Start with the basics — your brand name, what you do, where you're based. I'll research your market and draft a complete brief for you.</div>
+      </div>
+      <div class="entry-card disabled">
+        <div class="entry-card-title">I have a brief ready</div>
+        <div class="entry-card-desc">Paste or type your existing campaign brief and I'll structure it.</div>
+        <div class="entry-card-badge">Coming soon</div>
+      </div>
+      <div class="entry-card disabled">
+        <div class="entry-card-title">I have brand guidelines</div>
+        <div class="entry-card-desc">Upload a PDF or document and I'll extract the details.</div>
+        <div class="entry-card-badge">Coming soon</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="main" class="screen">
+    <section class="conversation-panel">
+      <div class="messages-scroll" id="scroll">
+        <div class="messages" id="messages"></div>
+      </div>
+      <div class="input-bar" id="inputBar">
+        <textarea id="input" rows="1" placeholder="Your brand name, what you do, where you're based..."></textarea>
+        <button id="send">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </button>
+      </div>
+    </section>
+
+    <aside class="sidebar">
+      <div class="progress-section">
+        <svg class="progress-ring" viewBox="0 0 120 120">
+          <circle class="ring-bg" cx="60" cy="60" r="52"/>
+          <circle class="ring-fill" id="ringFill" cx="60" cy="60" r="52"/>
+        </svg>
+        <div class="progress-pct" id="pct">0%</div>
+        <div class="progress-sublabel">Brief Confidence</div>
+      </div>
+      <div class="section-list" id="sectionList"></div>
+      <div class="preview-section">
+        <div class="preview-label">Live Preview</div>
+        <div class="preview-card" id="preview">
+          <div class="preview-empty">Preview will appear<br>after research</div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script>
+// ─── Steps ───
+const STEPS = [
+  {
+    id: 'personality',
+    label: 'Brand Personality',
+    rec: 'Warm & Authentic',
+    recValue: 'warm',
+    rationale: 'Specialty coffee brands in Riyadh that lean into craft and origin storytelling see 2–3x higher engagement than those with generic "premium" positioning. Warmth builds trust for a roastery selling direct.',
+    evidence: [
+      "Barn's and Elixir Bunn both use warm, personal language on Twitter/X",
+      'Single-origin positioning naturally lends itself to storytelling',
+      '"Authentic" consistently outperforms "luxury" in Saudi F&B social engagement'
+    ],
+    example: {
+      label: 'How this sounds in your content',
+      warm: 'كل كوب عندنا يحكي قصة حبة بُن سافرت من أصلها لحتى وصلتك',
+      bold: 'قهوتك ما هي بس قهوة — هي تجربة تبدأ من المحمصة وتنتهي بإيدك',
+      premium: 'نختار أجود حبات البُن من مصادرها، لنقدم لك كوبًا استثنائيًا',
+      playful: 'صباحك بُن! حبوبنا طازة وجاهزة تصبّح عليك',
+      traditional: 'من أرض القهوة العربية، بُن يعيد لك أصالة الفنجان'
+    },
+    type: 'pills',
+    options: [
+      { l: 'Bold & Modern', v: 'bold' },
+      { l: 'Warm & Authentic', v: 'warm' },
+      { l: 'Premium & Luxurious', v: 'premium' },
+      { l: 'Playful & Fun', v: 'playful' },
+      { l: 'Traditional with a twist', v: 'traditional' }
+    ]
+  },
+  {
+    id: 'audience',
+    label: 'Target Audience',
+    rec: 'Coffee Enthusiasts, Young Professionals (25–35)',
+    rationale: "These two segments drive 70%+ of specialty coffee social engagement in Saudi. They're the ones searching hashtags, visiting new roasteries, and sharing on stories.",
+    evidence: [
+      'Ages 25–35 account for largest share of Saudi specialty coffee spend',
+      'Coffee enthusiast accounts generate the highest repost rates',
+      'Young professionals are the primary weekday foot traffic driver'
+    ],
+    type: 'cards',
+    options: [
+      { l: 'Coffee Enthusiasts', d: 'Specialty coffee lovers, origin-curious' },
+      { l: 'Young Professionals', d: 'Ages 25–35, urban Riyadh' },
+      { l: 'Families', d: 'Weekend café outings' },
+      { l: 'Corporate / B2B', d: 'Office coffee, event catering' },
+      { l: 'Tourists', d: 'Visitors seeking local experiences' }
+    ],
+    defaultSelected: [0, 1]
+  },
+  {
+    id: 'competitors',
+    label: 'Competitors',
+    rec: "Barn's Coffee, Dose Café, % Arabica, Elixir Bunn",
+    rationale: 'These are the specialty coffee brands with the strongest social presence in Riyadh right now. Understanding their content strategy helps position Bunn distinctly.',
+    evidence: [
+      "Barn's — largest Saudi specialty chain, heavy Twitter/X presence",
+      'Dose — strong visual brand on Instagram, targets young professionals',
+      '% Arabica — international chain, premium minimal aesthetic',
+      'Elixir Bunn — direct competitor, similar single-origin focus'
+    ],
+    type: 'tags',
+    defaultTags: ["Barn's Coffee", "Dose Café", "% Arabica", "Elixir Bunn"],
+    moreSuggestions: ["Specialty Batch", "Camel Step", "Five Elephant", "Brew92"]
+  },
+  {
+    id: 'goal',
+    label: 'Campaign Goal',
+    rec: 'Brand Awareness',
+    recValue: 'awareness',
+    rationale: "For an emerging roastery, awareness is the highest-leverage goal. You need people to know you exist before they can visit or buy. Once you've built recognition, the next campaign can shift to foot traffic.",
+    evidence: [
+      'New F&B brands in Saudi need ~3 months of awareness before conversion campaigns perform',
+      'Awareness campaigns generate 4x more follower growth than promotion-led ones',
+      'Foot traffic campaigns work best after a base audience is established'
+    ],
+    type: 'pills',
+    options: [
+      { l: 'Brand Awareness', v: 'awareness' },
+      { l: 'Drive Foot Traffic', v: 'traffic' },
+      { l: 'Product Launch', v: 'launch' },
+      { l: 'Grow Social Following', v: 'growth' },
+      { l: 'Seasonal Promotion', v: 'seasonal' }
+    ]
+  },
+  {
+    id: 'voice',
+    label: 'Voice & Tone',
+    rec: 'Casual Saudi dialect · Warm tone',
+    rationale: 'Saudi coffee brands with the highest engagement use عامي on Twitter/X — it feels personal, not corporate. The warm tone matches your brand personality and builds the human connection roasteries thrive on.',
+    evidence: [
+      'Saudi dialect posts get 60% more engagement than MSA in F&B',
+      'عامي creates perceived intimacy — important for food brands',
+      "Formal Arabic signals corporate/government, not artisan"
+    ],
+    example: {
+      label: 'Same message, different voices',
+      texts: [
+        { label: 'Casual Saudi (recommended)', text: 'كل كوب عندنا يحكي قصة حبة بُن سافرت من أصلها لحتى وصلتك', tag: 'عامي' },
+        { label: 'Formal MSA', text: 'نحرص على اختيار أجود أنواع البُن من مصادرها لتقديم تجربة قهوة استثنائية', tag: 'فصحى' }
+      ]
+    },
+    type: 'sliders',
+    sliders: [
+      { ends: ['عامي Casual', 'رسمي Formal'], id: 'formality', def: 25 },
+      { ends: ['Playful', 'Serious'], id: 'tone', def: 40 }
+    ]
+  },
+  {
+    id: 'platforms',
+    label: 'Platforms',
+    rec: 'Twitter/X (primary) → Instagram (secondary)',
+    recValue: 'tw-ig',
+    rationale: 'Twitter/X dominates Saudi social conversation — especially in F&B. It\'s where food trends start and where café culture lives. Instagram is your secondary for visual storytelling of the roasting process and latte art.',
+    evidence: [
+      'Saudi Arabia has the highest Twitter/X penetration rate globally',
+      'F&B discovery in Riyadh happens on Twitter before Instagram',
+      'Instagram works best for visual content: roasting process, pour shots, space design',
+      'TikTok is growing but requires video production capacity'
+    ],
+    type: 'pills',
+    options: [
+      { l: 'Twitter/X → Instagram', v: 'tw-ig' },
+      { l: 'Instagram → Twitter/X', v: 'ig-tw' },
+      { l: 'TikTok → Instagram', v: 'tt-ig' },
+      { l: 'Instagram → TikTok', v: 'ig-tt' }
+    ]
+  },
+  {
+    id: 'timing',
+    label: 'Timing',
+    rec: 'Early May 2026 — post-Eid, summer traffic begins',
+    recValue: 'may',
+    rationale: 'Eid break ends late April. Early May catches the return-to-routine wave plus the start of summer evening café culture in Riyadh. Launching during Eid itself means lower attention; launching after means you\'re the fresh thing people discover.',
+    evidence: [
+      'Post-Eid week sees a 40% spike in social media activity in Saudi',
+      'Summer evenings are peak café season in Riyadh (too hot during the day)',
+      'May avoids Ramadan content restrictions and Eid travel absence',
+      'Saudi National Day (Sep) and Founding Day (Feb) are too far out for a first campaign'
+    ],
+    type: 'pills',
+    options: [
+      { l: 'Early May (recommended)', v: 'may' },
+      { l: 'Late April', v: 'apr' },
+      { l: 'June', v: 'jun' },
+      { l: 'Custom date', v: 'custom' }
+    ]
+  }
+];
+
+// ─── State ───
+let stepIndex = -1;
+const answers = {};
+const confirmed = new Set(['identity']); // brand identity confirmed from input
+
+// ─── DOM ───
+const $entry = document.getElementById('entry');
+const $main = document.getElementById('main');
+const $msgs = document.getElementById('messages');
+const $scroll = document.getElementById('scroll');
+const $input = document.getElementById('input');
+const $send = document.getElementById('send');
+const $inputBar = document.getElementById('inputBar');
+const $ring = document.getElementById('ringFill');
+const $pct = document.getElementById('pct');
+const $preview = document.getElementById('preview');
+const $sectionList = document.getElementById('sectionList');
+const CIRC = 2 * Math.PI * 52;
+
+function scroll() { $scroll.scrollTop = $scroll.scrollHeight; }
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+function sysMsg(html) {
+  const d = document.createElement('div');
+  d.className = 'msg msg-system';
+  d.innerHTML = `<div class="msg-bubble">${html}</div>`;
+  $msgs.appendChild(d); scroll();
+}
+
+function userMsg(text) {
+  const d = document.createElement('div');
+  d.className = 'msg msg-user';
+  d.innerHTML = `<div class="msg-bubble">${text}</div>`;
+  $msgs.appendChild(d); scroll();
+}
+
+function typing() {
+  const d = document.createElement('div');
+  d.className = 'msg msg-system'; d.id = 'typing';
+  d.innerHTML = `<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>`;
+  $msgs.appendChild(d); scroll();
+}
+
+function untyping() { const e = document.getElementById('typing'); if (e) e.remove(); }
+
+function addBlock(html, cls = '') {
+  const d = document.createElement('div');
+  d.className = cls || 'rec-block';
+  d.innerHTML = html;
+  $msgs.appendChild(d); scroll();
+  return d;
+}
+
+// ─── Progress ───
+function updateProgress() {
+  const total = STEPS.length + 1; // +1 for identity
+  const pct = Math.round((confirmed.size / total) * 100);
+  $ring.style.strokeDashoffset = CIRC - (pct / 100) * CIRC;
+  $pct.textContent = pct + '%';
+
+  const allSections = [{ id: 'identity', label: 'Brand Identity' }, ...STEPS.map(s => ({ id: s.id, label: s.label }))];
+  const currentId = stepIndex >= 0 && stepIndex < STEPS.length ? STEPS[stepIndex].id : null;
+
+  $sectionList.innerHTML = allSections.map(s => {
+    const isConfirmed = confirmed.has(s.id);
+    const isActive = s.id === currentId;
+    return `<div class="section-item ${isConfirmed ? 'confirmed' : ''} ${isActive ? 'active' : ''}">
+      <span class="s-dot"></span>${s.label}
+    </div>`;
+  }).join('');
+}
+
+// ─── Preview ───
+function updatePreview() {
+  const p = answers.personality || 'warm';
+  const texts = {
+    warm: 'كل كوب عندنا يحكي قصة حبة بُن سافرت من أصلها لحتى وصلتك',
+    bold: 'قهوتك ما هي بس قهوة — هي تجربة تبدأ من المحمصة وتنتهي بإيدك',
+    premium: 'نختار أجود حبات البُن من مصادرها، لنقدم لك كوبًا استثنائيًا',
+    playful: 'صباحك بُن! حبوبنا طازة وجاهزة تصبّح عليك',
+    traditional: 'من أرض القهوة العربية، بُن يعيد لك أصالة الفنجان'
+  };
+  const body = texts[p] || texts.warm;
+
+  const v = answers.voice;
+  let voiceLabel = 'Saudi dialect';
+  if (v) { const f = v.formality; voiceLabel = f < 35 ? 'Saudi dialect' : f > 65 ? 'Formal MSA' : 'Mixed register'; }
+
+  const plat = (answers.platforms || 'tw-ig').startsWith('tw') ? 'Twitter / X' : 'Instagram';
+
+  $preview.innerHTML = `
+    <div class="preview-post">
+      <div class="p-header">
+        <div class="p-avatar">B</div>
+        <div><div class="p-name">Bunn بُن</div><div class="p-handle">@bunn_sa</div></div>
+      </div>
+      <div class="p-body" dir="rtl">${body}</div>
+      <div class="p-meta">${plat} · ${voiceLabel}</div>
+    </div>`;
+}
+
+// ─── Research ───
+async function runResearch() {
+  $inputBar.classList.add('hidden');
+
+  const steps = [
+    'Researching specialty coffee in Riyadh...',
+    'Identifying competitors and market position...',
+    'Analyzing target demographics...',
+    'Determining optimal channels and timing...',
+    'Generating campaign recommendations...'
+  ];
+
+  const box = document.createElement('div');
+  box.className = 'msg msg-system';
+  box.innerHTML = `<div class="research-box">
+    <div class="research-title">Building your brief</div>
+    ${steps.map((s, i) => `<div class="research-step" id="rstep-${i}"><span class="r-icon"></span>${s}</div>`).join('')}
+  </div>`;
+  $msgs.appendChild(box); scroll();
+
+  for (let i = 0; i < steps.length; i++) {
+    document.getElementById('rstep-' + i).classList.add('active');
+    scroll();
+    await wait(600 + Math.random() * 500);
+    const el = document.getElementById('rstep-' + i);
+    el.classList.remove('active'); el.classList.add('done');
+    el.querySelector('.r-icon').textContent = '✓';
+  }
+
+  await wait(400);
+  updateProgress(); updatePreview();
+
+  sysMsg("I've researched your market. Let me walk you through what I'd recommend — confirm what fits, change what doesn't.");
+
+  await wait(600);
+  nextStep();
+}
+
+// ─── Step by Step Recommendations ───
+async function nextStep() {
+  stepIndex++;
+  if (stepIndex >= STEPS.length) {
+    await showSummary();
+    return;
+  }
+
+  const step = STEPS[stepIndex];
+  updateProgress();
+
+  await wait(200); typing(); await wait(600 + Math.random() * 300); untyping();
+
+  // Build recommendation card
+  let evidenceHtml = '';
+  if (step.evidence) {
+    evidenceHtml = `<div class="rec-evidence">
+      <div class="rec-evidence-title">Why this recommendation</div>
+      <ul class="rec-evidence-list">${step.evidence.map(e => `<li>${e}</li>`).join('')}</ul>
+    </div>`;
+  }
+
+  let exampleHtml = '';
+  if (step.example && step.type === 'pills' && step.example.warm) {
+    const val = step.recValue || 'warm';
+    exampleHtml = `<div class="rec-example">
+      <div class="rec-example-label">${step.example.label}</div>
+      <div class="rec-example-text" dir="rtl" id="example-text-${step.id}">${step.example[val]}</div>
+    </div>`;
+  }
+  if (step.example && step.example.texts) {
+    exampleHtml = `<div class="rec-example">
+      <div class="rec-example-label">${step.example.label}</div>
+      ${step.example.texts.map(t => `
+        <div style="margin-bottom:8px;">
+          <div style="font-size:11px;color:var(--text-3);margin-bottom:2px">${t.label} <span style="font-size:10px;opacity:0.6">${t.tag}</span></div>
+          <div class="rec-example-text" dir="rtl">${t.text}</div>
+        </div>`).join('')}
+    </div>`;
+  }
+
+  const block = addBlock(`
+    <div class="rec-card" id="rec-${step.id}">
+      <div class="rec-header">
+        <span class="rec-label">${step.label}</span>
+        <span class="rec-step-count">${stepIndex + 1} of ${STEPS.length}</span>
+      </div>
+      <div class="rec-body">
+        <div class="rec-value">${step.rec}</div>
+        <div class="rec-rationale">${step.rationale}</div>
+        ${evidenceHtml}
+        ${exampleHtml}
+        <div class="rec-actions">
+          <button class="rec-btn primary" id="confirm-${step.id}">Looks good</button>
+          <button class="rec-btn secondary" id="edit-${step.id}">Change this</button>
+        </div>
+      </div>
+      <div id="editor-${step.id}"></div>
+    </div>`);
+
+  scroll();
+
+  // Wire buttons
+  document.getElementById('confirm-' + step.id).onclick = () => confirmStep(step, block);
+  document.getElementById('edit-' + step.id).onclick = () => openEditor(step);
+}
+
+function confirmStep(step, block) {
+  // Save default value
+  if (step.type === 'pills') answers[step.id] = step.recValue;
+  else if (step.type === 'cards') answers[step.id] = step.defaultSelected.map(i => step.options[i].l);
+  else if (step.type === 'tags') answers[step.id] = [...step.defaultTags];
+  else if (step.type === 'sliders') answers[step.id] = { formality: step.sliders[0].def, tone: step.sliders[1].def };
+
+  confirmed.add(step.id);
+
+  // Collapse card, show confirmed chip
+  const card = document.getElementById('rec-' + step.id);
+  card.style.display = 'none';
+
+  const chip = document.createElement('div');
+  chip.className = 'confirmed-chip';
+  chip.innerHTML = `<span class="cc-check">✓</span> ${step.label}: ${step.rec}`;
+  block.appendChild(chip);
+
+  updateProgress(); updatePreview();
+  nextStep();
+}
+
+function saveEdited(step, value, displayValue) {
+  answers[step.id] = value;
+  confirmed.add(step.id);
+
+  // Update rec display and collapse
+  const card = document.getElementById('rec-' + step.id);
+  const block = card.parentElement;
+  card.style.display = 'none';
+
+  const chip = document.createElement('div');
+  chip.className = 'confirmed-chip';
+  chip.innerHTML = `<span class="cc-check">✓</span> ${step.label}: ${displayValue}`;
+  block.appendChild(chip);
+
+  updateProgress(); updatePreview();
+  nextStep();
+}
+
+// ─── Editors ───
+function openEditor(step) {
+  const editor = document.getElementById('editor-' + step.id);
+  editor.innerHTML = '';
+
+  // Hide the confirm/edit buttons
+  const actions = editor.parentElement.querySelector('.rec-actions');
+  if (actions) actions.style.display = 'none';
+
+  const area = document.createElement('div');
+  area.className = 'editor-area';
+  editor.appendChild(area);
+
+  switch (step.type) {
+    case 'pills': buildPillEditor(step, area); break;
+    case 'cards': buildCardEditor(step, area); break;
+    case 'tags': buildTagEditor(step, area); break;
+    case 'sliders': buildSliderEditor(step, area); break;
+  }
+  scroll();
+}
+
+function buildPillEditor(step, area) {
+  const current = step.recValue;
+  area.innerHTML = `
+    <div class="pills">${step.options.map(o =>
+      `<button class="pill ${o.v === current ? 'selected' : ''}" data-v="${o.v}">${o.l}</button>`
+    ).join('')}</div>
+    <button class="editor-save" id="save-${step.id}">Save</button>`;
+
+  let sel = current;
+  area.querySelectorAll('.pill').forEach(p => p.onclick = () => {
+    area.querySelectorAll('.pill').forEach(x => x.classList.remove('selected'));
+    p.classList.add('selected'); sel = p.dataset.v;
+    // Update example if exists
+    if (step.example && step.example[sel]) {
+      const ex = document.getElementById('example-text-' + step.id);
+      if (ex) ex.textContent = step.example[sel];
+    }
+  });
+  area.querySelector('.editor-save').onclick = () => {
+    const label = step.options.find(o => o.v === sel).l;
+    saveEdited(step, sel, label);
+  };
+}
+
+function buildCardEditor(step, area) {
+  const sel = new Set(step.defaultSelected || []);
+  area.innerHTML = `
+    <div style="font-size:11px;color:var(--text-3);margin-bottom:6px">Select all that apply</div>
+    <div class="cards">${step.options.map((o, i) =>
+      `<div class="card ${sel.has(i) ? 'selected' : ''}" data-i="${i}">
+        <span class="card-check"></span>
+        <span class="card-label">${o.l}</span>
+        <span class="card-desc">${o.d}</span>
+      </div>`
+    ).join('')}</div>
+    <button class="editor-save" id="save-${step.id}">Save</button>`;
+
+  area.querySelectorAll('.card').forEach(c => c.onclick = () => {
+    const i = +c.dataset.i;
+    sel.has(i) ? (sel.delete(i), c.classList.remove('selected')) : (sel.add(i), c.classList.add('selected'));
+  });
+  area.querySelector('.editor-save').onclick = () => {
+    const labels = [...sel].sort().map(i => step.options[i].l);
+    saveEdited(step, labels, labels.join(', '));
+  };
+}
+
+function buildTagEditor(step, area) {
+  const tags = [...(step.defaultTags || [])];
+  const moreSugs = (step.moreSuggestions || []).filter(s => !tags.includes(s));
+
+  area.innerHTML = `
+    <div class="tag-input-wrap">
+      <div class="tags-row" id="trow-${step.id}"></div>
+      <input class="tag-field" id="tfield-${step.id}" placeholder="Type a name and press Enter..." />
+    </div>
+    ${moreSugs.length ? `<div class="tag-suggestions" id="tsugs-${step.id}">${moreSugs.map(s =>
+      `<button class="tag-sug" data-v="${s}">${s}</button>`).join('')}</div>` : ''}
+    <button class="editor-save" id="save-${step.id}">Save</button>`;
+
+  const $row = area.querySelector(`#trow-${step.id}`);
+  const $field = area.querySelector(`#tfield-${step.id}`);
+
+  function refresh() {
+    $row.innerHTML = tags.map(t => `<span class="tag">${t}<span class="tag-x" data-t="${t}">&times;</span></span>`).join('');
+    $row.querySelectorAll('.tag-x').forEach(x => x.onclick = () => { tags.splice(tags.indexOf(x.dataset.t), 1); refresh(); });
+  }
+  function add(n) { n = n.trim(); if (!n || tags.includes(n)) return; tags.push(n); refresh(); }
+  refresh();
+
+  area.querySelectorAll('.tag-sug').forEach(b => b.onclick = () => { add(b.dataset.v); b.style.display = 'none'; });
+  $field.onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); add($field.value); $field.value = ''; } };
+  area.querySelector('.editor-save').onclick = () => saveEdited(step, [...tags], tags.join(', '));
+}
+
+function buildSliderEditor(step, area) {
+  const vals = { formality: step.sliders[0].def, tone: step.sliders[1].def };
+  area.innerHTML = `
+    <div class="slider-group">
+      ${step.sliders.map(s => `
+        <div class="slider-wrap">
+          <div class="slider-ends"><span>${s.ends[0]}</span><span>${s.ends[1]}</span></div>
+          <input type="range" min="0" max="100" value="${s.def}" id="sl-${step.id}-${s.id}" />
+        </div>`).join('')}
+    </div>
+    <button class="editor-save" id="save-${step.id}">Save</button>`;
+
+  area.querySelector('.editor-save').onclick = () => {
+    const v = {};
+    step.sliders.forEach(s => v[s.id] = +area.querySelector(`#sl-${step.id}-${s.id}`).value);
+    const f = v.formality, t = v.tone;
+    const label = (f < 35 ? 'Casual Saudi dialect' : f > 65 ? 'Formal MSA' : 'Mixed register') +
+                  ' · ' + (t < 35 ? 'Playful tone' : t > 65 ? 'Serious tone' : 'Warm tone');
+    saveEdited(step, v, label);
+  };
+}
+
+// ─── Summary ───
+async function showSummary() {
+  updateProgress();
+  await wait(300); typing(); await wait(700); untyping();
+
+  sysMsg("Your brief is complete. Here's the full picture:");
+
+  await wait(300);
+
+  const rows = [
+    ['Brand', 'Bunn بُن — Specialty Coffee Roastery, Riyadh'],
+    ['Personality', fmtPills('personality')],
+    ['Target Audience', answers.audience ? answers.audience.join(', ') : STEPS[1].rec],
+    ['Competitors', answers.competitors ? answers.competitors.join(', ') : STEPS[2].rec],
+    ['Campaign Goal', fmtPills('goal')],
+    ['Voice & Tone', fmtVoice()],
+    ['Platforms', fmtPills('platforms')],
+    ['Timing', fmtPills('timing')]
+  ];
+
+  const rh = rows.map(([l, v]) => `<div class="summary-row"><div class="summary-row-label">${l}</div><div class="summary-row-value">${v}</div></div>`).join('');
+
+  addBlock(`
+    <div class="summary-card"><div class="summary-title">Campaign Brief — Bunn بُن</div>${rh}</div>
+    <button class="cta-btn" onclick="alert('Campaign created! (This is where Simbel would generate your campaign.)')">Create Campaign →</button>
+    <div class="cta-sub">Create a free account to save your brief and generate your campaign</div>
+  `, 'summary-block');
+
+  scroll();
+}
+
+function fmtPills(id) {
+  const step = STEPS.find(s => s.id === id);
+  if (!step) return '—';
+  const v = answers[id] || step.recValue;
+  const opt = step.options.find(o => o.v === v);
+  return opt ? opt.l : step.rec;
+}
+
+function fmtVoice() {
+  const v = answers.voice;
+  if (!v) return STEPS.find(s => s.id === 'voice').rec;
+  const f = v.formality, t = v.tone;
+  return (f < 35 ? 'Casual Saudi dialect' : f > 65 ? 'Formal MSA' : 'Mixed register') +
+         ' · ' + (t < 35 ? 'Playful tone' : t > 65 ? 'Serious tone' : 'Warm tone');
+}
+
+// ─── User Input ───
+async function handleSend() {
+  const text = $input.value.trim();
+  if (!text) return;
+  userMsg(text);
+  $input.value = ''; $input.disabled = true; $send.disabled = true;
+
+  await wait(400); typing(); await wait(800); untyping();
+  sysMsg("Got it — let me research your market and put together a brief.");
+  await wait(600);
+  runResearch();
+}
+
+$send.onclick = handleSend;
+$input.onkeydown = e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } };
+$input.oninput = () => { $input.style.height = 'auto'; $input.style.height = Math.min($input.scrollHeight, 120) + 'px'; };
+
+document.getElementById('startGuided').onclick = async () => {
+  $entry.classList.remove('active');
+  $main.classList.add('active');
+  updateProgress();
+  await wait(400); typing(); await wait(800); untyping();
+  sysMsg("Let's build your campaign brief. Tell me the basics — your brand name, what you do, and where you're based.");
+};
+
+updateProgress();
+</script>
+</body>
+</html>
