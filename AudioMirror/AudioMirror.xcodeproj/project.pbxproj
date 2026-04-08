@@ -1,0 +1,387 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CC000000000000000000001 /* AudioMirrorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000000000000000000002 /* AudioMirrorApp.swift */; };
+		CC000000000000000000002 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000000000000000000003 /* AppDelegate.swift */; };
+		CC000000000000000000003 /* AudioDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000000000000000000004 /* AudioDevice.swift */; };
+		CC000000000000000000004 /* AudioDeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000000000000000000005 /* AudioDeviceManager.swift */; };
+		CC000000000000000000005 /* AudioAggregateBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000000000000000000006 /* AudioAggregateBuilder.swift */; };
+		CC000000000000000000006 /* StatusMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000000000000000000007 /* StatusMenuController.swift */; };
+		CC000000000000000000007 /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000000000000000000008 /* MenuBarView.swift */; };
+		CC000000000000000000008 /* DeviceRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000000000000000000009 /* DeviceRowView.swift */; };
+		CC000000000000000000009 /* UserPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB00000000000000000000A /* UserPreferences.swift */; };
+		CC00000000000000000000A /* MirrorState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB00000000000000000000D /* MirrorState.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		BB000000000000000000001 /* AudioMirror.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AudioMirror.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB000000000000000000002 /* AudioMirrorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioMirrorApp.swift; sourceTree = "<group>"; };
+		BB000000000000000000003 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		BB000000000000000000004 /* AudioDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioDevice.swift; sourceTree = "<group>"; };
+		BB000000000000000000005 /* AudioDeviceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioDeviceManager.swift; sourceTree = "<group>"; };
+		BB000000000000000000006 /* AudioAggregateBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioAggregateBuilder.swift; sourceTree = "<group>"; };
+		BB000000000000000000007 /* StatusMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusMenuController.swift; sourceTree = "<group>"; };
+		BB000000000000000000008 /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
+		BB000000000000000000009 /* DeviceRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceRowView.swift; sourceTree = "<group>"; };
+		BB00000000000000000000A /* UserPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPreferences.swift; sourceTree = "<group>"; };
+		BB00000000000000000000B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BB00000000000000000000C /* AudioMirror.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AudioMirror.entitlements; sourceTree = "<group>"; };
+		BB00000000000000000000D /* MirrorState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MirrorState.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		AAAA00000000000000000008 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		AAAA0000000000000000000A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BB000000000000000000001 /* AudioMirror.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AAAA0000000000000000000B /* / */ = {
+			isa = PBXGroup;
+			children = (
+				AAAA0000000000000000000C /* AudioMirror */,
+				AAAA0000000000000000000A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		AAAA0000000000000000000C /* AudioMirror */ = {
+			isa = PBXGroup;
+			children = (
+				AAAA0000000000000000000D /* App */,
+				AAAA0000000000000000000E /* Audio */,
+				AAAA0000000000000000000F /* UI */,
+				AAAA00000000000000000010 /* Persistence */,
+				BB00000000000000000000B /* Info.plist */,
+				BB00000000000000000000C /* AudioMirror.entitlements */,
+			);
+			path = AudioMirror;
+			sourceTree = "<group>";
+		};
+		AAAA0000000000000000000D /* App */ = {
+			isa = PBXGroup;
+			children = (
+				BB000000000000000000002 /* AudioMirrorApp.swift */,
+				BB000000000000000000003 /* AppDelegate.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		AAAA0000000000000000000E /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				BB000000000000000000004 /* AudioDevice.swift */,
+				BB000000000000000000005 /* AudioDeviceManager.swift */,
+				BB000000000000000000006 /* AudioAggregateBuilder.swift */,
+			);
+			path = Audio;
+			sourceTree = "<group>";
+		};
+		AAAA0000000000000000000F /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				BB000000000000000000007 /* StatusMenuController.swift */,
+				BB000000000000000000008 /* MenuBarView.swift */,
+				BB000000000000000000009 /* DeviceRowView.swift */,
+				BB00000000000000000000D /* MirrorState.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		AAAA00000000000000000010 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				BB00000000000000000000A /* UserPreferences.swift */,
+			);
+			path = Persistence;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		AAAA00000000000000000002 /* AudioMirror */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AAAA00000000000000000004 /* Build configuration list for PBXNativeTarget "AudioMirror" */;
+			buildPhases = (
+				AAAA00000000000000000007 /* Sources */,
+				AAAA00000000000000000008 /* Frameworks */,
+				AAAA00000000000000000009 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AudioMirror;
+			productName = AudioMirror;
+			productReference = BB000000000000000000001 /* AudioMirror.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		AAAA00000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					AAAA00000000000000000002 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = AAAA00000000000000000003 /* Build configuration list for PBXProject "AudioMirror" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = AAAA0000000000000000000B /* / */;
+			productRefGroup = AAAA0000000000000000000A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AAAA00000000000000000002 /* AudioMirror */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		AAAA00000000000000000009 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		AAAA00000000000000000007 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC000000000000000000001 /* AudioMirrorApp.swift in Sources */,
+				CC000000000000000000002 /* AppDelegate.swift in Sources */,
+				CC000000000000000000003 /* AudioDevice.swift in Sources */,
+				CC000000000000000000004 /* AudioDeviceManager.swift in Sources */,
+				CC000000000000000000005 /* AudioAggregateBuilder.swift in Sources */,
+				CC000000000000000000006 /* StatusMenuController.swift in Sources */,
+				CC000000000000000000007 /* MenuBarView.swift in Sources */,
+				CC000000000000000000008 /* DeviceRowView.swift in Sources */,
+				CC000000000000000000009 /* UserPreferences.swift in Sources */,
+				CC00000000000000000000A /* MirrorState.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		AAAA00000000000000000005 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_CYCLE = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		AAAA00000000000000000006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_CYCLE = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		AAAA00000000000000000011 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "AudioMirror/AudioMirror.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "AudioMirror/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.audiomirror.app";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		AAAA00000000000000000012 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "AudioMirror/AudioMirror.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "AudioMirror/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.audiomirror.app";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		AAAA00000000000000000003 /* Build configuration list for PBXProject "AudioMirror" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AAAA00000000000000000005 /* Debug */,
+				AAAA00000000000000000006 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AAAA00000000000000000004 /* Build configuration list for PBXNativeTarget "AudioMirror" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AAAA00000000000000000011 /* Debug */,
+				AAAA00000000000000000012 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+	};
+	rootObject = AAAA00000000000000000001 /* Project object */;
+}

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!--
+        App Sandbox MUST be disabled.
+        kAudioPlugInCreateAggregateDevice silently fails (returns kAudioHardwareBadObjectError)
+        in a sandboxed process. This app cannot be distributed on the Mac App Store.
+        Distribute as a direct download and notarize with Apple.
+    -->
+    <key>com.apple.security.app-sandbox</key>
+    <false/>
+</dict>
+</plist>
